@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:09:28 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/01/16 14:44:17 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/01/16 21:22:07 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,23 @@ t_dic_entry	*dict_create_entry(char *key, char *value)
 	return (ret_entry);
 }
 
-void	delete_key(t_dictionary *dict, char *key)
+void	dict_delete_key(t_dictionary *dict, char *key)
 {
 	unsigned int	index;
 	unsigned int	counter;
 
 	if (key == NULL)
-		return (NULL);
+		;
 	index = dict_hash(key) % dict->capacity;
 	counter = 0;
 	while (counter < dict->capacity - 1)
 	{
 		if (dict->entries[index] && !strcmp(dict->entries[index]->key, key))
-			return (free(dict->entries[index]));
+		{
+			free(dict->entries[index]);
+			dict->entries[index] = NULL;
+			return ;
+		}
 		index++;
 		if (index == dict->capacity - 1)
 			index = 0;
@@ -113,5 +117,7 @@ int	main(void)
 		return (dict_delete(dict), 1);
 	dict_insert(&dict, entry);
 	printf("PATH=%s", dict_get(dict, path));
+	dict_delete_key(dict, path);
+	printf("PATH=%s", dict_get(dict, "PATH"));
 	dict_delete(dict);
 }
