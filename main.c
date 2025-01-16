@@ -4,7 +4,8 @@
 #include <editline/readline.h>
 #include <readline/history.h> // Include this header for add_history
 
-int main() {
+int main()
+{
     char *line;
 
 	while ((line = readline("> ")))
@@ -16,5 +17,3 @@ int main() {
 	rl_clear_history();
     return 0;
 }
-
-

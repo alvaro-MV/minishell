@@ -1,6 +1,10 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <readline/readline.h>
+#include <editline/readline.h>
+#include <readline/history.h>
+#include "dynamic_array.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -23,6 +27,23 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (ptr);
 }
 
+void    ft_free_array(char **marr)
+{
+	char			*free_ptr;
+	unsigned int	i;
+
+	i = 0;
+	if (marr == NULL)
+		return ;
+	while (marr[i])
+	{
+		free_ptr = marr[i];
+		i++;
+		free(free_ptr);
+	}
+	free(marr);
+}
+
 int	is_simple_operator(char argv_char)
 {
 	if (argv_char == '>')
@@ -35,74 +56,145 @@ int	is_simple_operator(char argv_char)
 		return (0);
 }
 
-size_t	count_n_tokens(char **argv)
+int	is_doble_operator(char argv_char)
+{
+	if (argv_char == '>')
+		return (1);
+	else if (argv_char == '<')
+		return (1);
+	else
+		return (0);
+}
+
+size_t	count_n_tokens(char *argv)
 {
 	int	i;
-	int	j;
 	size_t	n_op;
 
 	i = 0;
-	j = 0;
 	n_op = 0;
 	while (argv[i])
 	{
-		while (argv[i][j])
+		if (is_simple_operator(argv[i]))
 		{
-			if (is_simple_operator(argv[i][j]))
-			{
-				if (is_simple_operator(argv[i][j + 1]))
-					j++;
-				n_op++;
-			}
-			j++;
+			if (is_doble_operator(argv[i + 1]))
+				i++;
+			n_op++;
+			while (isspace(argv[i + 1]))
+				i++;
+			i++;
+			continue ;
+		}
+		else if (isspace(argv[i]))
+		{
+			while (isspace(argv[i]) && argv[i + 1] != '\0')
+				i++;
+			i--;
+			n_op++;
 		}
 		i++;
 	}
-	return (n_op);
+	return (++n_op);
 }
 
-int	main(int argc, char **argv, char **env)
+int	add_token(t_darray **tokens, char *element)
 {
-	(void) argc;
-	argv++;
-	int		i;
-	int		j;
-	int		len_op;
-	char	last_op;
-	char	**tokens;
+	if (!append_darray(tokens, &element))
+		return (0);
+	return (1);
+}
+
+t_darray	*tokenizer_guarro(char *argv)
+{
+	int			i;
+	int			len_op;
+	int			start;
+	t_darray	*tokens;
 
 	i = 0;
-	j = 0;
-	last_op = 0;
-	tokens = (char **) malloc(count_n_tokens(argv) * sizeof(char *) + 1);
-
+	start = 0;
+	tokens = alloc_darray(count_n_tokens(argv) + 1, sizeof(char *));
 	if (!tokens)
-		return (1);
+		return (NULL);
 	while (argv[i])
 	{
-		while (argv[i][j])
+		len_op = 1;
+		if (is_simple_operator(argv[i]))
 		{
-			len_op = 0;
-			if (is_simple_operator(argv[i][j]))
+			if (i != 0 && !isspace(argv[i - 1]) && !is_simple_operator(argv[i - 1]))
 			{
-				*tokens = ft_substr(argv[i], last_op, j);
-				printf("tokens: %s\n", *tokens);
-				len_op++;
-				if (is_simple_operator(argv[i][j + 1]))
-					len_op++;
-				*tokens = ft_substr(argv[i], j, len_op);
-				printf("tokens: %s\n", *tokens);
-				tokens++;
-				if (is_simple_operator(argv[i][j + 1]))
-					j++;
-				last_op = j + 1;
+				if (!add_token(&tokens, ft_substr(argv, start, i - start)))
+					return (free_darray(tokens), NULL);
 			}
-			j++;
+			if (is_doble_operator(argv[i]) && is_doble_operator(argv[i + 1]))
+				len_op++;
+			if (!add_token(&tokens, ft_substr(argv, i, len_op)))
+				return (free_darray(tokens), NULL);
+			if (is_doble_operator(argv[i]) && is_doble_operator(argv[i + 1]))
+				i++;
+			while (isspace(argv[i + 1]) && argv[i + 1] != '\0')
+				i++;
+			i++;
+			start = i;
+			continue ;
 		}
-		*tokens = ft_substr(argv[i], last_op, j);
-		printf("tokens: %s\n", *tokens);
-		tokens++;
+		else if (isspace(argv[i]))
+		{
+			if (!add_token(&tokens, ft_substr(argv, start, i - start)))
+				return (free_darray(tokens), NULL);
+			while (isspace(argv[i]) && argv[i + 1] != '\0')
+				i++;
+			start = i;
+			i--;
+		}
 		i++;
 	}
-	return (0);
+	if (start != i)
+	{
+		if (!add_token(&tokens, ft_substr(argv, start, i - start)))
+			return (free_darray(tokens), NULL);
+	}
+	add_token(&tokens, NULL);
+	return (tokens);
+}
+
+int main(int argc, char **argv)
+{
+    char		*line;
+	int			i;
+	t_darray	*tokens;
+	char		**token_list;
+	
+	// if (argc != 2)
+	// 	return (write(1, "./a.out \"<sequence>\"\n", 22));
+	// argv++;
+	// tokens = tokenizer_guarro(argv[0]);
+	// token_list = (char **) tokens->darray;
+	// i = 0;
+	// printf("full_idx: %zu\n", tokens->full_idx);
+	// while (i < tokens->full_idx)
+	// {
+	// 	printf("token: %s\n", token_list[i]);
+	// 	i++;
+	// }
+	// ft_free_array(token_list);
+	// free(tokens);
+	while ((line = readline("> ")))
+	{
+		printf("La línea ingresada es: %s\n", line);
+		add_history(line);
+		tokens = tokenizer_guarro(line);
+		token_list = (char **) tokens->darray;
+		i = 0;
+		while (i < tokens->full_idx)
+		{
+			printf("token: %s\n", token_list[i]);
+			i++;
+		}
+		ft_free_array(token_list);
+		free(tokens);
+		free(line);
+	}
+	rl_clear_history();
+    return 0;
 }
