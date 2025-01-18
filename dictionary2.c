@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:09:28 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/01/16 21:22:07 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/01/17 00:25:35 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,17 +107,22 @@ void	dict_delete_key(t_dictionary *dict, char *key)
 	}
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
-	t_dictionary *dict = dict_init(5);
-	char *path = ft_strdup("PATH");
-	char *path_value = ft_strdup("bin:/usr/bin");
-	t_dic_entry *entry = dict_create_entry(path, path_value);
-	if (!entry)
-		return (dict_delete(dict), 1);
-	dict_insert(&dict, entry);
-	printf("PATH=%s", dict_get(dict, path));
-	dict_delete_key(dict, path);
-	printf("PATH=%s", dict_get(dict, "PATH"));
-	dict_delete(dict);
+	while (*env)
+	{
+		printf("%s\n", *env);
+		env++;
+	}
+	// t_dictionary *dict = dict_init(5);
+	// char *path = ft_strdup("PATH");
+	// char *path_value = ft_strdup("bin:/usr/bin");
+	// t_dic_entry *entry = dict_create_entry(path, path_value);
+	// if (!entry)
+	// 	return (dict_delete(dict), 1);
+	// dict_insert(&dict, entry);
+	// printf("PATH=%s", dict_get(dict, path));
+	// dict_delete_key(dict, path);
+	// printf("PATH=%s", dict_get(dict, "PATH"));
+	// dict_delete(dict);
 }

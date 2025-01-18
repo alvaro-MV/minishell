@@ -1,48 +1,4 @@
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <editline/readline.h>
-#include <readline/history.h>
-#include "dynamic_array.h"
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*ptr;
-	size_t	init;
-
-	if (start > strlen(s))
-		len = 0;
-	else if (len > strlen(s) - start)
-		len = strlen(s) - start;
-	ptr = (char *) calloc(len + 1, sizeof(char));
-	if (ptr == NULL)
-		return (NULL);
-	init = 0;
-	while (s[init] && len--)
-	{
-		ptr[init++] = s[start++];
-	}
-	ptr[init] = ""[0];
-	return (ptr);
-}
-
-void    ft_free_array(char **marr)
-{
-	char			*free_ptr;
-	unsigned int	i;
-
-	i = 0;
-	if (marr == NULL)
-		return ;
-	while (marr[i])
-	{
-		free_ptr = marr[i];
-		i++;
-		free(free_ptr);
-	}
-	free(marr);
-}
+#include "tokenizer.h"
 
 int	is_simple_operator(char argv_char)
 {
@@ -56,7 +12,7 @@ int	is_simple_operator(char argv_char)
 		return (0);
 }
 
-int	is_doble_operator(char argv_char)
+int	is_double_operator(char argv_char)
 {
 	if (argv_char == '>')
 		return (1);
@@ -77,7 +33,7 @@ size_t	count_n_tokens(char *argv)
 	{
 		if (is_simple_operator(argv[i]))
 		{
-			if (is_doble_operator(argv[i + 1]))
+			if (is_double_operator(argv[i + 1]))
 				i++;
 			n_op++;
 			while (isspace(argv[i + 1]))
@@ -104,7 +60,7 @@ int	add_token(t_darray **tokens, char *element)
 	return (1);
 }
 
-t_darray	*tokenizer_guarro(char *argv)
+t_darray	*tokenizer_str(char *argv)
 {
 	int			i;
 	int			len_op;
@@ -126,11 +82,11 @@ t_darray	*tokenizer_guarro(char *argv)
 				if (!add_token(&tokens, ft_substr(argv, start, i - start)))
 					return (free_darray(tokens), NULL);
 			}
-			if (is_doble_operator(argv[i]) && is_doble_operator(argv[i + 1]))
+			if (is_double_operator(argv[i]) && is_double_operator(argv[i + 1]))
 				len_op++;
 			if (!add_token(&tokens, ft_substr(argv, i, len_op)))
 				return (free_darray(tokens), NULL);
-			if (is_doble_operator(argv[i]) && is_doble_operator(argv[i + 1]))
+			if (is_double_operator(argv[i]) && is_double_operator(argv[i + 1]))
 				i++;
 			while (isspace(argv[i + 1]) && argv[i + 1] != '\0')
 				i++;
@@ -158,43 +114,57 @@ t_darray	*tokenizer_guarro(char *argv)
 	return (tokens);
 }
 
+t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
+{
+	int	i;
+
+	i = 0;
+	t_token	*token_stream = malloc((len + 1) * sizeof(t_token));
+	i = 0;
+	while (tokens_strings[i])
+	{
+		token_stream[i].text = tokens_strings[i];
+		if (is_double_operator(tokens_strings[i][0]))
+			token_stream[i].type = OPERATOR;
+		else if (i > 0 && token_stream[i - 1].type == OPERATOR)
+			token_stream[i].type = FILENAME;
+		else
+			token_stream[i].type = COMMAND;
+		i++;
+	}
+	token_stream[i].type = END;
+	token_stream[i].text = NULL;
+	return (token_stream);
+}
+
 int main(int argc, char **argv)
 {
     char		*line;
 	int			i;
-	t_darray	*tokens;
-	char		**token_list;
+	t_darray	*tokens_array;
+	char		**tokens_strings;
+	t_token		*token_stream;
 	
-	// if (argc != 2)
-	// 	return (write(1, "./a.out \"<sequence>\"\n", 22));
-	// argv++;
-	// tokens = tokenizer_guarro(argv[0]);
-	// token_list = (char **) tokens->darray;
-	// i = 0;
-	// printf("full_idx: %zu\n", tokens->full_idx);
-	// while (i < tokens->full_idx)
-	// {
-	// 	printf("token: %s\n", token_list[i]);
-	// 	i++;
-	// }
-	// ft_free_array(token_list);
-	// free(tokens);
 	while ((line = readline("> ")))
 	{
 		printf("La línea ingresada es: %s\n", line);
 		add_history(line);
-		tokens = tokenizer_guarro(line);
-		token_list = (char **) tokens->darray;
+		tokens_array = tokenizer_str(line);
+		tokens_strings = (char **) tokens_array->darray;
+		token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
+		free(tokens_array);
+		
 		i = 0;
-		while (i < tokens->full_idx)
+		while (token_stream[i].type != END)
 		{
-			printf("token: %s\n", token_list[i]);
+			printf("token: %s -|- type: %d\n", token_stream[i].text, (int) token_stream[i].type);
 			i++;
 		}
-		ft_free_array(token_list);
-		free(tokens);
+		ft_free_array(tokens_strings);
+		free(token_stream);
 		free(line);
 	}
-	rl_clear_history();
-    return 0;
+		rl_clear_history();
+		return 0;
 }
+
