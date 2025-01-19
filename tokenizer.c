@@ -125,9 +125,11 @@ t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
 	{
 		token_stream[i].text = tokens_strings[i];
 		if (is_double_operator(tokens_strings[i][0]))
-			token_stream[i].type = OPERATOR;
-		else if (i > 0 && token_stream[i - 1].type == OPERATOR)
+			token_stream[i].type = IO_OPERATOR;
+		else if (i > 0 && token_stream[i - 1].type == IO_OPERATOR)
 			token_stream[i].type = FILENAME;
+		else if (tokens_strings[i][0] == '|')
+			token_stream[i].type = PIPE_OPERATOR;
 		else
 			token_stream[i].type = COMMAND;
 		i++;
@@ -137,34 +139,33 @@ t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
 	return (token_stream);
 }
 
-int main(int argc, char **argv)
-{
-    char		*line;
-	int			i;
-	t_darray	*tokens_array;
-	char		**tokens_strings;
-	t_token		*token_stream;
+// int main(int argc, char **argv)
+// {
+//     char		*line;
+// 	int			i;
+// 	t_darray	*tokens_array;
+// 	char		**tokens_strings;
+// 	t_token		*token_stream;
 	
-	while ((line = readline("> ")))
-	{
-		printf("La línea ingresada es: %s\n", line);
-		add_history(line);
-		tokens_array = tokenizer_str(line);
-		tokens_strings = (char **) tokens_array->darray;
-		token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
-		free(tokens_array);
+// 	while (line = readline("\033[32mminishell\033[0m$ "))
+// 	{
+// 		printf("La línea ingresada es: %s\n", line);
+// 		add_history(line);
+// 		tokens_array = tokenizer_str(line);
+// 		tokens_strings = (char **) tokens_array->darray;
+// 		token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
+// 		free(tokens_array);
 		
-		i = 0;
-		while (token_stream[i].type != END)
-		{
-			printf("token: %s -|- type: %d\n", token_stream[i].text, (int) token_stream[i].type);
-			i++;
-		}
-		ft_free_array(tokens_strings);
-		free(token_stream);
-		free(line);
-	}
-		rl_clear_history();
-		return 0;
-}
-
+// 		i = 0;
+// 		while (token_stream[i].type != END)
+// 		{
+// 			printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
+// 			i++;
+// 		}
+// 		ft_free_array(tokens_strings);
+// 		free(token_stream);
+// 		free(line);
+// 	}
+// 		rl_clear_history();
+// 		return 0;
+// }

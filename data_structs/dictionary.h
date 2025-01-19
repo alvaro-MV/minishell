@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:08:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/01/16 14:16:54 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/01/18 18:27:47 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define DICTIONARY_H
 
 # include <stdlib.h>
-#include "libft/include/libft.h"
-#include "libft/include/get_next_line.h"
+#include "../libft/include/libft.h"
+#include "../libft/include/get_next_line.h"
 # include <stdint.h>
 # include <string.h>
 

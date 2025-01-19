@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:00:35 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/12/10 18:00:13 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/01/18 18:10:27 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,7 @@ int		ft_ptoa_w(unsigned long long nb);
 int		ft_printf(char const *s1, ...);
 int		ft_strtoa_w(char *str);
 int		ft_chtoa_w(unsigned int c);
+
+void	sort_strings(char **strings, int n);
 
 #endif

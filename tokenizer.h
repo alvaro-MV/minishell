@@ -6,12 +6,13 @@
 # include <readline/readline.h>
 # include <editline/readline.h>
 # include <readline/history.h>
-# include "dynamic_array.h"
+# include "data_structs/dynamic_array.h"
 # include "libft/include/libft.h"
 
 typedef enum	token_type
 {
-	OPERATOR=1,
+	IO_OPERATOR=1,
+	PIPE_OPERATOR,
 	FILENAME,
 	COMMAND,
 	END
@@ -24,6 +25,8 @@ typedef struct	s_token
 }		t_token;
 
 
+int			add_token(t_darray **tokens, char *element);
 t_darray	*tokenizer_str(char *argv);
+t_token		*tokenizer_t_tokens(char **tokens_strings, size_t len);
 
 #endif

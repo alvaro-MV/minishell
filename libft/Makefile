@@ -57,7 +57,8 @@ SRCS =	ft_atoi.c \
 		  ft_strtoa.c \
 		  ft_xtoa.c \
 		  get_next_line.c \
-		  ft_free_array.c
+		  ft_free_array.c \
+		  sort_strings.c
 
 SRCS_BONUS = ft_lstadd_back_bonus.c \
 		  ft_lstadd_front_bonus.c \

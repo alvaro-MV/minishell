@@ -3,8 +3,8 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-#include "libft/include/libft.h"
-#include "libft/include/get_next_line.h"
+#include "../libft/include/libft.h"
+#include "../libft/include/get_next_line.h"
 
 typedef	struct s_darray
 {

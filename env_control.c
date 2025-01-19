@@ -1,4 +1,4 @@
-#include "dictionary.h"
+#include "data_structs/dictionary.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
