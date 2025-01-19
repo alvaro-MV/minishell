@@ -6,8 +6,8 @@
 # include <readline/readline.h>
 # include <editline/readline.h>
 # include <readline/history.h>
-# include "data_structs/dynamic_array.h"
-# include "libft/include/libft.h"
+# include "../data_structs/dynamic_array.h"
+# include "../libft/include/libft.h"
 
 typedef enum	token_type
 {
@@ -26,6 +26,9 @@ typedef struct	s_token
 
 
 int			add_token(t_darray **tokens, char *element);
+int			is_simple_operator(char argv_char);
+int			is_double_operator(char argv_char);
+int			is_quote(char argv_char);
 t_darray	*tokenizer_str(char *argv);
 t_token		*tokenizer_t_tokens(char **tokens_strings, size_t len);
 
