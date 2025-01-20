@@ -15,12 +15,11 @@ int	expand_dollar(char *str, char **expanded_str, int *i)
 	// if (!str_env_var)
 	// 	return (free(tmp_expand_str), 0);
 	// ft_printf("str_env_var: %s\n", str_env_var);
-	str_env_var = ft_strdup("hjkl");
+	str_env_var = ft_strdup("");
 	*expanded_str = ft_strjoin(*expanded_str, str_env_var);
-	ft_printf("expanded str: %s\n", *expanded_str);
-	if (!(*expanded_str))
-		return (free(str_env_var), free(tmp_expand_str), 0);
-	ft_printf("str_env_vawr: %s\n", str_env_var);
+	// *expanded_str = ft_strjoin(*expanded_str, str_env_var);
+	// if (!(*expanded_str))
+	// 	return (free(str_env_var), free(tmp_expand_str), 0);
 	free(tmp_expand_str);
 	free(str_env_var);
 	*i = len_env_var - 1;
@@ -135,7 +134,11 @@ char	*expand_str(char *str)
 int	main(void)
 {
 	char	*expanded_str = expand_str("DI$Bar\"\'Hola\"peste");
-	ft_printf("%s\n", expanded_str);
+	ft_printf("expanded_str: %s\n", expanded_str);
+	ft_printf("%d\n", ft_strcmp(expanded_str, "DI\'Holapeste"));
+	free(expanded_str);
+	expanded_str = expand_str("DI\'$Bar\'\"\'Hola\"peste");
+	ft_printf("%d\n", ft_strcmp(expanded_str, "DI$Bar\'Holapeste"));
 	free(expanded_str);
 	return (0);
 }	
