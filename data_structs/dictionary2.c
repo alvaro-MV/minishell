@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:09:28 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/01/17 00:25:35 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/01/20 14:12:35 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,6 @@ char	*dict_get(t_dictionary *dic, char *key)
 		counter++;
 	}
 	return (NULL);
-}
-
-unsigned int	dict_hash(char *key)
-{
-	unsigned int	hash;
-	int				i;
-	int				length;
-
-	hash = 2166136261u;
-	i = 0;
-	length = ft_strlen(key);
-	while (i < length)
-	{
-		hash ^= (uint8_t)key[i];
-		hash *= 16777619;
-		i++;
-	}
-	return (hash);
 }
 
 void	dict_delete(t_dictionary *dic)

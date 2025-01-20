@@ -22,11 +22,16 @@ int	is_double_operator(char argv_char)
 		return (0);
 }
 
-int	is_quote(char argv_char)
+int	still_in_quote(char c, char quote)
 {
-	if (argv_char == '\'')
+	static int inside_quote = 0;
+
+	if (c == quote)
+	{
+		inside_quote = 1 - inside_quote;
 		return (1);
-	else if (argv_char == '\"')
+	}
+	if (inside_quote == 1)
 		return (1);
 	else
 		return (0);

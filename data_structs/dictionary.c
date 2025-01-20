@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dictionary.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:09:15 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/09/10 12:09:16 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/01/20 14:12:42 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,24 @@ void	dict_insert(t_dictionary **dic_p, t_dic_entry *entry)
 	*dic_p = dic;
 }
 
+unsigned int	dict_hash(char *key)
+{
+	unsigned int	hash;
+	int				i;
+	int				length;
+
+	hash = 2166136261u;
+	i = 0;
+	length = ft_strlen(key);
+	while (i < length)
+	{
+		hash ^= (uint8_t)key[i];
+		hash *= 16777619;
+		i++;
+	}
+	return (hash);
+}
+
 static void	map_old_values(t_dictionary *old_dic, t_dictionary *new_dic)
 {
 	unsigned int	i;
@@ -92,7 +110,7 @@ static void	map_old_values(t_dictionary *old_dic, t_dictionary *new_dic)
 	}
 }
 
-int	dict_expand(t_dictionary **dic_pointer)
+static int	dict_expand(t_dictionary **dic_pointer)
 {
 	int				new_capacity;
 	t_dictionary	*old_dic;
