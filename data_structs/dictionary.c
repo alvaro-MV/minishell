@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:09:15 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/01/20 14:12:42 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/01/21 22:29:07 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static void	map_old_values(t_dictionary *old_dic, t_dictionary *new_dic)
 	}
 }
 
-static int	dict_expand(t_dictionary **dic_pointer)
+int	dict_expand(t_dictionary **dic_pointer)
 {
 	int				new_capacity;
 	t_dictionary	*old_dic;

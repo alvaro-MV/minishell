@@ -1,28 +1,29 @@
-#include "tokenizer/tokenizer.h"
-#include "data_structs/dictionary.h"
+#include "../tokenizer/tokenizer.h"
+#include "../data_structs/dictionary.h"
 
-int	expand_dollar(char *str, char **expanded_str, int *i)
+int	expand_dollar(char *str, char **expanded_str, int *i, t_dictionary *env)
 {
 	int		len_env_var;
 	char	*tmp_expand_str;
-	char	*str_env_var;
+	char	*env_var_name;
+	char	*env_var_value;
 
 	len_env_var = *i + 1;
 	while (str[len_env_var] != '\'' && str[len_env_var] != '\"'
 			 && str[len_env_var] != '$' && str[len_env_var] != '\0')
 		len_env_var++;
 	tmp_expand_str = *expanded_str;
-	// str_env_var = ft_substr(str, *i + 1, len_env_var - *i - 1);
-	// if (!str_env_var)
-	// 	return (free(tmp_expand_str), 0);
-	// ft_printf("str_env_var: %s\n", str_env_var);
-	str_env_var = ft_strdup("");
-	*expanded_str = ft_strjoin(*expanded_str, str_env_var);
-	// *expanded_str = ft_strjoin(*expanded_str, str_env_var);
-	// if (!(*expanded_str))
-	// 	return (free(str_env_var), free(tmp_expand_str), 0);
+	env_var_name = ft_substr(str, *i + 1, len_env_var - *i - 1);
+	if (!env_var_name)
+		return (free(tmp_expand_str), 0);
+	env_var_value = dict_get(env, env_var_name);
+	if (!env_var_value)
+		env_var_value = "";
+	*expanded_str = ft_strjoin(*expanded_str, env_var_value);
+	if (!(*expanded_str))
+		return (free(env_var_name), free(tmp_expand_str), 0);
 	free(tmp_expand_str);
-	free(str_env_var);
+	free(env_var_name);
 	*i = len_env_var - 1;
 	return (1);
 }
@@ -49,7 +50,7 @@ int	expand_simple_quote(char *str, char **expanded_str, int *i)
 	return (1);
 }
 
-int	expand_double_quote(char *str, char **expanded_str, int *i)
+int	expand_double_quote(char *str, char **expanded_str, int *i, t_dictionary *env)
 {
 	int		len_quote;
 	char	*tmp_expand_str;
@@ -59,7 +60,7 @@ int	expand_double_quote(char *str, char **expanded_str, int *i)
 	while (still_in_quote(str[len_quote], '\"'))
 	{
 		if (str[len_quote] == '$')
-			expand_dollar(str, expanded_str, i);
+			expand_dollar(str, expanded_str, i, env);
 		len_quote++;	
 	}
 	tmp_expand_str = *expanded_str;
@@ -114,12 +115,12 @@ char	*expand_str(char *str, t_dictionary *env)
 		}
 		else if (str[i] == '\"')
 		{
-			if (!expand_double_quote(str, &expanded_str, &i))
+			if (!expand_double_quote(str, &expanded_str, &i, env))
 				return (NULL);
 		}
 		else if (str[i] == '$')
 		{
-			if (!expand_dollar(str, &expanded_str, &i))
+			if (!expand_dollar(str, &expanded_str, &i, env))
 				return (NULL);
 		}
 		else
@@ -134,12 +135,23 @@ char	*expand_str(char *str, t_dictionary *env)
 
 int	main(int argc, char **argv, char **env)
 {
-	char	*expanded_str = expand_str("DI$Bar\"\'Hola\"peste");
-	ft_printf("expanded_str: %s\n", expanded_str);
-	ft_printf("%d\n", ft_strcmp(expanded_str, "DI\'Holapeste"));
-	free(expanded_str);
-	expanded_str = expand_str("DI\'$Bar\'\"\'Hola\"peste");
-	ft_printf("%d\n", ft_strcmp(expanded_str, "DI$Bar\'Holapeste"));
+	t_dictionary	*hash_env;
+	t_dic_entry		*env_var;
+	char			**env_var_array;
+
+	hash_env = dict_init(16); //El número de variables que hay en la gramática de shell
+	while (*env)
+	{
+		env_var_array = ft_split(*env, '=');
+		env_var = dict_create_entry(env_var_array[0], env_var_array[1]);
+		dict_insert(&hash_env, env_var);
+		env++;
+	}
+	char	*expanded_str = expand_str(argv[1], hash_env);
+	ft_printf("%s", expanded_str);
+	dict_delete(hash_env);
 	free(expanded_str);
 	return (0);
 }	
+
+// $BAR\"ooo\"

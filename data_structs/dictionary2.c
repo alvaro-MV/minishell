@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:09:28 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/01/20 14:12:35 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/01/21 22:30:29 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,22 +89,22 @@ void	dict_delete_key(t_dictionary *dict, char *key)
 	}
 }
 
-int	main(int argc, char **argv, char **env)
-{
-	while (*env)
-	{
-		printf("%s\n", *env);
-		env++;
-	}
-	// t_dictionary *dict = dict_init(5);
-	// char *path = ft_strdup("PATH");
-	// char *path_value = ft_strdup("bin:/usr/bin");
-	// t_dic_entry *entry = dict_create_entry(path, path_value);
-	// if (!entry)
-	// 	return (dict_delete(dict), 1);
-	// dict_insert(&dict, entry);
-	// printf("PATH=%s", dict_get(dict, path));
-	// dict_delete_key(dict, path);
-	// printf("PATH=%s", dict_get(dict, "PATH"));
-	// dict_delete(dict);
-}
+// int	main(int argc, char **argv, char **env)
+// {
+// 	while (*env)
+// 	{
+// 		printf("%s\n", *env);
+// 		env++;
+// 	}
+// 	// t_dictionary *dict = dict_init(5);
+// 	// char *path = ft_strdup("PATH");
+// 	// char *path_value = ft_strdup("bin:/usr/bin");
+// 	// t_dic_entry *entry = dict_create_entry(path, path_value);
+// 	// if (!entry)
+// 	// 	return (dict_delete(dict), 1);
+// 	// dict_insert(&dict, entry);
+// 	// printf("PATH=%s", dict_get(dict, path));
+// 	// dict_delete_key(dict, path);
+// 	// printf("PATH=%s", dict_get(dict, "PATH"));
+// 	// dict_delete(dict);
+// }

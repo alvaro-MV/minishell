@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:08:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/01/20 14:13:00 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/01/21 22:29:29 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_dictionary	*dict_init(int capacity);
 void			dict_insert(t_dictionary **dic_p, t_dic_entry *entry);
 unsigned int	dict_hash(char *key);
 char			*dict_get(t_dictionary *dic, char *key);
+int				dict_expand(t_dictionary **dic_pointer);
 void			dict_delete(t_dictionary *dic);
 void			dict_delete_key(t_dictionary *dict, char *key);
 t_dic_entry		*dict_create_entry(char *key, char *value);
