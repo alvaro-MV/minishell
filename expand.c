@@ -1,4 +1,5 @@
 #include "tokenizer/tokenizer.h"
+#include "data_structs/dictionary.h"
 
 int	expand_dollar(char *str, char **expanded_str, int *i)
 {
@@ -96,7 +97,7 @@ int	expand_normal_text(char *str, char **expanded_str, int *i)
 	return (1);
 }
 
-char	*expand_str(char *str)
+char	*expand_str(char *str, t_dictionary *env)
 {
 	int		i;
 	int		normal_string;
@@ -131,7 +132,7 @@ char	*expand_str(char *str)
 	return (expanded_str);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
 	char	*expanded_str = expand_str("DI$Bar\"\'Hola\"peste");
 	ft_printf("expanded_str: %s\n", expanded_str);
