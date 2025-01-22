@@ -133,6 +133,8 @@ char	*expand_str(char *str, t_dictionary *env)
 	return (expanded_str);
 }
 
+void	expand_tester();
+
 int	main(int argc, char **argv, char **env)
 {
 	t_dictionary	*hash_env;
@@ -147,11 +149,55 @@ int	main(int argc, char **argv, char **env)
 		dict_insert(&hash_env, env_var);
 		env++;
 	}
-	char	*expanded_str = expand_str(argv[1], hash_env);
-	ft_printf("%s", expanded_str);
+	expand_tester(hash_env);
 	dict_delete(hash_env);
-	free(expanded_str);
 	return (0);
-}	
+}
 
-// $BAR\"ooo\"
+void	print_result(int condition)
+{
+	if (!condition)
+		ft_printf("\033[31m[KO]\033[0m");
+	else
+		ft_printf("\033[32m[OK]\033[0m");
+}
+
+void	make_test(char *str, t_dictionary *env, char *expected)
+{
+	char	*expanded_str;
+
+	str = str;
+	ft_printf("%s: ", str);
+	expanded_str = expand_str(str, env);
+	print_result(ft_strncmp(expanded_str, expected, ft_strlen(expected)));
+	free(expanded_str);
+}
+
+void	expand_tester(t_dictionary *env)
+{
+	char	*str;
+	
+	str = "$BAR\"ooo\"";
+	make_test(str, env, "\"ooo\"");
+	ft_printf("\n----------------------\n");
+
+	str = "\"$DISPLAY\"ooo\"i\"";
+	make_test(str, env, "\":0\"ooo\"i\"");
+	ft_printf("\n----------------------\n");
+
+	str = "\"$DISPLA\"Yooo\"i\"";
+	make_test(str, env, "Yoooi");
+	ft_printf("\n----------------------\n");
+
+	str = "\"$HOME\"/home/usuario";
+	make_test(str, env, "/home/alvaro/home/usuario");
+	ft_printf("\n----------------------\n");
+
+	str = "'Cualquier mierda'";
+	make_test(str, env, "'Cualquier mierda'");
+	ft_printf("\n----------------------\n");
+
+	str = "$DISPLAY'ooo\"i\"'";
+	make_test(str, env, "'Cualquier mierda'");
+	ft_printf("\n----------------------\n");
+}
