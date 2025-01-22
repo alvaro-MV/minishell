@@ -17,10 +17,10 @@ void	print_cmd(t_cmd *cmd)
 	char	**command_list;
 	command	*cmd_array;
 	t_cmd	*tmp_cmd;
-	t_cmd	first_command;
 	size_t	i;
 
 	tmp_cmd = cmd;
+	command_list;
 	while (cmd)
 	{
 		print_io_redir(cmd->cmd_prefix);
@@ -30,14 +30,15 @@ void	print_cmd(t_cmd *cmd)
 	ft_printf("\033[33m{ ");
 	while (tmp_cmd)
 	{
-	i = 0;
-	cmd_array = tmp_cmd->cmd;	
-	command_list = (char **) cmd_array->darray;
-	while (command_list[i])
-	{
-		ft_printf("%s ", command_list[i]);
-		i++;
-	}
+		i = 0;
+		cmd_array = tmp_cmd->cmd;	
+		command_list = (char **) cmd_array->darray;
+		ft_printf("Testeooo: %s\n", command_list[i]);
+		while (command_list && command_list[i])
+		{
+			ft_printf("%s ", command_list[i]);
+			i++;
+		}
 		tmp_cmd = tmp_cmd->next;
 	}
 	ft_printf("}\033[0m ");

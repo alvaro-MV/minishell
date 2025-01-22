@@ -30,6 +30,7 @@ typedef struct s_cmd_pipe
 	struct s_cmd_pipe	*pipe_seq;
 }						t_cmd_pipe;
 
-
+int		here_doc(char *delimiter);
+void	free_AST(t_cmd_pipe *sequence);
 
 #endif

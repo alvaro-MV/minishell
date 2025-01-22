@@ -9,8 +9,8 @@ int	expand_dollar(char *str, char **expanded_str, int *i, t_dictionary *env)
 	char	*env_var_value;
 
 	len_env_var = *i + 1;
-	while (str[len_env_var] != '\'' && str[len_env_var] != '\"'
-			 && str[len_env_var] != '$' && str[len_env_var] != '\0')
+	while (str[len_env_var] != '\'' && str[len_env_var] != '\"' && str[len_env_var] != '/'
+			&& str[len_env_var] != '$' && str[len_env_var] != '\0')
 		len_env_var++;
 	tmp_expand_str = *expanded_str;
 	env_var_name = ft_substr(str, *i + 1, len_env_var - *i - 1);
@@ -60,7 +60,11 @@ int	expand_double_quote(char *str, char **expanded_str, int *i, t_dictionary *en
 	while (still_in_quote(str[len_quote], '\"'))
 	{
 		if (str[len_quote] == '$')
-			expand_dollar(str, expanded_str, i, env);
+		{
+			*i = len_quote;
+			expand_dollar(str, expanded_str, i , env);
+			len_quote = *i;
+		}
 		len_quote++;	
 	}
 	tmp_expand_str = *expanded_str;
@@ -86,7 +90,7 @@ int	expand_normal_text(char *str, char **expanded_str, int *i)
 	while (str[len_normal] != '\'' && str[len_normal] != '\"' && str[len_normal] != '$' && str[len_normal] != '\0')
 		len_normal++;	
 	tmp_expand_str = *expanded_str;
-	str_normal_text = ft_substr(str, *i, len_normal);
+	str_normal_text = ft_substr(str, *i, len_normal - *i);
 	if (!str_normal_text)
 		return (free(tmp_expand_str), 0);
 	*expanded_str = ft_strjoin(*expanded_str, str_normal_text);
@@ -133,6 +137,8 @@ char	*expand_str(char *str, t_dictionary *env)
 	return (expanded_str);
 }
 
+void	expand_tester();
+
 int	main(int argc, char **argv, char **env)
 {
 	t_dictionary	*hash_env;
@@ -147,11 +153,62 @@ int	main(int argc, char **argv, char **env)
 		dict_insert(&hash_env, env_var);
 		env++;
 	}
-	char	*expanded_str;
 
-	ft_printf("argv1: %s\n", argv[1]);
-	expanded_str = expand_str(argv[1], hash_env);
-	ft_printf("%s\n", expanded_str);
+	// char	*testeo = expand_str("\"PATH\"oo$'DISPLAY'", hash_env);
+	// ft_printf("testeo: %s\n", testeo);
+	expand_tester(hash_env);
 	dict_delete(hash_env);
 	return (0);
+}
+
+void	print_result(int condition)
+{
+	if (!condition)
+		ft_printf("\033[31m[KO]\033[0m");
+	else
+		ft_printf("\033[32m[OK]\033[0m");
+}
+
+void	make_test(char *str, t_dictionary *env, char *expected)
+{
+	char	*expanded_str;
+
+	ft_printf("%s: ", str);
+	expanded_str = expand_str(str, env);
+	ft_printf("\n\tmio: %s\n\techo: %s\n", expanded_str, expected);
+	print_result(!ft_strncmp(expanded_str, expected, ft_strlen(expected)));
+	free(expanded_str);
+}
+
+void	expand_tester(t_dictionary *env)
+{
+	char	*str;
+	
+	str = "$BAR\"ooo\"";
+	make_test(str, env, "ooo");
+	ft_printf("\n----------------------\n");
+
+	str = "\"$DISPLAY\"ooo\"i\"";
+	make_test(str, env, ":0oooi");
+	ft_printf("\n----------------------\n");
+
+	str = "\"$DISPLA\"Yooo\"i\"";
+	make_test(str, env, "Yoooi");
+	ft_printf("\n----------------------\n");
+
+	str = "\"$HOME\"/home/usuario";
+	make_test(str, env, "/home/alvaro/home/usuario");
+	ft_printf("\n----------------------\n");
+
+	str = "'Cualquier mierda'";
+	make_test(str, env, "Cualquier mierda");
+	ft_printf("\n----------------------\n");
+
+	str = "$DISPLAY'ooo\"i\"'";
+	make_test(str, env, ":0ooo\"i\"");
+	ft_printf("\n----------------------\n");
+
+	str = "\"PATH\r\"oo$'DISPLAY'";
+	make_test(str, env, "PATH\rooDISPLAY");
+	ft_printf("\n----------------------\n");
 }

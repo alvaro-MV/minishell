@@ -7,10 +7,10 @@ t_darray	*alloc_darray(size_t len, size_t size)
 {
 	t_darray	*ret_darray;
 	
-	ret_darray = (t_darray *) malloc(sizeof(t_darray));
+	ret_darray = (t_darray *) ft_calloc(1, sizeof(t_darray));
 	if (!ret_darray)
 		return (NULL);
-	ret_darray->darray = malloc(len * sizeof(size));
+	ret_darray->darray = ft_calloc(len, sizeof(size));
 	if (!ret_darray->darray)
 		return (free(ret_darray), NULL);
 	ret_darray->len = len;
@@ -28,7 +28,7 @@ int	resize_darray(t_darray **darray)
 
 	i = 0;
 	str_darray = (unsigned char *) (*darray)->darray;
-	resz_darray = malloc((2 * (*darray)->len) * (*darray)->size);
+	resz_darray = ft_calloc((2 * (*darray)->len), (*darray)->size);
 	if (!resz_darray)
 		return (0);
 	str_resz_darray = (unsigned char *) resz_darray;

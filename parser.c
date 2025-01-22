@@ -26,7 +26,7 @@ t_io_redir	*parse_io_redir(t_token **token_stream)
 	{
 		current_io_redir->op = parse_word(token_stream);
 		current_io_redir->filename = parse_word(token_stream);
-		tmp_io_redir = malloc(sizeof(t_io_redir));
+		tmp_io_redir = ft_calloc(1, sizeof(t_io_redir));
 		if (!tmp_io_redir)
 			return (NULL); //Por determinar. Lo suyo sería liberar todo el AST.
 		current_io_redir->next = tmp_io_redir;
@@ -58,7 +58,7 @@ t_cmd	*parse_cmd(t_token **token_stream)
 		add_token(&current_cmd->cmd, NULL);
 		current_cmd->cmd_suffix = parse_io_redir(token_stream);
 		
-		tmp_cmd = malloc(sizeof(t_cmd));
+		tmp_cmd = ft_calloc(1, sizeof(t_cmd));
 		if (!tmp_cmd)
 			return (NULL); //Se tiene que liberar todo el AST
 		current_cmd->next = tmp_cmd;
@@ -83,7 +83,7 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream)
 	while ((*token_stream)->type == PIPE_OPERATOR)
 	{
 		(*token_stream)++;
-		tmp_cmd_pipe = malloc(sizeof(t_cmd_pipe));
+		tmp_cmd_pipe = ft_calloc(1, sizeof(t_cmd_pipe));
 		if (!tmp_cmd_pipe)
 			return (NULL); //Por determinar. Lo suyo sería liberar todo el AST.
 		tmp_cmd_pipe->cmd = parse_cmd(token_stream);
@@ -117,6 +117,7 @@ int main(int argc, char **argv)
 	print_AST(sequence);
 	ft_printf("\n\n");
 	
+	free_AST(sequence);
 	ft_free_array(tokens_strings);
 	free(tokens_for_free);
 	// free(line);
