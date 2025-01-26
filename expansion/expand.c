@@ -1,6 +1,14 @@
 #include "../tokenizer/tokenizer.h"
 #include "../data_structs/dictionary.h"
 
+int	is_quot_o_metach(char *str, int i)
+{
+	if (str[i] == '\"' || str[i] == '$' || str[i] == '\0')
+		return (1);
+	else
+		return (0);
+}
+
 int	expand_dollar(char *str, char **expanded_str, int *i, t_dictionary *env)
 {
 	int		len_env_var;
@@ -9,8 +17,7 @@ int	expand_dollar(char *str, char **expanded_str, int *i, t_dictionary *env)
 	char	*env_var_value;
 
 	len_env_var = *i + 1;
-	while (str[len_env_var] != '\'' && str[len_env_var] != '\"' && str[len_env_var] != '/'
-			&& str[len_env_var] != '$' && str[len_env_var] != '\0')
+	while (ft_isalnum(str[len_env_var]))
 		len_env_var++;
 	tmp_expand_str = *expanded_str;
 	env_var_name = ft_substr(str, *i + 1, len_env_var - *i - 1);
@@ -25,6 +32,28 @@ int	expand_dollar(char *str, char **expanded_str, int *i, t_dictionary *env)
 	free(tmp_expand_str);
 	free(env_var_name);
 	*i = len_env_var - 1;
+	return (1);
+}
+
+int	expand_normal_text(char *str, char **expanded_str, int *i)
+{
+	int		len_normal;
+	char	*tmp_expand_str;
+	char	*str_normal_text;
+
+	len_normal = *i;
+	while (str[len_normal] != '\'' && str[len_normal] != '\"' && str[len_normal] != '$' && str[len_normal] != '\0')
+		len_normal++;
+	tmp_expand_str = *expanded_str;
+	str_normal_text = ft_substr(str, *i, len_normal - *i);
+	if (!str_normal_text)
+		return (free(tmp_expand_str), 0);
+	*expanded_str = ft_strjoin(*expanded_str, str_normal_text);
+	if (!(*expanded_str))
+		return (free(str_normal_text), free(tmp_expand_str), 0);
+	free(tmp_expand_str);
+	free(str_normal_text);
+	*i = len_normal - 1;
 	return (1);
 }
 
@@ -59,46 +88,18 @@ int	expand_double_quote(char *str, char **expanded_str, int *i, t_dictionary *en
 	len_quote = *i;
 	while (still_in_quote(str[len_quote], '\"'))
 	{
-		if (str[len_quote] == '$')
+		if (!is_quot_o_metach(str, len_quote) && !expand_normal_text(str, expanded_str, &len_quote))
+			return (0);
+		else if (str[len_quote] == '$')
 		{
 			*i = len_quote;
-			expand_dollar(str, expanded_str, i , env);
+			if (!expand_dollar(str, expanded_str, i , env))
+				return (0);
 			len_quote = *i;
 		}
 		len_quote++;	
 	}
-	tmp_expand_str = *expanded_str;
-	str_quote = ft_substr(str, *i + 1, len_quote - *i - 2);
-	if (!str_quote)
-		return (free(tmp_expand_str), 0);
-	*expanded_str = ft_strjoin(*expanded_str, str_quote);
-	if (!(*expanded_str))
-		return (free(str_quote), free(tmp_expand_str), 0);
-	free(tmp_expand_str);
-	free(str_quote);
 	*i = len_quote - 1;
-	return (1);
-}
-
-int	expand_normal_text(char *str, char **expanded_str, int *i)
-{
-	int		len_normal;
-	char	*tmp_expand_str;
-	char	*str_normal_text;
-
-	len_normal = *i;
-	while (str[len_normal] != '\'' && str[len_normal] != '\"' && str[len_normal] != '$' && str[len_normal] != '\0')
-		len_normal++;	
-	tmp_expand_str = *expanded_str;
-	str_normal_text = ft_substr(str, *i, len_normal - *i);
-	if (!str_normal_text)
-		return (free(tmp_expand_str), 0);
-	*expanded_str = ft_strjoin(*expanded_str, str_normal_text);
-	if (!(*expanded_str))
-		return (free(str_normal_text), free(tmp_expand_str), 0);
-	free(tmp_expand_str);
-	free(str_normal_text);
-	*i = len_normal - 1;
 	return (1);
 }
 
@@ -210,5 +211,17 @@ void	expand_tester(t_dictionary *env)
 
 	str = "\"PATH\r\"oo$'DISPLAY'";
 	make_test(str, env, "PATH\rooDISPLAY");
+	ft_printf("\n----------------------\n");
+
+	str = "\"$LESS AAAAAAA $SHLVL\"";
+	make_test(str, env, "-R AAAAAAA 1");
+	ft_printf("\n----------------------\n");
+
+	str = "\"$LESS A'AAAAAA $SHLVL\"";
+	make_test(str, env, "-R A'AAAAAA 1");
+	ft_printf("\n----------------------\n");
+
+	str = "\"$LESS A'AAAAAA $SHLVL hola\"";
+	make_test(str, env, "-R A'AAAAAA 1 hola");
 	ft_printf("\n----------------------\n");
 }
