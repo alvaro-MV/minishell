@@ -28,7 +28,8 @@ int			add_token(t_darray **tokens, char *element);
 int			is_simple_operator(char argv_char);
 int			is_double_operator(char argv_char);
 int			still_in_quote(char c, char quote);
-t_darray	*tokenizer_str(char *argv);
-t_token		*tokenizer_t_tokens(char **tokens_strings, size_t len);
+t_token		*tokenizer(char *line);
+void		free_tokens(t_token *tokens);
+void		traverse_quote(char *line, int *i);
 
 #endif

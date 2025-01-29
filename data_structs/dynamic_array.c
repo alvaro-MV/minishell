@@ -59,7 +59,7 @@ int	append_darray(t_darray **darray, void *element)
 	if ((*darray)->full_idx == (*darray)->len)
 	{
 		if (!resize_darray(darray))
-			return (free_darray(*darray), 0);
+			return (free_darray(*darray), 18);
 	}
 	str_darray = (unsigned char *) (*darray)->darray;
 	str_element = (unsigned char *) element;
@@ -70,6 +70,23 @@ int	append_darray(t_darray **darray, void *element)
 	}
 	(*darray)->full_idx++;
 	return (1);
+}
+
+unsigned char	*r_darray(t_darray *darray, int idx)
+{
+	unsigned char	*str_darr;
+	int				full_idx;
+	size_t			bytes_size;
+
+	full_idx = (int) darray->full_idx;
+	if (-idx > full_idx || idx > full_idx - 1)
+		return (NULL);
+	if (idx >= 0)
+		bytes_size = idx * darray->size;
+	else
+		bytes_size = (size_t) (full_idx + idx) * darray->size;
+	str_darr = &((unsigned char *) darray->darray)[bytes_size];
+	return (str_darr);
 }
 
 // int	main(void)
@@ -85,8 +102,7 @@ int	append_darray(t_darray **darray, void *element)
 // 			return (1);
 // 		i++;
 // 	}
-// 	int *int_array = (int *) darr->darray;
 // 	for (int j = 0; j < darr->full_idx; j++)
-// 		printf("darr: %i\n", int_array[j]);
+// 		printf("darr: %i\n", *(int *) r_darray(darr, j));
 // 	free_darray(darr);
 // }

@@ -37,10 +37,29 @@ int	still_in_quote(char c, char quote)
 		return (0);
 }
 
-int	add_token(t_darray **tokens, char *element)
+void	traverse_quote(char *line, int *i)
 {
-	if (!append_darray(tokens, &element))
-		return (0);
-	return (1);
+	int	idx;
+
+	idx = *i;
+	while (still_in_quote(line[idx], '\''))
+		idx++;
+	while (still_in_quote(line[idx], '\"'))
+		idx++;
+	*i = idx;
 }
 
+void	free_tokens(t_token *tokens)
+{
+	int	i;
+
+	i = 0;
+	if (!tokens)
+		return ;
+	while (tokens[i].type != END)
+	{
+		free (tokens[i].text);
+		i++;
+	}
+	free(tokens);
+}

@@ -15,9 +15,10 @@ typedef	struct s_darray
 }			t_darray;
 
 
-t_darray	*alloc_darray(size_t len, size_t size);
-int			resize_darray(t_darray **darray);
-void		free_darray(t_darray *darray);
-int			append_darray(t_darray **darray, void *element);
+t_darray		*alloc_darray(size_t len, size_t size);
+int				resize_darray(t_darray **darray);
+void			free_darray(t_darray *darray);
+int				append_darray(t_darray **darray, void *element);
+unsigned char	*r_darray(t_darray *darray, int idx);
 
 #endif
