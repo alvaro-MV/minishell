@@ -31,11 +31,11 @@ int main(int argc, char **argv)
 	t_token	*tokens_for_free = token_stream;
 
 	t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream);
-	if (!sequence)
-		return (0);
-	print_AST(sequence);
-	ft_printf("\n\n");
-	
+	if (sequence)
+	{
+		print_AST(sequence);
+		ft_printf("\n\n");
+	}
 	free_AST(sequence);
 	free(tokens_for_free);
 	// free(line);

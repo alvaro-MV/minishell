@@ -29,6 +29,8 @@ void	free_cmd(t_cmd *cmd)
 
 void	free_AST(t_cmd_pipe *sequence)
 {
+	if (!sequence)
+		return ;
 	free_cmd(sequence->cmd);
 	if (sequence->next)
 		free_AST(sequence->next);

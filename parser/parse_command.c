@@ -31,8 +31,6 @@ t_cmd	*parse_cmd(t_token **token_stream)
 		{
 			if (append_darray(&current_cmd->cmd, parse_word(token_stream)->text))
 				return (NULL);
-			// append_darray(&current_cmd->cmd, (*token_stream)->text);
-			// (*token_stream)++;
 		}
 		if (append_darray(&current_cmd->cmd, NULL)) //NULL para el terminación y el último para el execve
 			return (NULL);
