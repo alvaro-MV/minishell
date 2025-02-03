@@ -58,7 +58,7 @@ void	free_tokens(t_token *tokens)
 		return ;
 	while (tokens[i].type != END)
 	{
-		free (tokens[i].text);
+		free(tokens[i].text);
 		i++;
 	}
 	free(tokens);

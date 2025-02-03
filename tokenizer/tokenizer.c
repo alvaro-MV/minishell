@@ -42,6 +42,7 @@ int	add_token(t_darray **token_stream, char *text)
 	
 	token_entry.text = text;
 	last_token = ((t_token *) r_darray(*token_stream, -1));
+
 	if (!text)
 		token_entry.type = END;
 	else if (is_double_operator(text[0]))
@@ -125,30 +126,30 @@ t_token	*tokenizer(char *line)
 	return (tokens);
 }
 
-int main(int argc, char **argv)
-{
-    char		*line;
-	int			i;
-	t_token		*token_stream;
+// int main(int argc, char **argv)
+// {
+//     char		*line;
+// 	int			i;
+// 	t_token		*token_stream;
 	
-	line  = argv[1];
-	while (line = readline("\033[32mminishell\033[0m$ "))
-	{
-		ft_printf("\n");
-		add_history(line);
-		token_stream = tokenizer(line);
-		i = 0;
-		while (token_stream && token_stream[i].type != END)
-		{
-			printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
-			i++;
-		}
-		free_tokens(token_stream);
-		free(line);
-	}
-		rl_clear_history();
-		return 0;
-}
+// 	line  = argv[1];
+// 	while (line = readline("\033[32mminishell\033[0m$ "))
+// 	{
+// 		ft_printf("\n");
+// 		add_history(line);
+// 		token_stream = tokenizer(line);
+// 		i = 0;
+// 		while (token_stream && token_stream[i].type != END)
+// 		{
+// 			printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
+// 			i++;
+// 		}
+// 		free_tokens(token_stream);
+// 		free(line);
+// 	}
+// 	rl_clear_history();
+// 	return 0;
+// }
 
 
 

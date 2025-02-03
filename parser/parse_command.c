@@ -19,14 +19,15 @@ int	parse_ix(t_io_redir **ptr_io_redir, t_token **token_stream)
 	return (1);
 }
 
-int	fill_cmd(t_token **token_stream, t_cmd **ptr_cmd)
+int	fill_cmd(t_token **token_stream, command **ptr_cmd)
 {
 	while ((*token_stream)->type == COMMAND)
 	{
-		if (append_darray(ptr_cmd, parse_word(token_stream)->text))
+		if (!add_command(ptr_cmd, (*token_stream)->text))
 			return (0);
+		(*token_stream)++;
 	}
-	if (append_darray(ptr_cmd, NULL)) //NULL para el terminación y el último para el execve
+	if (!add_command(ptr_cmd, NULL)) //NULL para el terminación y el último para el execve
 		return (0);
 	return (1);
 }
@@ -42,7 +43,7 @@ t_cmd	*parse_cmd(t_token **token_stream)
 		ft_printf("minishell: syntax error near unexpected token `|'");
 		return (NULL);
 	}
-	if (alloc_cmd(&ret_cmd))
+	if (!alloc_cmd(&ret_cmd))
 		return (NULL);
 	current_cmd = ret_cmd;	
 	while ((*token_stream)->type != END && (*token_stream)->type != PIPE_OPERATOR)
@@ -52,7 +53,7 @@ t_cmd	*parse_cmd(t_token **token_stream)
 
 		// Meter tokens en el campo cmd hasta que el siguiente token != COMMAND
 
-		if (fill_cmd(token_stream, &current_cmd->cmd))
+		if (!fill_cmd(token_stream, &current_cmd->cmd))
 			return (NULL);
 
 		// Parseo de redirecciones.
@@ -60,7 +61,7 @@ t_cmd	*parse_cmd(t_token **token_stream)
 			return (NULL);
 		
 		// Se reserva el siguiente comando.
-		if (alloc_cmd(&tmp_cmd))
+		if (!alloc_cmd(&tmp_cmd))
 			return (NULL);
 		current_cmd = tmp_cmd;
 	}

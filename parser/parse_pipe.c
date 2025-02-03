@@ -2,11 +2,11 @@
 
 int	is_empty_cmd(t_cmd *cmd)
 {
-	if (cmd->cmd_prefix->op != END && cmd->cmd_prefix->filename != END)
+	if (cmd->cmd_prefix->op->type != END && cmd->cmd_prefix->filename->type != END)
 		return (0);
 	if (cmd->cmd->full_idx > 0)
 		return (0);
-	if (cmd->cmd_suffix->op != END && cmd->cmd_suffix->filename != END)
+	if (cmd->cmd_suffix->op->type != END && cmd->cmd_suffix->filename->type != END)
 		return (0);
 	if (cmd->next)
 		return (0);

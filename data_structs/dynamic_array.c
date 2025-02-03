@@ -1,5 +1,6 @@
 #include "dynamic_array.h"
 #include <stdio.h>
+#include "../tokenizer/tokenizer.h" //testeo
 
 void	free_darray(t_darray *darray);
 

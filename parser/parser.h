@@ -40,8 +40,10 @@ t_cmd		*parse_cmd(t_token **token_stream);
 t_io_redir	*parse_io_redir(t_token **token_stream);
 t_token		*parse_word(t_token **token_stream);
 
-void	free_AST(t_cmd_pipe *sequence);
-void	free_cmd(t_cmd *cmd);
-void	free_io_redir(t_io_redir *io_redir);
+void		free_AST(t_cmd_pipe *sequence);
+void		free_cmd(t_cmd *cmd);
+void		free_io_redir(t_io_redir *io_redir);
+
+int			add_command(command **cmd, char *element);
 
 #endif

@@ -33,7 +33,6 @@ void	print_cmd(t_cmd *cmd)
 		i = 0;
 		cmd_array = tmp_cmd->cmd;	
 		command_list = (char **) cmd_array->darray;
-		ft_printf("Testeooo: %s\n", command_list[i]);
 		while (command_list && command_list[i])
 		{
 			ft_printf("%s ", command_list[i]);
