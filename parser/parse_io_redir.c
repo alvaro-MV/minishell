@@ -21,9 +21,16 @@ t_io_redir	*parse_io_redir(t_token **token_stream)
 	{
 		current_io_redir->op = parse_word(token_stream);
 		current_io_redir->filename = parse_word(token_stream);
-		if (current_io_redir->filename->type == IO_OPERATOR 
-		|| current_io_redir->filename->type == END)
+
+		if (current_io_redir->filename->type != FILENAME)
+		{
+			ft_printf("minishell: syntax error near unexpected token ");
+			if ((*token_stream)->type == END)
+				ft_printf("`newline'\n");
+			else
+				ft_printf("%s\n", (*token_stream)->text);
 			return (NULL);
+		}
 		if (alloc_io_redir(&tmp_io_redir))
 			return (NULL);
 		current_io_redir->next = tmp_io_redir;

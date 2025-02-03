@@ -39,7 +39,7 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream)
 	//Si falla la memoria o la verificación mediante LL (todavía no hecho),
 	//entonces 
 	current_cmd_pipe = ret_cmd_pipe;
-	while ((*token_stream)->type == PIPE_OPERATOR)
+	while ((*token_stream)->type == PIPE_OPERATOR) // while (parse_word(token_stream)->type == PIPE_OPERATOR)
 	{
 		(*token_stream)++;
 		//Mismo parseo para el próximo comando.
