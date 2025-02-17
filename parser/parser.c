@@ -27,9 +27,10 @@ int main(int argc, char **argv)
 	int			i = 0;
 	t_token		*token_stream;
 	
-	while (line = readline("\033[32mminishell\033[0m$ "))
-	{
-		add_history(line);
+	// while (line = readline("\033[32mminishell\033[0m$ "))
+		line = argv[1];
+	// {
+	// 	add_history(line);
 		token_stream = tokenizer(line);
 
 		t_token	*tokens_for_free = token_stream;
@@ -48,8 +49,8 @@ int main(int argc, char **argv)
 		}
 		free_AST(sequence);
 		free(tokens_for_free);
-		free(line);
-	}
-	rl_clear_history();
+		// free(line);
+	// }
+	// rl_clear_history();
 	return 0;
 }

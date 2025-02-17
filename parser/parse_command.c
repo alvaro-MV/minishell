@@ -59,7 +59,6 @@ t_cmd	*parse_cmd(t_token **token_stream)
 		// Parseo de redirecciones.
 		if (!parse_ix(&current_cmd->cmd_suffix, token_stream))
 			return (NULL);
-		
 		// Se reserva el siguiente comando.
 		if (!alloc_cmd(&tmp_cmd))
 			return (NULL);

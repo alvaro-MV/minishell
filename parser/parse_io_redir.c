@@ -19,6 +19,7 @@ t_io_redir	*parse_io_redir(t_token **token_stream)
 	current_io_redir = ret_io_redir;
 	while ((*token_stream)->type == IO_OPERATOR)
 	{
+		ft_printf("Pero que cojonessssq\n"); //testeo
 		current_io_redir->op = parse_word(token_stream);
 		current_io_redir->filename = parse_word(token_stream);
 

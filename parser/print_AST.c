@@ -20,7 +20,6 @@ void	print_cmd(t_cmd *cmd)
 	size_t	i;
 
 	tmp_cmd = cmd;
-	command_list;
 	while (cmd)
 	{
 		print_io_redir(cmd->cmd_prefix);

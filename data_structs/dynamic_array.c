@@ -97,13 +97,14 @@ unsigned char	*r_darray(t_darray *darray, int idx)
 // 		return (printf("Hijos de putaaaaaaaaa\n"));
 	
 // 	int i = 1;
-// 	while (i < 81)
-// 	{
-// 		if (!append_darray(&darr, (char *) &i))
-// 			return (1);
-// 		i++;
-// 	}
-// 	for (int j = 0; j < darr->full_idx; j++)
-// 		printf("darr: %i\n", *(int *) r_darray(darr, j));
+// 	// while (i < 80)
+// 	// {
+// 	// 	if (!append_darray(&darr, (char *) &i))
+// 	// 		return (1);
+// 	// 	i++;
+// 	// }
+// 	printf("darr: %i\n", *(int *) r_darray(darr, -1));
+// 	// for (int j = 0; j < darr->full_idx; j++)
+// 	// 	printf("darr: %i\n", *(int *) r_darray(darr, j));
 // 	free_darray(darr);
 // }
