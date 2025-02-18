@@ -84,7 +84,6 @@ int	tokenize_literal(char *line, int *i, int *start, t_darray **tokens)
 {
 	if (!add_token(tokens, ft_substr(line, *start, *i - *start)))
 		return (free_darray(*tokens), 0);
-
 	while (isspace(line[*i]))
 		*i = *i + 1;
 	*start = *i;
@@ -101,7 +100,7 @@ t_token	*tokenizer(char *line)
 
 	i = 0;
 	start = 0;
-	tokens_darray = alloc_darray(5, sizeof(t_token)); //5 es aleatorio
+	tokens_darray = alloc_darray(count_n_tokens(line) + 1, sizeof(t_token)); //5 es aleatorio
 	if (!tokens_darray)
 		return (NULL);
 	while (tokens_darray->full_idx < count_n_tokens(line))
@@ -120,7 +119,6 @@ t_token	*tokenizer(char *line)
 		}
 		i++;
 	}
-
 	add_token(&tokens_darray, NULL);
 	tokens = (t_token *) tokens_darray->darray;
 	free(tokens_darray);
@@ -134,25 +132,41 @@ int main(int argc, char **argv)
 	t_token		*token_stream;
 	
 	line  = argv[1];
-	while (line = readline("\033[32mminishell\033[0m$ "))
+	ft_printf("\n");
+	token_stream = tokenizer(line);
+	i = 0;
+	while (token_stream && token_stream[i].type != END)
 	{
-		ft_printf("\n");
-		add_history(line);
-		token_stream = tokenizer(line);
-		i = 0;
-		while (token_stream && token_stream[i].type != END)
-		{
-			printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
-			i++;
-		}
-		free_tokens(token_stream);
-		free(line);
+		printf("token: %p -|- type: %d\n", &token_stream[i], token_stream[i].type);
+		i++;
 	}
-	rl_clear_history();
-	return 0;
+	free_tokens(token_stream);
 }
 
-
+// int main(int argc, char **argv)
+// {
+//     char		*line;
+// 	int			i;
+// 	t_token		*token_stream;
+	
+// 	line  = argv[1];
+// 	while (line = readline("\032[32mminishell\033[0m$ "))
+// 	{
+// 		ft_printf("\n");
+// 		add_history(line);
+// 		token_stream = tokenizer(line);
+// 		i = 0;
+// 		while (token_stream && token_stream[i].type != END)
+// 		{
+// 			printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
+// 			i++;
+// 		}
+// 		free_tokens(token_stream);
+// 		free(line);
+// 	}
+// 	rl_clear_history();
+// 	return 0;
+// }
 
 /* 		---------------- [Test] ----------------      */
 /* 

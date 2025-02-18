@@ -59,6 +59,8 @@ void	free_tokens(t_token *tokens)
 	while (tokens[i].type != END)
 	{
 		free(tokens[i].text);
+		// write(1, tokens[i].text, 10);
+		// write(1, "bhnm,\n", 7);
 		i++;
 	}
 	free(tokens);

@@ -60,10 +60,11 @@ int	append_darray(t_darray **darray, void *element)
 	if ((*darray)->full_idx == (*darray)->len)
 	{
 		if (!resize_darray(darray))
-			return (free_darray(*darray), 18);
+			return (free_darray(*darray), 0);
 	}
 	str_darray = (unsigned char *) (*darray)->darray;
 	str_element = (unsigned char *) element;
+	ft_printf("ptr de darray a la hora de introducir: %p\n", &(*darray)[((*darray)->full_idx * (*darray)->size)]); //testeo
 	while (i < (*darray)->size)
 	{
 		str_darray[((*darray)->full_idx * (*darray)->size) + i] = str_element[i];
