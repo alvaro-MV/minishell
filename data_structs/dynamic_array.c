@@ -57,20 +57,22 @@ unsigned char	*r_darray(t_darray *darray, int idx)
 	size_t			bytes_size;
 
 	full_idx = (int) darray->full_idx;
+	if (!full_idx)
+		return (darray->darray);
 	if (-idx > full_idx || idx > full_idx - 1)
 		return (NULL);
 	if (idx >= 0)
 		bytes_size = idx * darray->size;
 	else
-		bytes_size = (size_t) (full_idx + idx) * darray->size;
+		bytes_size = (size_t) (full_idx + idx + 1) * darray->size;
 	str_darr = &((unsigned char *) darray->darray)[bytes_size];
 	return (str_darr);
 }
 
 int	append_darray(t_darray **darray, void *element)
 {
-	unsigned char	*str_darray;
-	unsigned char	*str_element;
+	char	*str_darray;
+	char	*str_element;
 	size_t			i;
 
 	i = 0;
@@ -79,15 +81,10 @@ int	append_darray(t_darray **darray, void *element)
 		if (!resize_darray(darray))
 			return (free_darray(*darray), 0);
 	}
-	if ((*darray)->full_idx)
-		str_darray = (unsigned char *) r_darray(*darray, -1);
-	else
-		str_darray = (unsigned char *) (*darray)->darray;
-	str_element = (unsigned char *) element;
-	printf("ptr de darray a la hora de introducir: %p\n", str_darray); //testeo
+	str_darray = (char *) r_darray(*darray, -1);
+	str_element = (char *) element;
 	while (i < (*darray)->size)
 	{
-		// str_darray[((*darray)->full_idx * (*darray)->size) + i] = str_element[i];
 		str_darray[i] = str_element[i];
 		i++;
 	}
@@ -95,24 +92,26 @@ int	append_darray(t_darray **darray, void *element)
 	return (1);
 }
 
-int	main(void)
-{
-	t_token	t_entry;
-	t_darray	*darr = alloc_darray(4, sizeof(t_token));
+// int	main(void)
+// {
+// 	t_token	t_entry;
+// 	t_darray	*darr = alloc_darray(6, sizeof(t_token));
 
-	if (!darr)
-		return (printf("Hijos de putaaaaaaaaa\n"));
-	
-	int i = 0;
-	while (i < 5)
-	{
-		t_entry.text = ft_itoa(i);
-		t_entry.type = -1;
-		if (!append_darray(&darr, &t_entry))
-			return (1);
-		i++;
-	}
-	for (int j = 0; j < darr->full_idx; j++)
-		printf("j: %d  darr: %s\n", j, ((t_token *)(darr->darray))[j].text);
-	free_darray(darr);
-}
+// 	if (!darr)
+// 		return (printf("Hijos de putaaaaaaaaa\n"));
+// 	int i = 0;
+// 	while (i < 4)
+// 	{
+// 		t_entry.text = ft_itoa(i);
+// 		t_entry.type = -1;
+// 		if (!append_darray(&darr, &t_entry))
+// 			return (1);
+// 		i++;
+// 	}
+// 	for (int j = 0; j < darr->full_idx; j++)
+// 		printf("ptr: %p  j: %d  darr: %s\n", &((t_token *) darr->darray)[j], j, ((t_token *)(darr->darray))[j].text);
+// 	free_darray(darr);
+// }
+
+
+
