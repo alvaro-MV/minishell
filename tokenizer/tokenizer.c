@@ -100,7 +100,7 @@ t_token	*tokenizer(char *line)
 
 	i = 0;
 	start = 0;
-	tokens_darray = alloc_darray(count_n_tokens(line) + 1, sizeof(t_token)); //5 es aleatorio
+	tokens_darray = alloc_darray(count_n_tokens(line) + 5, sizeof(t_token)); //5 es aleatorio
 	if (!tokens_darray)
 		return (NULL);
 	while (tokens_darray->full_idx < count_n_tokens(line))
@@ -137,7 +137,7 @@ int main(int argc, char **argv)
 	i = 0;
 	while (token_stream && token_stream[i].type != END)
 	{
-		printf("token: %p -|- type: %d\n", &token_stream[i], token_stream[i].type);
+		printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
 		i++;
 	}
 	free_tokens(token_stream);
