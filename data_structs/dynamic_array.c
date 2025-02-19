@@ -95,15 +95,15 @@ int	append_darray(t_darray **darray, void *element)
 // int	main(void)
 // {
 // 	t_token	t_entry;
-// 	t_darray	*darr = alloc_darray(6, sizeof(t_token));
+// 	t_darray	*darr = alloc_darray(130, sizeof(t_token));
 
 // 	if (!darr)
 // 		return (printf("Hijos de putaaaaaaaaa\n"));
 // 	int i = 0;
-// 	while (i < 4)
+// 	while (i < 65)
 // 	{
-// 		t_entry.text = ft_itoa(i);
-// 		t_entry.type = -1;
+// 		t_entry.text = ft_strdup("La ostia puta");
+// 		t_entry.type = 4;
 // 		if (!append_darray(&darr, &t_entry))
 // 			return (1);
 // 		i++;

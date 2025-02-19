@@ -46,7 +46,7 @@ int	add_token(t_darray **token_stream, char *text)
 		token_entry.type = END;
 	else if (is_double_operator(text[0]))
 		token_entry.type = IO_OPERATOR;
-	else if ((*token_stream)->full_idx > 0 && last_token->type == IO_OPERATOR)
+	else if (ft_printf("last_token: %d", last_token->type) && (*token_stream)->full_idx > 0 && last_token->type == IO_OPERATOR)
 		token_entry.type = FILENAME;
 	else if (text[0] == '|')
 		token_entry.type = PIPE_OPERATOR;
@@ -100,7 +100,7 @@ t_token	*tokenizer(char *line)
 
 	i = 0;
 	start = 0;
-	tokens_darray = alloc_darray(count_n_tokens(line) + 5, sizeof(t_token)); //5 es aleatorio
+	tokens_darray = alloc_darray(count_n_tokens(line) * 2 + 5, sizeof(t_token)); //5 es aleatorio
 	if (!tokens_darray)
 		return (NULL);
 	while (tokens_darray->full_idx < count_n_tokens(line))
@@ -125,34 +125,14 @@ t_token	*tokenizer(char *line)
 	return (tokens);
 }
 
-int	main(int argc, char **argv)
-{
-	int			i;
-	char		*line;
-	t_token		*token_stream;
-	
-	ft_printf("\n");
-	line = "ls | cat -e > outfile";
-	token_stream = tokenizer(line);
-	i = 0;
-	while (token_stream && token_stream[i].type != END)
-	{
-		printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
-		i++;
-	}
-	free_tokens(token_stream);
-}
-
-/*  ******************  [[Testeo]]	***********************  */
-/*  ******************  [[Testeo]]	***********************  */
-/*  ******************  [[Testeo]]	***********************  */
-
-// t_token	*tester_token(char *line)
+// int	main(int argc, char **argv)
 // {
 // 	int			i;
+// 	char		*line;
 // 	t_token		*token_stream;
 	
 // 	ft_printf("\n");
+// 	line = "echo adios | echo adios | echo adios | echo adios";
 // 	token_stream = tokenizer(line);
 // 	i = 0;
 // 	while (token_stream && token_stream[i].type != END)
@@ -160,73 +140,93 @@ int	main(int argc, char **argv)
 // 		printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
 // 		i++;
 // 	}
-// 	return (token_stream);
+// 	free_tokens(token_stream);
 // }
 
-// void	intr_token_expect(t_token **expected, int idx, char *text, token_type type)
-// {
-// 	(*expected)[idx].text = text;
-// 	(*expected)[idx].type = type;
-// }
+/*  ******************  [[Testeo]]	***********************  */
+/*  ******************  [[Testeo]]	***********************  */
+/*  ******************  [[Testeo]]	***********************  */
 
-// int	compare_token_arr(t_token *actual, t_token *expected, int len)
-// {
-// 	int	i = 0;
-// 	while (i < len)
-// 	{
-// 		if (!actual[i].text)
-// 			return (0);
-// 		if (ft_strcmp(actual[i].text, expected[i].text))
-// 			return (0);
-// 		if (actual[i].type != expected[i].type)
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
+t_token	*tester_token(char *line)
+{
+	int			i;
+	t_token		*token_stream;
+	
+	ft_printf("\n");
+	token_stream = tokenizer(line);
+	i = 0;
+	while (token_stream && token_stream[i].type != END)
+	{
+		printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
+		i++;
+	}
+	return (token_stream);
+}
 
-// int	main(void)
-// {
-// 	char	*line;
-// 	int		len = 0;
-// 	t_token	*expected = ft_calloc(1000, sizeof(t_token));
-// 	t_token	*actual;
+void	intr_token_expect(t_token **expected, int idx, char *text, token_type type)
+{
+	(*expected)[idx].text = text;
+	(*expected)[idx].type = type;
+}
 
-// 	line = ft_strdup("Mini chele");
-// 	actual = tester_token(line);
-// 	intr_token_expect(&expected, 0, "Mini", 4);
-// 	len++;
-// 	intr_token_expect(&expected, 1, "chele", 4);
-// 	len++;
-// 	if (compare_token_arr(actual, expected, len))
-// 		ft_printf("\033[32m%l[OK]\n\033[0m");
-// 	else
-// 		ft_printf("\033[31m%l[KO]\n\033[0m");
-// 	free_tokens(actual);
-// 	free(line);
+int	compare_token_arr(t_token *actual, t_token *expected, int len)
+{
+	int	i = 0;
+	while (i < len)
+	{
+		if (!actual[i].text)
+			return (0);
+		if (ft_strcmp(actual[i].text, expected[i].text))
+			return (0);
+		if (actual[i].type != expected[i].type)
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
-// 	len = 0;
-// 	line = ft_strdup("ls | cat -e > outfile");
-// 	actual = tester_token(line);
-// 	intr_token_expect(&expected, 0, "ls", 4);
-// 	len++;
-// 	intr_token_expect(&expected, 1, "|", 2);
-// 	len++;
-// 	intr_token_expect(&expected, 1, "cat", 4);
-// 	len++;
-// 	intr_token_expect(&expected, 1, "-e", 4);
-// 	len++;
-// 	intr_token_expect(&expected, 1, ">", 1);
-// 	len++;
-// 	intr_token_expect(&expected, 1, "outfile", 3);
-// 	len++;
-// 	if (compare_token_arr(actual, expected, len))
-// 		ft_printf("\033[32m%l[OK]\n\033[0m");
-// 	else
-// 		ft_printf("\033[31m%l[KO]\n\033[0m");
-// 	free_tokens(actual);
-// 	free(line);
-// }
+int	main(void)
+{
+	char	*line;
+	int		len = 0;
+	t_token	*expected = ft_calloc(1000, sizeof(t_token));
+	t_token	*actual;
+
+	line = ft_strdup("Mini chele");
+	actual = tester_token(line);
+	intr_token_expect(&expected, 0, "Mini", 4);
+	len++;
+	intr_token_expect(&expected, 1, "chele", 4);
+	len++;
+	if (compare_token_arr(actual, expected, len))
+		ft_printf("\033[32m%l[OK]\n\033[0m");
+	else
+		ft_printf("\033[31m%l[KO]\n\033[0m");
+	free_tokens(actual);
+	free(line);
+
+	len = 0;
+	line = ft_strdup("ls | cat -e > outfile");
+	actual = tester_token(line);
+	intr_token_expect(&expected, 0, "ls", 4);
+	len++;
+	intr_token_expect(&expected, 1, "|", 2);
+	len++;
+	intr_token_expect(&expected, 1, "cat", 4);
+	len++;
+	intr_token_expect(&expected, 1, "-e", 4);
+	len++;
+	intr_token_expect(&expected, 1, ">", 1);
+	len++;
+	intr_token_expect(&expected, 1, "outfile", 3);
+	len++;
+	if (compare_token_arr(actual, expected, len))
+		ft_printf("\033[32m%l[OK]\n\033[0m");
+	else
+		ft_printf("\033[31m%l[KO]\n\033[0m");
+	free_tokens(actual);
+	free(line);
+}
 
 // int main(int argc, char **argv)
 // {
