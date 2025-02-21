@@ -37,16 +37,11 @@ int	still_in_quote(char c, char quote)
 		return (0);
 }
 
-void	traverse_quote(char *line, int *i)
+int	add_token(t_darray **tokens, char *element)
 {
-	int	idx;
-
-	idx = *i;
-	while (still_in_quote(line[idx], '\''))
-		idx++;
-	while (still_in_quote(line[idx], '\"'))
-		idx++;
-	*i = idx;
+	if (!append_darray(tokens, &element))
+		return (0);
+	return (1);
 }
 
 void	free_tokens(t_token *tokens)
@@ -58,10 +53,10 @@ void	free_tokens(t_token *tokens)
 		return ;
 	while (tokens[i].type != END)
 	{
+		// ft_printf("token: %s\n", tokens[i].text);
 		free(tokens[i].text);
-		// write(1, tokens[i].text, 10);
-		// write(1, "bhnm,\n", 7);
 		i++;
 	}
 	free(tokens);
 }
+
