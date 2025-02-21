@@ -189,62 +189,62 @@ void	intr_token_expect(t_token **expected, int idx, char *text, token_type type)
 	(*expected)[idx].type = type;
 }
 
-int	compare_token_arr(t_token *actual, t_token *expected, int len)
+typedef struct s_test {
+    char *input;
+    char **expected_values;
+    token_type *expected_types;
+    size_t length;
+} t_test;
+
+int	compare_token_arr(t_token *actual, t_test expected, int len)
 {
 	int	i = 0;
 	while (i < len)
 	{
 		if (!actual[i].text)
 			return (0);
-		if (ft_strcmp(actual[i].text, expected[i].text))
+		if (ft_strcmp(actual[i].text, expected.expected_values[i]))
 			return (0);
-		if (actual[i].type != expected[i].type)
+		if (actual[i].type != expected.expected_types[i])
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
+
+
 int	main(void)
 {
-	char	*line;
-	int		len = 0;
-	t_token	*expected = ft_calloc(1000, sizeof(t_token));
 	t_token	*actual;
+	int		i = 0;
 
-	line = ft_strdup("Mini chele");
-	actual = tester_token(line);
-	intr_token_expect(&expected, 0, "Mini", 4);
-	len++;
-	intr_token_expect(&expected, 1, "chele", 4);
-	len++;
-	if (compare_token_arr(actual, expected, len))
-		ft_printf("\033[32m%l[OK]\n\033[0m");
-	else
-		ft_printf("\033[31m%l[KO]\n\033[0m");
-	free_tokens(actual);
-	free(line);
+	t_test tests[] = {
+			{
+				.input = "Mini chele",
+				.expected_values = (char*[]){"Mini", "chele"},
+				.expected_types = (token_type[]){COMMAND, COMMAND},
+				.length = 2
+			},
+			{
+				.input = "ls | cat -e > outfile",
+				.expected_values = (char*[]){"ls", "|", "cat", "-e", ">", "outfile"},
+				.expected_types = (token_type[]){
+					COMMAND, PIPE_OPERATOR, COMMAND, COMMAND,
+					IO_OPERATOR, FILENAME
+				},
+				.length = 6
+			}
+	};
+	while (i < 2)
+	{
+		actual = tester_token(tests[i].input);
+		if (compare_token_arr(actual, tests[i], tests[i].length))
+			ft_printf("\033[32m%l[OK]\n\033[0m");
+		else
+			ft_printf("\033[31m%l[KO]\n\033[0m");
+		free_tokens(actual);
+		i++;
+	}
 
-	len = 0;
-	line = ft_strdup("ls | cat -e > outfile");
-	actual = tester_token(line);
-	intr_token_expect(&expected, len, "ls", COMMAND);
-	len++;
-	intr_token_expect(&expected, len, "|", PIPE_OPERATOR);
-	len++;
-	intr_token_expect(&expected, len, "cat", COMMAND);
-	len++;
-	intr_token_expect(&expected, len, "-e", COMMAND);
-	len++;
-	intr_token_expect(&expected, len, ">", IO_OPERATOR);
-	len++;
-	intr_token_expect(&expected, len, "outfile", FILENAME);
-	len++;
-	if (compare_token_arr(actual, expected, len))
-		ft_printf("\033[32m%l[OK]\n\033[0m");
-	else
-		ft_printf("\033[31m%l[KO]\n\033[0m");
-	free_tokens(actual);
-	free(expected);
-	free(line);
 }
