@@ -1,0 +1,102 @@
+#include "parser.h"
+
+void	buffer_io_redir(t_io_redir *io_redir, char	**buff_io)
+{
+	char 	*buff_tmp_io;
+
+	if (io_redir)
+	{
+		if (io_redir->op && io_redir->op->type != END)
+		{
+			buff_tmp_io = *buff_io;
+			*buff_io = ft_strjoin(*buff_io, "(");
+			free(*buff_io);
+
+			buff_tmp_io = *buff_io;
+			*buff_io = ft_strjoin(*buff_io, io_redir->op->text);
+			free(*buff_io);
+		}
+		if (io_redir->filename && io_redir->filename->type != END)
+		{
+			buff_tmp_io = *buff_io;
+			*buff_io = ft_strjoin(*buff_io, io_redir->filename->text);
+			free(*buff_io);
+			
+			buff_tmp_io = *buff_io;
+			*buff_io = ft_strjoin(*buff_io, ")");
+			free(*buff_io);
+		}
+		buffer_io_redir(io_redir->next, buff_io);
+	}
+}
+
+char	*buffer_cmd(t_cmd *cmd)
+{
+	char	*buff_cmd = ft_strdup("");
+	char	*buff_tmp_cmd;
+
+	char	**command_list;
+	command	*cmd_array;
+	t_cmd	*tmp_cmd;
+	size_t	i;
+
+	tmp_cmd = cmd;
+	while (cmd)
+	{
+		//buff_tmp_cmd = buff_cmd;
+		//buff_cmd = ft_strjoin(buff_cmd, buffer_io_redir(cmd->cmd_prefix));
+		//free(buff_tmp_cmd);
+		
+		buffer_io_redir(cmd->cmd_prefix, &buff_cmd);
+		buffer_io_redir(cmd->cmd_suffix, &buff_cmd);
+
+//		buff_tmp_cmd = buff_cmd;
+		//buff_cmd = ft_strjoin(buff_cmd, buffer_io_redir(cmd->cmd_suffix));
+		//free(buff_tmp_cmd);
+		cmd = cmd->next;
+	}
+	buff_tmp_cmd = buff_cmd;
+	buff_cmd = ft_strjoin(buff_cmd, "{ ");
+	free(buff_tmp_cmd);
+	while (tmp_cmd)
+	{
+		i = 0;
+		cmd_array = tmp_cmd->cmd;	
+		command_list = (char **) cmd_array->darray;
+		while (command_list && command_list[i])
+		{
+			buff_tmp_cmd = buff_cmd;
+			buff_cmd = ft_strjoin(buff_cmd, command_list[i]);
+			free(buff_tmp_cmd);
+
+			buff_tmp_cmd = buff_cmd;
+			buff_cmd = ft_strjoin(buff_cmd, " ");
+			free(buff_tmp_cmd);
+			i++;
+		}
+		tmp_cmd = tmp_cmd->next;
+	}
+	buff_tmp_cmd = buff_cmd;
+	buff_cmd = ft_strjoin(buff_cmd, "} ");
+	free(buff_tmp_cmd);
+	return (buff_cmd);
+}
+
+void	buffer_AST(t_cmd_pipe *sequence, char **AST)
+{
+	char	*tmp_AST;
+	char	*buff_cmd;
+
+	tmp_AST = *AST;
+	buff_cmd = buffer_cmd(sequence->cmd);
+	*AST = ft_strjoin(*AST, buff_cmd);
+	free(tmp_AST);
+	free(buff_cmd);
+	if (sequence->next)
+	{
+		tmp_AST = *AST;
+		*AST = ft_strjoin(*AST, "| \n");
+		free(tmp_AST);
+		buffer_AST(sequence->next, AST);
+	}
+}

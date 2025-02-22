@@ -43,7 +43,6 @@ t_token		*parse_word(t_token **token_stream);
 void		free_AST(t_cmd_pipe *sequence);
 void		free_cmd(t_cmd *cmd);
 void		free_io_redir(t_io_redir *io_redir);
-
 int			add_command(command **cmd, char *element);
 
 #endif

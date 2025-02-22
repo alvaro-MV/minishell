@@ -46,13 +46,13 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream)
 		if (!alloc_pipe_cmd(&tmp_cmd_pipe))
 			return (free_AST(ret_cmd_pipe), NULL); //Fallo de sintaxis. Pirarse y liberar todo
 		tmp_cmd_pipe->cmd = parse_cmd(token_stream);
-		if (!tmp_cmd_pipe->cmd)
-			return (free_AST(ret_cmd_pipe), NULL); //Fallo de sintaxis. Pirarse y liberar todo
-		
+
 		//Avanzas en la lista.
 
 		current_cmd_pipe->next = tmp_cmd_pipe;
 		current_cmd_pipe = tmp_cmd_pipe;
+		if (!tmp_cmd_pipe->cmd)
+			return (free_AST(ret_cmd_pipe), NULL); //Fallo de sintaxis. Pirarse y liberar todo
 	}
 	current_cmd_pipe->next = NULL;
 	return (ret_cmd_pipe);

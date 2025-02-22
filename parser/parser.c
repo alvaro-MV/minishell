@@ -1,6 +1,7 @@
 #include "parser.h"
 
 void	print_AST(t_cmd_pipe *sequence); //testeo
+void	buffer_AST(t_cmd_pipe *sequence, char **AST); //testeo
 
 t_token	*parse_word(t_token **token_stream)
 {
@@ -21,43 +22,41 @@ int	add_command(command **cmd, char *element)
 	return (1);
 }
 
-int main(int argc, char **argv)
+void tester_parser(char *line, char *expected)
 {
-    char		*line;
 	int			i = 0;
 	t_darray	*tokens_array;
 	char		**tokens_strings;
 	t_token		*token_stream;
+	char		*AST = ft_strdup("");
 
-	
-	// while (line = readline("\033[32mminishell\033[0m$ "))
-		line = argv[1];
-	// {
-	// 	add_history(line);
+	tokens_array = tokenizer_str(line);
+	tokens_strings = (char **) tokens_array->darray;
+	token_stream = tokenizer(tokens_strings, tokens_array->full_idx);
 
-		tokens_array = tokenizer_str(line);
-		tokens_strings = (char **) tokens_array->darray;
-		free(tokens_array);
-		token_stream = tokenizer(tokens_strings, tokens_array->full_idx);
+	t_token	*tokens_for_free = token_stream;
+	t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream);
+	if (sequence)
+	{
+		print_AST(sequence);
+		buffer_AST(sequence, &AST);
+		ft_printf("AST: %s\n", AST);
+		ft_printf("\n\n");
 
-		t_token	*tokens_for_free = token_stream;
+		if (strcmp(AST, expected))
+ 			ft_printf("\033[32m%l[OK]\n\033[0m");
+		else
+ 			ft_printf("\033[31m%l[KO]\n\033[0m");
+	}
 
-		while (token_stream && token_stream[i].type != END)
-		{
-			printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
-			i++;
-		}
-		t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream);
-		if (sequence)
-		{
-			print_AST(sequence);
-			ft_printf("\n\n");
-		}
-		free_AST(sequence);
-		free(tokens_for_free);
-		ft_free_array(tokens_strings);
-		// free(line);
-	// }
-	// rl_clear_history();
-	return 0;
+	free(AST);
+	free_AST(sequence);
+	free(tokens_array);
+	free(tokens_for_free);
+	ft_free_array(tokens_strings);
+}
+
+int	main(void)
+{
+	tester_parser("ls | cat", "{ ls } | \n{ cat }");
 }

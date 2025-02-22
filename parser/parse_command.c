@@ -62,6 +62,7 @@ t_cmd	*parse_cmd(t_token **token_stream)
 		// Se reserva el siguiente comando.
 		if (!alloc_cmd(&tmp_cmd))
 			return(free_cmd(ret_cmd), NULL);
+		current_cmd->next = tmp_cmd;
 		current_cmd = tmp_cmd;
 	}
 	current_cmd->next = NULL;
