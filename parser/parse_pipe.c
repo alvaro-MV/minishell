@@ -31,7 +31,7 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream)
 		return (NULL);
 	ret_cmd_pipe->cmd = parse_cmd(token_stream);
 	if  (!ret_cmd_pipe->cmd)
-		return (NULL); //Fallo de sintaxis. Pirarse y liberar todo
+		return (free_AST(ret_cmd_pipe), NULL); //Fallo de sintaxis. Pirarse y liberar todo
 	// else if (is_empty_cmd(ret_cmd_pipe->cmd))
 	// 	// abrir here_doc y recibir comando: tokenización, verificación y si todo OK incuirlo en lista. 
 	
@@ -44,10 +44,10 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream)
 		(*token_stream)++;
 		//Mismo parseo para el próximo comando.
 		if (!alloc_pipe_cmd(&tmp_cmd_pipe))
-			return (NULL);
+			return (free_AST(ret_cmd_pipe), NULL); //Fallo de sintaxis. Pirarse y liberar todo
 		tmp_cmd_pipe->cmd = parse_cmd(token_stream);
 		if (!tmp_cmd_pipe->cmd)
-			return (NULL);
+			return (free_AST(ret_cmd_pipe), NULL); //Fallo de sintaxis. Pirarse y liberar todo
 		
 		//Avanzas en la lista.
 

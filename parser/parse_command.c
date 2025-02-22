@@ -38,7 +38,7 @@ t_cmd	*parse_cmd(t_token **token_stream)
 	t_cmd	*tmp_cmd;
 	t_cmd	*current_cmd;
 
-	if ((*token_stream)->type == IO_OPERATOR) // Para el caso | |
+	if ((*token_stream)->type == PIPE_OPERATOR) // Para el caso | |
 	{
 		ft_printf("minishell: syntax error near unexpected token `|'");
 		return (NULL);
@@ -49,19 +49,19 @@ t_cmd	*parse_cmd(t_token **token_stream)
 	while ((*token_stream)->type != END && (*token_stream)->type != PIPE_OPERATOR)
 	{
 		if (!parse_ix(&current_cmd->cmd_prefix, token_stream))
-			return (NULL);
+			return(free_cmd(ret_cmd), NULL);
 
 		// Meter tokens en el campo cmd hasta que el siguiente token != COMMAND
 
 		if (!fill_cmd(token_stream, &current_cmd->cmd))
-			return (NULL);
+			return(free_cmd(ret_cmd), NULL);
 
 		// Parseo de redirecciones.
 		if (!parse_ix(&current_cmd->cmd_suffix, token_stream))
-			return (NULL);
+			return(free_cmd(ret_cmd), NULL);
 		// Se reserva el siguiente comando.
 		if (!alloc_cmd(&tmp_cmd))
-			return (NULL);
+			return(free_cmd(ret_cmd), NULL);
 		current_cmd = tmp_cmd;
 	}
 	current_cmd->next = NULL;

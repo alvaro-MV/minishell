@@ -30,10 +30,10 @@ t_io_redir	*parse_io_redir(t_token **token_stream)
 				ft_printf("`newline'\n");
 			else
 				ft_printf("%s\n", (*token_stream)->text);
-			return (NULL);
+			return (free_io_redir(ret_io_redir), NULL);
 		}
 		if (!alloc_io_redir(&tmp_io_redir))
-			return (NULL);
+			return (free_io_redir(ret_io_redir), NULL);
 		current_io_redir->next = tmp_io_redir;
 		current_io_redir = tmp_io_redir;
 	}
