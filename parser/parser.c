@@ -25,13 +25,20 @@ int main(int argc, char **argv)
 {
     char		*line;
 	int			i = 0;
+	t_darray	*tokens_array;
+	char		**tokens_strings;
 	t_token		*token_stream;
+
 	
 	// while (line = readline("\033[32mminishell\033[0m$ "))
 		line = argv[1];
 	// {
 	// 	add_history(line);
-		token_stream = tokenizer(line);
+
+		tokens_array = tokenizer_str(line);
+		tokens_strings = (char **) tokens_array->darray;
+		free(tokens_array);
+		token_stream = tokenizer(tokens_strings, tokens_array->full_idx);
 
 		t_token	*tokens_for_free = token_stream;
 
@@ -40,7 +47,6 @@ int main(int argc, char **argv)
 			printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
 			i++;
 		}
-
 		t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream);
 		if (sequence)
 		{
@@ -49,6 +55,7 @@ int main(int argc, char **argv)
 		}
 		free_AST(sequence);
 		free(tokens_for_free);
+		ft_free_array(tokens_strings);
 		// free(line);
 	// }
 	// rl_clear_history();
