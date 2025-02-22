@@ -27,6 +27,8 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream)
 	t_cmd_pipe	*current_cmd_pipe;
 	t_cmd_pipe	*tmp_cmd_pipe;
 
+	if (!*token_stream)
+		return (NULL);
 	if (!alloc_pipe_cmd(&ret_cmd_pipe))
 		return (NULL);
 	ret_cmd_pipe->cmd = parse_cmd(token_stream);
