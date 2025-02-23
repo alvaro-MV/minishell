@@ -99,4 +99,9 @@ int	main(void)
 	tester_parser("<>", "minishell: syntax error near unexpected token >", 15);
 	tester_parser("/bin/env | grep \"SHLVL\"", "{ /bin/env } | \n{ grep \"SHLVL\" } ", 16);
 	tester_parser("echo hi >./test_files/invalid_permission | echo bye", "(> ./test_files/invalid_permission) { echo hi } | \n{ echo bye } ", 17);
+	tester_parser("cat << lim''", "(<< lim'') { cat } ", 18);
+	tester_parser("echo \"env | /usr/bin/wc -l\" | env -i $minishell_path\"/\"$executable", 
+		"{ echo \"env | /usr/bin/wc -l\" } | \n{ env -i $minishell_path\"/\"$executable } ", 19);
+	tester_parser("echo >>< 'echo'", "minishell: syntax error near unexpected token <", 20);
+	tester_parser("echo segfault < \" < < < \" < < amazing", "minishell: syntax error near unexpected token <", 21);
 }
