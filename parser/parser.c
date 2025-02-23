@@ -46,6 +46,12 @@ void tester_parser(char *line, char *expected, int n)
 	tokens_strings = (char **) tokens_array->darray;
 	token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
 
+	//i = 0;
+	//while (token_stream[i].type != END)
+	//{
+		//printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
+		//i++;
+	//}
 
 	t_token	*tokens_for_free = token_stream;
 	t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream);
@@ -84,4 +90,13 @@ int	main(void)
 	tester_parser("\"ECho\" -n -nnn\"\" \"-\"nnnnn", "{ \"ECho\" -n -nnn\"\" \"-\"nnnnn } ", 7);
 	tester_parser(">| echo sure", "minishell: syntax error near unexpected token", 8);
 	tester_parser("<<| echo wtf", "(<< |) | \n{ echo wtf } ", 9);
+	tester_parser("echo | |", "minishell: syntax error near unexpected token", 10);
+	tester_parser("echo \"<| echo wtf\"", "{ echo \"<| echo wtf\" } ", 11);
+	tester_parser("| | |", "minishell: syntax error near unexpected token", 12);
+	tester_parser("|", "minishell: syntax error near unexpected token", 12);
+	tester_parser(">> >> >> >>", "minishell: syntax error near unexpected token >>", 13);
+	tester_parser("< >", "minishell: syntax error near unexpected token >", 14);
+	tester_parser("<>", "minishell: syntax error near unexpected token >", 15);
+	tester_parser("/bin/env | grep \"SHLVL\"", "{ /bin/env } | \n{ grep \"SHLVL\" } ", 16);
+	tester_parser("echo hi >./test_files/invalid_permission | echo bye", "(> ./test_files/invalid_permission) { echo hi } | \n{ echo bye } ", 17);
 }

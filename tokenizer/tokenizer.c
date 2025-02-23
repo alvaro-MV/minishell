@@ -17,7 +17,7 @@ size_t	count_n_tokens(char *argv)
 		{
 			if (i && !isspace(argv[i - 1]) && !is_simple_operator(argv[i - 1]))
 				n_op++;
-			if (is_double_operator(argv[i + 1]))
+			if (argv[i] == argv[i + 1])
 				i++;
 			n_op++;
 			while (isspace(argv[i + 1]))
@@ -35,7 +35,9 @@ size_t	count_n_tokens(char *argv)
 		}
 		i++;
 	}
-	return (++n_op);
+	if (!is_double_operator(argv[i - 1]))
+		++n_op;
+	return (n_op);
 }
 
 int	tokenize_operator(char *line, int *i, int *start, t_darray **tokens)
@@ -48,11 +50,11 @@ int	tokenize_operator(char *line, int *i, int *start, t_darray **tokens)
 		if (!add_token(tokens, ft_substr(line, *start, *i - *start)))
 			return (free_darray(*tokens), 0);
 	}
-	if (is_double_operator(line[*i]) && is_double_operator(line[*i + 1]))
+	if (line[*i] == line[*i + 1])
 		len_op++;
 	if (!add_token(tokens, ft_substr(line, *i, len_op)))
 		return (free_darray(*tokens), 0);
-	if (is_double_operator(line[*i]) && is_double_operator(line[*i + 1]))
+	if (line[*i] == line[*i + 1])
 		*i = *i + 1;
 	while (isspace(line[*i + 1]) && line[*i + 1] != '\0')
 		*i = *i + 1;
@@ -273,6 +275,18 @@ int	compare_token_arr(t_token *actual, t_test expected, int len)
 			//.expected_values = (char*[]){">", "|", "echo", "sure"},
 			//.expected_types = (token_type[]){IO_OPERATOR, PIPE_OPERATOR, COMMAND, COMMAND},
 			//.length = 4
+		//},
+		//{
+			//.input = "<>",
+			//.expected_values = (char*[]){"<", ">"},
+			//.expected_types = (token_type[]){IO_OPERATOR, IO_OPERATOR},
+			//.length = 2
+		//},
+		//{
+			//.input = "><",
+			//.expected_values = (char*[]){">", "<"},
+			//.expected_types = (token_type[]){IO_OPERATOR, IO_OPERATOR},
+			//.length = 2
 		//}
 	//};
 	//while (i < sizeof(tests) / sizeof(t_test))
