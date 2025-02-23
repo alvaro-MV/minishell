@@ -3,18 +3,15 @@
 size_t	count_n_tokens(char *argv)
 {
 	int	i;
-	int	inside_quote;
 	size_t	n_op;
 
 	i = 0;
 	n_op = 0;
-	inside_quote = 0;
 	while (argv[i])
 	{
-
-		while (still_in_quote(argv[i], '\'') && argv[i + 1])
+		while (still_in_quote(argv[i], '\''))
 			i++;
-		while (still_in_quote(argv[i], '\"') && argv[i + 1])
+		while (still_in_quote(argv[i], '\"'))
 			i++;
 		if (is_simple_operator(argv[i]))
 		{
@@ -133,38 +130,6 @@ t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
 	token_stream[i].text = NULL;
 	return (token_stream);
 }
-
-// int main(int argc, char **argv)
-// {
-//     char		*line;
-// 	int			i;
-// 	t_darray	*tokens_array;
-// 	char		**tokens_strings;
-// 	t_token		*token_stream;
-	
-// 	while (line = readline("\033[32mminishell\033[0m$ "))
-// 	{
-// 		ft_printf("\n");
-// 		add_history(line);
-// 		tokens_array = tokenizer_str(line);
-// 		tokens_strings = (char **) tokens_array->darray;
-// 		token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
-// 		free(tokens_array);
-		
-// 		i = 0;
-// 		while (token_stream[i].type != end)
-// 		{
-// 			printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
-// 			i++;
-// 		}
-// 		ft_free_array(tokens_strings);
-// 		free(token_stream);
-// 		free(line);
-// 	}
-// 		rl_clear_history();
-// 		return 0;
-// }
-
 
 /* 		---------------- [Test] ----------------      */
 /* 		---------------- [Test] ----------------      */

@@ -29,6 +29,8 @@ int	still_in_quote(char c, char quote)
 	if (c == quote)
 	{
 		inside_quote = 1 - inside_quote;
+		if (!inside_quote)
+			return(0);
 		return (1);
 	}
 	if (inside_quote == 1)
