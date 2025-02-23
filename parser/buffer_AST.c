@@ -10,21 +10,21 @@ void	buffer_io_redir(t_io_redir *io_redir, char	**buff_io)
 		{
 			buff_tmp_io = *buff_io;
 			*buff_io = ft_strjoin(*buff_io, "(");
-			free(*buff_io);
+			free(buff_tmp_io);
 
 			buff_tmp_io = *buff_io;
 			*buff_io = ft_strjoin(*buff_io, io_redir->op->text);
-			free(*buff_io);
+			free(buff_tmp_io);
 		}
 		if (io_redir->filename && io_redir->filename->type != END)
 		{
 			buff_tmp_io = *buff_io;
 			*buff_io = ft_strjoin(*buff_io, io_redir->filename->text);
-			free(*buff_io);
+			free(buff_tmp_io);
 			
 			buff_tmp_io = *buff_io;
 			*buff_io = ft_strjoin(*buff_io, ")");
-			free(*buff_io);
+			free(buff_tmp_io);
 		}
 		buffer_io_redir(io_redir->next, buff_io);
 	}
