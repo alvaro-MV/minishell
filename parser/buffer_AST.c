@@ -15,7 +15,12 @@ void	buffer_io_redir(t_io_redir *io_redir, char	**buff_io)
 			buff_tmp_io = *buff_io;
 			*buff_io = ft_strjoin(*buff_io, io_redir->op->text);
 			free(buff_tmp_io);
+		
+			buff_tmp_io = *buff_io;
+			*buff_io = ft_strjoin(*buff_io, " ");
+			free(buff_tmp_io);
 		}
+
 		if (io_redir->filename && io_redir->filename->type != END)
 		{
 			buff_tmp_io = *buff_io;
@@ -23,7 +28,7 @@ void	buffer_io_redir(t_io_redir *io_redir, char	**buff_io)
 			free(buff_tmp_io);
 			
 			buff_tmp_io = *buff_io;
-			*buff_io = ft_strjoin(*buff_io, ")");
+			*buff_io = ft_strjoin(*buff_io, ") ");
 			free(buff_tmp_io);
 		}
 		buffer_io_redir(io_redir->next, buff_io);
@@ -43,16 +48,8 @@ char	*buffer_cmd(t_cmd *cmd)
 	tmp_cmd = cmd;
 	while (cmd)
 	{
-		//buff_tmp_cmd = buff_cmd;
-		//buff_cmd = ft_strjoin(buff_cmd, buffer_io_redir(cmd->cmd_prefix));
-		//free(buff_tmp_cmd);
-		
 		buffer_io_redir(cmd->cmd_prefix, &buff_cmd);
 		buffer_io_redir(cmd->cmd_suffix, &buff_cmd);
-
-//		buff_tmp_cmd = buff_cmd;
-		//buff_cmd = ft_strjoin(buff_cmd, buffer_io_redir(cmd->cmd_suffix));
-		//free(buff_tmp_cmd);
 		cmd = cmd->next;
 	}
 	buff_tmp_cmd = buff_cmd;

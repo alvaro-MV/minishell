@@ -30,7 +30,7 @@ int			is_simple_operator(char argv_char);
 int			is_double_operator(char argv_char);
 int			still_in_quote(char c, char quote);
 t_darray	*tokenizer_str(char *argv);
-t_token		*tokenizer(char **tokens_strings, size_t len);
+t_token		*tokenizer_t_tokens(char **tokens_strings, size_t len);
 void		free_tokens(t_token *tokens);
 
 #endif
