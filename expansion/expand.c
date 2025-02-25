@@ -80,22 +80,32 @@ char	*expand_str(char *str, t_dictionary *env)
 		}
 		else if (state == ENV_VAR)
 		{
-			len_env_var = i;
-			while (ft_isalpha(str[len_env_var]))
-				len_env_var++;
-			tmp_str = expanded_str;
-			env_var_name = ft_substr(str, i, len_env_var - i);
-			if (!env_var_name)
-				return (free(tmp_str), free(expanded_str), NULL);
-			env_var_value = dict_get(env, env_var_name);
-			if (!env_var_value)
-				env_var_value = "";
-			expanded_str = ft_strjoin(expanded_str, env_var_value);
-			free(tmp_str);
-			free(env_var_name);
-			i += len_env_var - 2;
 			state = old_state;
 			old_state = ENV_VAR;
+			if (ft_isalpha(str[i]))
+			{
+				len_env_var = i;
+				while (ft_isalpha(str[len_env_var]))
+					len_env_var++;
+				tmp_str = expanded_str;
+				env_var_name = ft_substr(str, i, len_env_var - i);
+				if (!env_var_name)
+					return (free(tmp_str), free(expanded_str), NULL);
+				if (ft_strncmp(ft_strtrim(env_var_name, " \t\r"), " ", 2))
+				{
+					// ft_printf()
+					env_var_value = dict_get(env, env_var_name);
+					if (!env_var_value)
+						env_var_value = "";
+				}
+				else
+					env_var_value = "$";
+				expanded_str = ft_strjoin(expanded_str, env_var_value);
+				free(tmp_str);
+				free(env_var_name);
+				i += len_env_var - 3;
+				ft_printf("str i despues de expandir: %s\n", &str[i]);
+			}
 		}
 		i++;
 	}
@@ -146,35 +156,44 @@ void	expand_tester(t_dictionary *env)
 {
 	char	*str;
 	
-	str = "$BAR\"ooo\"";
-	make_test(str, env, "ooo");
+	// str = "$BAR\"ooo\"";
+	// make_test(str, env, "ooo");
+	// ft_printf("\n----------------------\n");
+
+	// str = "\"Hola\"a";
+	// make_test(str, env, "Holaa");
+	// ft_printf("\n----------------------\n");
+
+	// str = "\"$DISPLAY\"ooo\"i\"";
+	// make_test(str, env, ":0oooi");
+	// ft_printf("\n----------------------\n");
+
+	// str = "\"$DISPLA\"Yooo\"i\"";
+	// make_test(str, env, "Yoooi");
+	// ft_printf("\n----------------------\n");
+
+	// str = "\"$HOME\"/home/usuario";
+	// make_test(str, env, "/home/alvaro/home/usuario");
+	// ft_printf("\n----------------------\n");
+
+	// str = "'Cualquier mierda'";
+	// make_test(str, env, "Cualquier mierda");
+	// ft_printf("\n----------------------\n");
+
+	// str = "$DISPLAY'ooo\"i\"'";
+	// make_test(str, env, ":0ooo\"i\"");
+	// ft_printf("\n----------------------\n");
+
+	// str = "\"PATH\"\roo$'DISPLAY'";
+	// make_test(str, env, "PATH\rooDISPLAY");
+	// ft_printf("\n----------------------\n");
+	
+	// make_test("\"$?\"", env, "0");
+	// ft_printf("\n----------------------\n");
+
+	make_test("\"$SHELL$\"", env, "/usr/bin/zsh$");
 	ft_printf("\n----------------------\n");
 
-	str = "\"Hola\"a";
-	make_test(str, env, "Holaa");
-	ft_printf("\n----------------------\n");
-
-	str = "\"$DISPLAY\"ooo\"i\"";
-	make_test(str, env, ":0oooi");
-	ft_printf("\n----------------------\n");
-
-	str = "\"$DISPLA\"Yooo\"i\"";
-	make_test(str, env, "Yoooi");
-	ft_printf("\n----------------------\n");
-
-	str = "\"$HOME\"/home/usuario";
-	make_test(str, env, "/home/alvaro/home/usuario");
-	ft_printf("\n----------------------\n");
-
-	str = "'Cualquier mierda'";
-	make_test(str, env, "Cualquier mierda");
-	ft_printf("\n----------------------\n");
-
-	str = "$DISPLAY'ooo\"i\"'";
-	make_test(str, env, ":0ooo\"i\"");
-	ft_printf("\n----------------------\n");
-
-	str = "\"PATH\r\"oo$'DISPLAY'";
-	make_test(str, env, "PATH\rooDISPLAY");
-	ft_printf("\n----------------------\n");
+	// make_test("\"$DISP\"'X'", env, "X");
+	// ft_printf("\n----------------------\n");
 }

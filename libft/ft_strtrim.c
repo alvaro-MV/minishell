@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 16:55:29 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/04/04 16:52:38 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/02/25 12:07:01 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ char	*ft_strtrim(char const *s1, char const *set)
 
 // int	main()
 // {
-// 	const char	s1[] = "abcdba";
-// 	const char	set[] = "acb"; //zsx, '\0' 
+// 	const char	s1[] = "      \t  ";
+// 	const char	set[] = " \t\r"; //zsx, '\0' 
 // 	char	*ptr;
 
 // 	ptr = ft_strtrim(s1, set);
-// 	printf("%s\n", ptr);
+// 	printf("ptr: %s\n", ptr);
 // 	free(ptr);	
 // }
