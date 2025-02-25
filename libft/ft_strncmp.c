@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 20:03:16 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/04/06 14:58:44 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:43:45 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	ft_strncmp(char	*s1, char	*s2, unsigned int n)
 {
 	if (n == 0)
 		return (0);
+	if (!s1 && !s2)
+		return (1);
 	while (*s1 && *s2 && n > 0)
 	{
 		if (*s1 != *s2)
