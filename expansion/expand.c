@@ -37,7 +37,7 @@ char	*expand_str(char *str, t_dictionary *env)
 				state = DOUBLE_QUOTE;
 			else if (str[i] == '\'')
 				state = SINGLE_QUOTE;
-			else if (str[i] == '$' && ft_isalnum(str[i + 1]))
+			else if (str[i] == '$' && ft_isalnum(str[i + 1]) || str[i] == '$' && str[i + 1] == '\'')
 				state = ENV_VAR;
 			else
 			{
@@ -169,7 +169,7 @@ void	expand_tester(t_dictionary *env)
 	ft_printf("\n----------------------\n");
 
 	str = "\"$HOME\"/home/usuario";
-	make_test(str, env, "/home/alvmoral/home/usuario");
+	make_test(str, env, "/home/alvaro/home/usuario");
 	ft_printf("\n----------------------\n");
 
 	str = "'Cualquier mierda'";
@@ -187,10 +187,10 @@ void	expand_tester(t_dictionary *env)
 	make_test("\"$?\"", env, "0");
 	ft_printf("\n----------------------\n");
 
-	make_test("\"$SHELL$\"", env, "/bin/zsh$");
+	make_test("\"$SHELL$\"", env, "/usr/bin/zsh$");
 	ft_printf("\n----------------------\n");
 
-	make_test("$SHELL$", env, "/bin/zsh$");
+	make_test("$SHELL$", env, "/usr/bin/zsh$");
 	ft_printf("\n----------------------\n");
 
 	make_test("\"$DISP\"'X'", env, "X");
