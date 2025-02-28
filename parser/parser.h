@@ -22,6 +22,7 @@ typedef struct s_cmd
 	t_io_redir		*cmd_prefix;
 	t_io_redir		*cmd_suffix;
 	struct s_cmd	*next;
+	int			fds[2];
 	// struct s_cmd	*prev;
 }					t_cmd;
 

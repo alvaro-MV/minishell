@@ -204,4 +204,7 @@ void	expand_tester(t_dictionary *env)
 
 	make_test("\"$DISP\"'X'", env, "X");
 	ft_printf("\n----------------------\n");
+
+	make_test("$\"DISP\"'X'", env, "$DISPX");
+	ft_printf("\n----------------------\n");
 }
