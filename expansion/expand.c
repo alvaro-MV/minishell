@@ -37,7 +37,8 @@ char	*expand_str(char *str, t_dictionary *env)
 				state = DOUBLE_QUOTE;
 			else if (str[i] == '\'')
 				state = SINGLE_QUOTE;
-			else if (str[i] == '$' && ft_isalnum(str[i + 1]) || str[i] == '$' && str[i + 1] == '\'')
+			else if ((str[i] == '$' && ft_isalnum(str[i + 1]))
+					|| (str[i] == '$' && str[i + 1] == '\''))
 				state = ENV_VAR;
 			else
 			{
@@ -85,23 +86,31 @@ char	*expand_str(char *str, t_dictionary *env)
 			state = old_state;
 			old_state = ENV_VAR;
 			len_env_var = i;
-			while (ft_isalpha(str[len_env_var]))
-				len_env_var++;
-			tmp_str = expanded_str;
-			env_var_name = ft_substr(str, i, len_env_var - i);
-			if (!env_var_name)
-				return (free(tmp_str), free(expanded_str), NULL);
-			if (ft_strncmp(ft_strtrim(env_var_name, " \t\r"), " ", 2))
+			if (str[i] == '\'')
 			{
-				env_var_value = dict_get(env, env_var_name);
-				if (!env_var_value)
-					env_var_value = "";
+				// i--;				
+				state = SINGLE_QUOTE;
 			}
-			expanded_str = ft_strjoin(expanded_str, env_var_value);
-			free(tmp_str);
-			free(env_var_name);
-			i += len_env_var - 2;
-			ft_printf("str i despues de expandir: %s\n", &str[i]);
+			else
+			{
+				while (ft_isalpha(str[len_env_var]))
+					len_env_var++;
+				tmp_str = expanded_str;
+				env_var_name = ft_substr(str, i, len_env_var - i);
+				if (!env_var_name)
+					return (free(tmp_str), free(expanded_str), NULL);
+				if (ft_strncmp(ft_strtrim(env_var_name, " \t\r"), " ", 2))
+				{
+					env_var_value = dict_get(env, env_var_name);
+					if (!env_var_value)
+						env_var_value = "";
+				}
+				expanded_str = ft_strjoin(expanded_str, env_var_value);
+				free(tmp_str);
+				free(env_var_name);
+				i += len_env_var - 2;
+				ft_printf("str i despues de expandir: %s\n", &str[i]);
+			}
 		}
 		i++;
 	}
