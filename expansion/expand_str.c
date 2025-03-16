@@ -7,12 +7,23 @@ int	is_for_expand_str(char *str)
 	return (1);
 }
 
+void	join_char(char **expanded_str, char *str)
+{
+	char	*tmp_str;
+	char 	c[2];
+
+	tmp_str = *expanded_str;
+	c[0] = *str;
+	c[1] = '\0';
+	*expanded_str = ft_strjoin(*expanded_str, c);
+	free(tmp_str);
+}
+
 char	*expand_str(char *str, t_dictionary *env)
 {
 	int				i;
 	char			*expanded_str;
 	char			*tmp_str;
-	char			c[2];
 	expand_states	state;
 	expand_states	old_state;
 
@@ -41,13 +52,7 @@ char	*expand_str(char *str, t_dictionary *env)
 					|| (str[i] == '$' && str[i + 1] == '\''))
 				state = ENV_VAR;
 			else
-			{
-				tmp_str = expanded_str;
-				c[0] = str[i];
-				c[1] = '\0';
-				expanded_str = ft_strjoin(expanded_str, c);
-				free(tmp_str);
-			}
+				join_char(&expanded_str, &str[i]);
 		}
 		else if (state == DOUBLE_QUOTE)
 		{
@@ -57,13 +62,7 @@ char	*expand_str(char *str, t_dictionary *env)
 			else if (str[i] == '$' && ft_isalpha(str[i + 1]))
 				state = ENV_VAR;
 			else
-			{
-				tmp_str = expanded_str;
-				c[0] = str[i];
-				c[1] = '\0';
-				expanded_str = ft_strjoin(expanded_str, c);
-				free(tmp_str);
-			}
+				join_char(&expanded_str, &str[i]);
 		}
 		else if (state == SINGLE_QUOTE)
 		{
@@ -71,13 +70,7 @@ char	*expand_str(char *str, t_dictionary *env)
 			if (str[i] == '\'')
 				state = WORD;
 			else
-			{
-				tmp_str = expanded_str;
-				c[0] = str[i];
-				c[1] = '\0';
-				expanded_str = ft_strjoin(expanded_str, c);
-				free(tmp_str);
-			}
+				join_char(&expanded_str, &str[i]);
 		}
 		else if (state == ENV_VAR)
 		{
@@ -116,24 +109,24 @@ char	*expand_str(char *str, t_dictionary *env)
 
 void	expand_tester(t_dictionary *env);
 
-int	main(int argc, char **argv, char **env)
-{
-	t_dictionary	*hash_env;
-	t_dic_entry		*env_var;
-	char			**env_var_array;
+// int	main(int argc, char **argv, char **env)
+// {
+// 	t_dictionary	*hash_env;
+// 	t_dic_entry		*env_var;
+// 	char			**env_var_array;
 
-	hash_env = dict_init(16); //El número de variables que hay en la gramática de shell
-	while (*env)
-	{
-		env_var_array = ft_split(*env, '=');
-		env_var = dict_create_entry(env_var_array[0], env_var_array[1]);
-		dict_insert(&hash_env, env_var);
-		env++;
-	}
-	expand_tester(hash_env);
-	dict_delete(hash_env);
-	return (0);
-}
+// 	hash_env = dict_init(16); //El número de variables que hay en la gramática de shell
+// 	while (*env)
+// 	{
+// 		env_var_array = ft_split(*env, '=');
+// 		env_var = dict_create_entry(env_var_array[0], env_var_array[1]);
+// 		dict_insert(&hash_env, env_var);
+// 		env++;
+// 	}
+// 	expand_tester(hash_env);
+// 	dict_delete(hash_env);
+// 	return (0);
+// }
 
 void	print_result(int condition)
 {
@@ -212,6 +205,9 @@ void	expand_tester(t_dictionary *env)
 	ft_printf("\n----------------------\n");
 
 	make_test("\"'$USER'\"", env, "'alvaro'");
+	ft_printf("\n----------------------\n");
+	
+	make_test("'\"$USER\"'", env, "\"$USER\"");
 	ft_printf("\n----------------------\n");
 
 	make_test("$SHELL$DISPLAY", env, "/usr/bin/zsh:0");

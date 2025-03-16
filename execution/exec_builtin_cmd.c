@@ -46,15 +46,8 @@ int	call_execve(t_exec exec)
 int	run_builtin(t_exec exec)
 {
 	char	**arguments;
-	int		i;
 
-	i = 0;
 	arguments = (char **)exec.cmd->cmd->darray;
-	while (arguments[i])
-	{
-		arguments[i] = expand_str(arguments[i], exec.env);
-		i++;
-	}
 	if (!ft_strncmp(arguments[0], "echo", ft_strlen("echo")))
 		echo(arguments);
 	// else if (!ft_strncmp(arguments[0], "export", ft_strlen("export")))
