@@ -3,6 +3,7 @@
 
 # include "../tokenizer/tokenizer.h"
 # include "../data_structs/dynamic_array.h"
+# include "../data_structs/dictionary.h"
 # include "../libft/include/libft.h"
 
 typedef struct	s_io_redir
@@ -22,7 +23,7 @@ typedef struct s_cmd
 	t_io_redir		*cmd_prefix;
 	t_io_redir		*cmd_suffix;
 	struct s_cmd	*next;
-	int			fds[2];
+	int				fds[2];
 	// struct s_cmd	*prev;
 }					t_cmd;
 
@@ -45,5 +46,12 @@ void		free_AST(t_cmd_pipe *sequence);
 void		free_cmd(t_cmd *cmd);
 void		free_io_redir(t_io_redir *io_redir);
 int			add_command(command **cmd, char *element);
+
+//    Get environment    
+t_dictionary	*get_env(char **env);
+
+
+//    Testeo
+void	print_AST(t_cmd_pipe *sequence);
 
 #endif

@@ -78,30 +78,30 @@ void tester_parser(char *line, char *expected, int n)
 	ft_free_array(tokens_strings);
 }
 
-int	main(void)
-{
-	tester_parser("ls | cat", "{ ls } | \n{ cat } ", 1);
-	tester_parser("ls | cat | echo Hola", "{ ls } | \n{ cat } | \n{ echo Hola } ", 2);
-	tester_parser("export | sort | grep -v SHLVL | grep -v \"declare -x _\" | grep -v \"PS.=\"", 
-		"{ export } | \n{ sort } | \n{ grep -v SHLVL } | \n{ grep -v \"declare -x _\" } | \n{ grep -v \"PS.=\" } ", 3);
-	tester_parser("echo hi | \"|\"", "{ echo hi } | \n{ \"|\" } ", 4);
-	tester_parser("\"			\"", "{ \"			\" } ", 5);
-	tester_parser("cat <\"./whatever\" >\"./whatever\"", "(< \"./whatever\") (> \"./whatever\") { cat } ", 6);
-	tester_parser("\"ECho\" -n -nnn\"\" \"-\"nnnnn", "{ \"ECho\" -n -nnn\"\" \"-\"nnnnn } ", 7);
-	tester_parser(">| echo sure", "minishell: syntax error near unexpected token", 8);
-	tester_parser("<<| echo wtf", "(<< |) | \n{ echo wtf } ", 9);
-	tester_parser("echo | |", "minishell: syntax error near unexpected token", 10);
-	tester_parser("echo \"<| echo wtf\"", "{ echo \"<| echo wtf\" } ", 11);
-	tester_parser("| | |", "minishell: syntax error near unexpected token", 12);
-	tester_parser("|", "minishell: syntax error near unexpected token", 12);
-	tester_parser(">> >> >> >>", "minishell: syntax error near unexpected token >>", 13);
-	tester_parser("< >", "minishell: syntax error near unexpected token >", 14);
-	tester_parser("<>", "minishell: syntax error near unexpected token >", 15);
-	tester_parser("/bin/env | grep \"SHLVL\"", "{ /bin/env } | \n{ grep \"SHLVL\" } ", 16);
-	tester_parser("echo hi >./test_files/invalid_permission | echo bye", "(> ./test_files/invalid_permission) { echo hi } | \n{ echo bye } ", 17);
-	tester_parser("cat << lim''", "(<< lim'') { cat } ", 18);
-	tester_parser("echo \"env | /usr/bin/wc -l\" | env -i $minishell_path\"/\"$executable", 
-		"{ echo \"env | /usr/bin/wc -l\" } | \n{ env -i $minishell_path\"/\"$executable } ", 19);
-	tester_parser("echo >>< 'echo'", "minishell: syntax error near unexpected token <", 20);
-	tester_parser("echo segfault < \" < < < \" < < amazing", "minishell: syntax error near unexpected token <", 21);
-}
+// int	main(void)
+// {
+// 	tester_parser("ls | cat", "{ ls } | \n{ cat } ", 1);
+// 	tester_parser("ls | cat | echo Hola", "{ ls } | \n{ cat } | \n{ echo Hola } ", 2);
+// 	tester_parser("export | sort | grep -v SHLVL | grep -v \"declare -x _\" | grep -v \"PS.=\"", 
+// 		"{ export } | \n{ sort } | \n{ grep -v SHLVL } | \n{ grep -v \"declare -x _\" } | \n{ grep -v \"PS.=\" } ", 3);
+// 	tester_parser("echo hi | \"|\"", "{ echo hi } | \n{ \"|\" } ", 4);
+// 	tester_parser("\"			\"", "{ \"			\" } ", 5);
+// 	tester_parser("cat <\"./whatever\" >\"./whatever\"", "(< \"./whatever\") (> \"./whatever\") { cat } ", 6);
+// 	tester_parser("\"ECho\" -n -nnn\"\" \"-\"nnnnn", "{ \"ECho\" -n -nnn\"\" \"-\"nnnnn } ", 7);
+// 	tester_parser(">| echo sure", "minishell: syntax error near unexpected token", 8);
+// 	tester_parser("<<| echo wtf", "(<< |) | \n{ echo wtf } ", 9);
+// 	tester_parser("echo | |", "minishell: syntax error near unexpected token", 10);
+// 	tester_parser("echo \"<| echo wtf\"", "{ echo \"<| echo wtf\" } ", 11);
+// 	tester_parser("| | |", "minishell: syntax error near unexpected token", 12);
+// 	tester_parser("|", "minishell: syntax error near unexpected token", 12);
+// 	tester_parser(">> >> >> >>", "minishell: syntax error near unexpected token >>", 13);
+// 	tester_parser("< >", "minishell: syntax error near unexpected token >", 14);
+// 	tester_parser("<>", "minishell: syntax error near unexpected token >", 15);
+// 	tester_parser("/bin/env | grep \"SHLVL\"", "{ /bin/env } | \n{ grep \"SHLVL\" } ", 16);
+// 	tester_parser("echo hi >./test_files/invalid_permission | echo bye", "(> ./test_files/invalid_permission) { echo hi } | \n{ echo bye } ", 17);
+// 	tester_parser("cat << lim''", "(<< lim'') { cat } ", 18);
+// 	tester_parser("echo \"env | /usr/bin/wc -l\" | env -i $minishell_path\"/\"$executable", 
+// 		"{ echo \"env | /usr/bin/wc -l\" } | \n{ env -i $minishell_path\"/\"$executable } ", 19);
+// 	tester_parser("echo >>< 'echo'", "minishell: syntax error near unexpected token <", 20);
+// 	tester_parser("echo segfault < \" < < < \" < < amazing", "minishell: syntax error near unexpected token <", 21);
+// }

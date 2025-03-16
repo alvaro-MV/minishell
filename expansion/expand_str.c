@@ -1,13 +1,11 @@
-#include "../tokenizer/tokenizer.h"
-#include "../data_structs/dictionary.h"
+#include "expansion.h"
 
-typedef enum expand_states
+int	is_for_expand_str(char *str)
 {
-	WORD = 1,
-	DOUBLE_QUOTE,
-	SINGLE_QUOTE,
-	ENV_VAR
-}	expand_states;
+	if (!ft_strchr(str, '"') && !ft_strchr(str, '\'') && !ft_strchr(str, '$'))
+		return (0);
+	return (1);
+}
 
 char	*expand_str(char *str, t_dictionary *env)
 {
@@ -25,6 +23,8 @@ char	*expand_str(char *str, t_dictionary *env)
 	char	*env_var_value;
 
 	i = 0;
+	// if (!is_for_expand_str(str))
+	// 	return (str);
 	expanded_str = ft_strdup("");
 	state = WORD;
 	old_state = WORD;
@@ -56,7 +56,7 @@ char	*expand_str(char *str, t_dictionary *env)
 			old_state = state;
 			if (str[i] == '"')
 				state = WORD;
-			else if (str[i] == '$' && ft_isalnum(str[i + 1]))
+			else if (str[i] == '$' && str[i + 1] != '\'' && str[i + 1] != '"')
 				state = ENV_VAR;
 			else
 			{
@@ -86,7 +86,7 @@ char	*expand_str(char *str, t_dictionary *env)
 			state = old_state;
 			old_state = ENV_VAR;
 			len_env_var = i;
-			if (str[i] == '\'')
+			if (state != DOUBLE_QUOTE && str[i] == '\'')
 			{
 				// i--;				
 				state = SINGLE_QUOTE;
@@ -109,7 +109,6 @@ char	*expand_str(char *str, t_dictionary *env)
 				free(tmp_str);
 				free(env_var_name);
 				i += len_env_var - 2;
-				ft_printf("str i despues de expandir: %s\n", &str[i]);
 			}
 		}
 		i++;
@@ -161,50 +160,62 @@ void	expand_tester(t_dictionary *env)
 {
 	char	*str;
 	
-	str = "$BAR\"ooo\"";
+	str = "$bar\"ooo\"";
 	make_test(str, env, "ooo");
 	ft_printf("\n----------------------\n");
 
-	str = "\"Hola\"a";
-	make_test(str, env, "Holaa");
+	str = "\"hola\"a";
+	make_test(str, env, "holaa");
 	ft_printf("\n----------------------\n");
 
-	str = "\"$DISPLAY\"ooo\"i\"";
+	str = "\"$display\"ooo\"i\"";
 	make_test(str, env, ":0oooi");
 	ft_printf("\n----------------------\n");
 
-	str = "\"$DISPLA\"Yooo\"i\"";
-	make_test(str, env, "Yoooi");
+	str = "\"$displa\"yooo\"i\"";
+	make_test(str, env, "yoooi");
 	ft_printf("\n----------------------\n");
 
-	str = "\"$HOME\"/home/usuario";
+	str = "\"$home\"/home/usuario";
 	make_test(str, env, "/home/alvaro/home/usuario");
 	ft_printf("\n----------------------\n");
 
-	str = "'Cualquier mierda'";
-	make_test(str, env, "Cualquier mierda");
+	str = "'cualquier mierda'";
+	make_test(str, env, "cualquier mierda");
 	ft_printf("\n----------------------\n");
 
-	str = "$DISPLAY'ooo\"i\"'";
+	str = "$display'ooo\"i\"'";
 	make_test(str, env, ":0ooo\"i\"");
 	ft_printf("\n----------------------\n");
 
-	str = "\"PATH\"oo$'DISPLAY'";
-	make_test(str, env, "PATHooDISPLAY");
+	str = "\"path\"oo$'display'";
+	make_test(str, env, "pathoodisplay");
 	ft_printf("\n----------------------\n");
 	
-	make_test("\"$?\"", env, "0");
+	// make_test("\"$?\"", env, "0");
+	// ft_printf("\n----------------------\n");
+
+	make_test("\"$shell$\"", env, "/usr/bin/zsh$");
 	ft_printf("\n----------------------\n");
 
-	make_test("\"$SHELL$\"", env, "/usr/bin/zsh$");
+	make_test("$shell$", env, "/usr/bin/zsh$");
 	ft_printf("\n----------------------\n");
 
-	make_test("$SHELL$", env, "/usr/bin/zsh$");
+	make_test("\"$disp\"'x'", env, "x");
 	ft_printf("\n----------------------\n");
 
-	make_test("\"$DISP\"'X'", env, "X");
+	make_test("$\"disp\"'x'", env, "$dispx");
 	ft_printf("\n----------------------\n");
 
-	make_test("$\"DISP\"'X'", env, "$DISPX");
+	make_test("cat -e", env, "cat -e");
+	ft_printf("\n----------------------\n");
+
+	make_test("$=penelope'9'", env, "9");
+	ft_printf("\n----------------------\n");
+
+	make_test("\"'$USER'\"", env, "'alvaro'");
+	ft_printf("\n----------------------\n");
+
+	make_test("$1234$", env, "$");
 	ft_printf("\n----------------------\n");
 }

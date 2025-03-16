@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:08:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/01/21 22:29:29 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/03/15 19:57:53 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define DICTIONARY_H
 
 # include <stdlib.h>
-#include "../libft/include/libft.h"
-#include "../libft/include/get_next_line.h"
+# include "../libft/include/libft.h"
+# include "../libft/include/get_next_line.h"
 # include <stdint.h>
 # include <string.h>
 
@@ -44,5 +44,6 @@ int				dict_expand(t_dictionary **dic_pointer);
 void			dict_delete(t_dictionary *dic);
 void			dict_delete_key(t_dictionary *dict, char *key);
 t_dic_entry		*dict_create_entry(char *key, char *value);
+char			**dict_get_keys(t_dictionary *dict);
 
 #endif

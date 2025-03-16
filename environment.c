@@ -1,7 +1,6 @@
-#include "../tokenizer/tokenizer.h"
-#include "../data_structs/dictionary.h"
+#include "minishell.h"
 
-insert_special_params(t_dictionary **env)
+void	insert_special_params(t_dictionary **env)
 {
 	t_dic_entry		*env_var;
 
@@ -23,7 +22,7 @@ insert_special_params(t_dictionary **env)
 	dict_insert(env, env_var);
 }
 
-int	main(int argc, char **argv, char **env)
+t_dictionary	*get_env(char **env)
 {
 	t_dictionary	*hash_env;
 	t_dic_entry		*env_var;
@@ -38,5 +37,11 @@ int	main(int argc, char **argv, char **env)
 		env++;
 	}
 	insert_special_params(&hash_env);
-	return (0);
+	return (hash_env);
 }
+
+// int main(int argc, char **argv, char **env)
+// {
+// 	t_dictionary	*hash_env = get_env(env);
+// 	printf("user: %s\n", dict_get(hash_env, "USER"));
+// }
