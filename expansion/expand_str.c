@@ -215,4 +215,7 @@ void	expand_tester(t_dictionary *env)
 
 	make_test("$1234$", env, "$");
 	ft_printf("\n----------------------\n");
+	
+	make_test("APA$=jesulin", env, "APA$=jesulin");
+	ft_printf("\n----------------------\n");
 }

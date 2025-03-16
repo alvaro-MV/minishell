@@ -1,16 +1,63 @@
 #include "../minishell.h"
 /* 
 	-SI pones: $-USER, entonces te expande a 569JNRXZghiklmsUSER Invalido
-	-Si poner: export APA$=jesulin, no saca mensaje y no crea la variable
-	-Si poners: export apa solo, se genera apa='', pero no se ve en env.access
+	-Si poner: export APA$=jesulin, Invalido.
+	-Si poners: export apa solo, se genera apa='', pero no se ve en env.
 	-Si pones: export apa=, lo mismo del anterior.
-	-Si pones: export 
+	-Si pones: export te saca todo.
+	-Si pones: export $#POLLAS=pollas, Invalido.
+	-Sipones: export 1234kaka=kaka, te da invalida identifier
+	-Si pones export VAR+=var, te lo coje.
+	
+	Basicamente la diferencia entre VAR= y VAR a secas, es que
+	en el primer caso pone ft_strdup(""), mientras que en el 
+	segundo ponemos NULL.
 */
+
+#define legal_variable_starter(c) (ISALPHA(c) || (c == '_'))
+#define legal_variable_char(c)	(ISALNUM(c) || c == '_')
+
+//  aflags = 0;
+// 	  if (assign)
+// 	    {
+// 	      name[assign] = '\0';
+// 	      if (name[assign - 1] == '+')
+// 		{
+// 		  aflags |= ASS_APPEND;
+// 		  name[assign - 1] = '\0';
+// 		}
+// 	    }
+
+// 	  if (legal_identifier (name) == 0)
+// 	    {
+// 	      sh_invalidid (name);
+// 	      if (assign)
+// 		assign_error++;
+// 	      else
+// 		any_failed++;
+// 	      list = list->next;
+// 	      continue;
+// 	    }
+// if (assign)	/* xxx [-np] name=value */
+// 	    {
+// 	      name[assign] = '=';
+// 	      if (aflags & ASS_APPEND)
+// 		name[assign - 1] = '+';
+// 	if (do_assignment_no_expand (name) == 0)
+// 		assign_error++;
+// 	      name[assign] = '\0';
+// 	      if (aflags & ASS_APPEND)
+// 		name[assign - 1] = '\0';
+// }
+	
+
 int	is_valid_name(char *name)
 {
+	if (legal_variable_starter(*name))
+		return (0);
 	while (*name)
 	{
-		if (!ft_isalpha(*name))
+		if (legal_variable_char(*name))
 			return (0);
 		name++;
 	}
@@ -21,10 +68,9 @@ void	export(t_exec *exec)
 {
 	t_dic_entry	*entry;
 	char	**arguments;
-	char	**var;
+	char	*var;
 	char	**env_keys;
 	int		i;
-	int		j;
 
 	i = 0;
 	arguments = (char **) exec->cmd->cmd->darray;
@@ -33,21 +79,70 @@ void	export(t_exec *exec)
 		env_keys = dict_get_keys(exec->cmd);
 		sort_strings(env_keys, exec->env->capacity);
 		while (env_keys[i])
-			ft_printf("%s\n", env_keys[i++]);
+			ft_printf("%s=%s\n", env_keys[i], dict_get(exec->env, env_keys[i]));
 		return ;
 	}
 	while (arguments[i])
 	{
-		if (ft_strchr(arguments[i], '=') 
-			&& !ft_strchr(ft_strchr(arguments[i], '='), '='))
+		if (ft_strchr(arguments[i], '='))
 		{
-			var = ft_split(arguments[i], '=');
-			if (is_valid_name(var[0]))
+			var = ft_strchr(arguments[i], '=');
+			var[0] = '\0';
+			if (is_valid_name(arguments[i]))
 			{
-				entry = dict_create_entry(var[0], var[1]);
+				entry = dict_create_entry(arguments[i], var[1]);
+				dict_insert(&exec->env, entry);
+			}
+			else
+				ft_printf("minishell: export: `%s': not a valid identifier",
+					arguments[i]);
+		}
+		else
+		{
+			if (is_valid_name(arguments[i]))
+			{
+				entry = dict_create_entry(arguments[i], NULL);
 				dict_insert(&exec->env, entry);
 			}
 		}
 		i++;
 	}
 }
+/* 
+	El codigo de abajo es para comprobar SI un name contiene assignment.
+
+*/
+
+// int
+// assignment (
+//      const char *string,
+//      int flags
+// )
+// {
+//   register unsigned char c;
+//   register int newi, indx;
+
+//   c = string[indx = 0];
+//   if (legal_variable_starter (c) == 0)
+//     return (0);
+
+//   while (c = string[indx])
+//     {
+//       /* The following is safe.  Note that '=' at the start of a word
+// 	 is not an assignment statement. */
+//       if (c == '=')
+// 	return (indx);
+
+//       /* Check for `+=' */
+//       if (c == '+' && string[indx+1] == '=')
+// 	return (indx + 1);
+
+//       /* Variable names in assignment statements may contain only letters,
+// 	 digits, and `_'. */
+//       if (legal_variable_char (c) == 0)
+// 	return (0);
+
+//       indx++;
+//     }
+//   return (0);
+// }
