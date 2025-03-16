@@ -64,6 +64,12 @@ int	is_valid_name(char *name)
 	return (1);
 }
 
+void	export_error(char *name)
+{
+	ft_printf("minishell: export: `%s': not a valid identifier",
+		name);
+}
+
 void	export(t_exec *exec)
 {
 	t_dic_entry	*entry;
@@ -85,26 +91,16 @@ void	export(t_exec *exec)
 	while (arguments[i])
 	{
 		if (ft_strchr(arguments[i], '='))
+			var = ft_strchr(arguments[i], '=') + 1;
+		else
+			var = NULL;
+		if (is_valid_name(arguments[i]))
 		{
-			var = ft_strchr(arguments[i], '=');
-			var[0] = '\0';
-			if (is_valid_name(arguments[i]))
-			{
-				entry = dict_create_entry(arguments[i], var[1]);
-				dict_insert(&exec->env, entry);
-			}
-			else
-				ft_printf("minishell: export: `%s': not a valid identifier",
-					arguments[i]);
+			entry = dict_create_entry(arguments[i], var);
+			dict_insert(&exec->env, entry);
 		}
 		else
-		{
-			if (is_valid_name(arguments[i]))
-			{
-				entry = dict_create_entry(arguments[i], NULL);
-				dict_insert(&exec->env, entry);
-			}
-		}
+			export_error(arguments[i]);
 		i++;
 	}
 }

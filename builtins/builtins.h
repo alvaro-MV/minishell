@@ -1,7 +1,7 @@
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
-# include "../minishell.h"
+# include "../execution/execution.h"
 
 typedef enum echo_states
 {
@@ -11,5 +11,6 @@ typedef enum echo_states
 }	echo_states;
 
 void	echo(char	**arguments);
+void	export(t_exec *exec);
 
 #endif

@@ -50,8 +50,8 @@ int	run_builtin(t_exec exec)
 	arguments = (char **)exec.cmd->cmd->darray;
 	if (!ft_strncmp(arguments[0], "echo", ft_strlen("echo")))
 		echo(arguments);
-	// else if (!ft_strncmp(arguments[0], "export", ft_strlen("export")))
-	// 	export(arguments);
+	else if (!ft_strncmp(arguments[0], "export", ft_strlen("export")))
+		export(arguments);
 }
 
 int	execute_child(t_exec exec_vars)

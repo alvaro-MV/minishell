@@ -7,8 +7,8 @@ int	is_builtin(char **cmd_args)
 	cmd_name = cmd_args[0];
 	if (!ft_strncmp(cmd_name, "echo", ft_strlen("echo")))
 		return (1);
-	// else if (!ft_strncmp(cmd_name, "export", ft_strlen("export")))
-	// 	return (1);
+	else if (!ft_strncmp(cmd_name, "export", ft_strlen("export")))
+		return (1);
 	//Meter el resto
 	return (0);
 }
