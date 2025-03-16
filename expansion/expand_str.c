@@ -51,12 +51,10 @@ char	*expand_str(char *str, t_dictionary *env)
 		}
 		else if (state == DOUBLE_QUOTE)
 		{
-			if (old_state == ENV_VAR)
-				i--;
 			old_state = state;
 			if (str[i] == '"')
 				state = WORD;
-			else if (str[i] == '$' && str[i + 1] != '\'' && str[i + 1] != '"')
+			else if (str[i] == '$' && ft_isalpha(str[i + 1]))
 				state = ENV_VAR;
 			else
 			{
@@ -88,12 +86,12 @@ char	*expand_str(char *str, t_dictionary *env)
 			len_env_var = i;
 			if (state != DOUBLE_QUOTE && str[i] == '\'')
 			{
-				// i--;				
+				// i--;
 				state = SINGLE_QUOTE;
 			}
 			else
 			{
-				while (ft_isalpha(str[len_env_var]))
+				while (ft_isalnum(str[len_env_var]))
 					len_env_var++;
 				tmp_str = expanded_str;
 				env_var_name = ft_substr(str, i, len_env_var - i);
@@ -108,7 +106,7 @@ char	*expand_str(char *str, t_dictionary *env)
 				expanded_str = ft_strjoin(expanded_str, env_var_value);
 				free(tmp_str);
 				free(env_var_name);
-				i += len_env_var - 2;
+				i = len_env_var - 1;
 			}
 		}
 		i++;
@@ -169,14 +167,14 @@ void	expand_tester(t_dictionary *env)
 	ft_printf("\n----------------------\n");
 
 	str = "\"$display\"ooo\"i\"";
-	make_test(str, env, ":0oooi");
+	make_test(str, env, "oooi");
 	ft_printf("\n----------------------\n");
 
 	str = "\"$displa\"yooo\"i\"";
 	make_test(str, env, "yoooi");
 	ft_printf("\n----------------------\n");
 
-	str = "\"$home\"/home/usuario";
+	str = "\"$HOME\"/home/usuario";
 	make_test(str, env, "/home/alvaro/home/usuario");
 	ft_printf("\n----------------------\n");
 
@@ -184,21 +182,21 @@ void	expand_tester(t_dictionary *env)
 	make_test(str, env, "cualquier mierda");
 	ft_printf("\n----------------------\n");
 
-	str = "$display'ooo\"i\"'";
+	str = "$DISPLAY'ooo\"i\"'";
 	make_test(str, env, ":0ooo\"i\"");
 	ft_printf("\n----------------------\n");
 
-	str = "\"path\"oo$'display'";
-	make_test(str, env, "pathoodisplay");
+	str = "\"path\"oo$'DISPLAY'";
+	make_test(str, env, "pathooDISPLAY");
 	ft_printf("\n----------------------\n");
 	
 	// make_test("\"$?\"", env, "0");
 	// ft_printf("\n----------------------\n");
 
-	make_test("\"$shell$\"", env, "/usr/bin/zsh$");
+	make_test("\"$SHELL$\"", env, "/usr/bin/zsh$");
 	ft_printf("\n----------------------\n");
 
-	make_test("$shell$", env, "/usr/bin/zsh$");
+	make_test("$SHELL$", env, "/usr/bin/zsh$");
 	ft_printf("\n----------------------\n");
 
 	make_test("\"$disp\"'x'", env, "x");
@@ -210,10 +208,13 @@ void	expand_tester(t_dictionary *env)
 	make_test("cat -e", env, "cat -e");
 	ft_printf("\n----------------------\n");
 
-	make_test("$=penelope'9'", env, "9");
+	make_test("$=penelope'9'", env, "$=penelope9");
 	ft_printf("\n----------------------\n");
 
 	make_test("\"'$USER'\"", env, "'alvaro'");
+	ft_printf("\n----------------------\n");
+
+	make_test("$SHELL$DISPLAY", env, "/usr/bin/zsh:0");
 	ft_printf("\n----------------------\n");
 
 	make_test("$1234$", env, "$");
