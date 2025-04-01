@@ -35,13 +35,13 @@ int	override_fd(t_exec exec, t_io_redir *redir, int flags, int idx)
 
 void	traverse_io_redir(t_io_redir *ix, t_exec exec)
 {
-	if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, "<", 1))
+	if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, "<", 2))
 		override_fd(exec, ix, O_RDONLY, 0);
-	// if (!ft_strncmp(ix->op->text, "<<", 1))
-		// override_fd_here_doc(exec, ix);
-	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, ">", 1))
+	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, "<<", 2))
+		here_doc(ix->filename->text);
+	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, ">", 2))
 		override_fd(exec, ix, O_RDWR | O_CREAT | O_TRUNC, 1);
-	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, ">>", 1))
+	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, ">>", 2))
 		override_fd(exec, ix, O_RDWR | O_APPEND | O_TRUNC, 1);
 }
 

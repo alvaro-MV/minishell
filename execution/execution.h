@@ -17,5 +17,6 @@ int		is_builtin(char **cmd_args);
 int		run_builtin(t_exec exec);
 int		execute_child(t_exec exec_vars);
 void	close_cmd_fds(t_cmd *cmd);
+int		here_doc(char *delimiter);
 
 #endif
