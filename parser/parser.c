@@ -35,7 +35,6 @@ void	print_from_diff(char *AST, char *expected)
 
 void tester_parser(char *line, char *expected, int n)
 {
-	int			i = 0;
 	t_darray	*tokens_array;
 	char		**tokens_strings;
 	t_token		*token_stream;

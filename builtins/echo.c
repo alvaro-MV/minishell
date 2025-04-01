@@ -3,7 +3,7 @@
 void	echo(char	**arguments)
 {
 	int			i;
-	int			j;
+	size_t		j;
 	int			new_line;
 	echo_states	e_states;
 

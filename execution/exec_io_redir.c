@@ -49,7 +49,6 @@ int	execute_io_redir(t_exec exec)
 {
 	t_io_redir	*prefix;
 	t_io_redir	*suffix;
-	int			fd;
 
 	prefix = exec.cmd->cmd_prefix;
 	suffix = exec.cmd->cmd_suffix;
@@ -63,4 +62,5 @@ int	execute_io_redir(t_exec exec)
 		traverse_io_redir(suffix, exec);
 		suffix = suffix->next;
 	}
+	return (1);
 }

@@ -31,7 +31,6 @@ char	*find_exec_in_path(char **path, char *exec)
 
 int	call_execve(t_exec exec)
 {
-	int		status;
 	char	**arguments;
 
 	arguments = (char **)exec.cmd->cmd->darray;
@@ -50,8 +49,9 @@ int	run_builtin(t_exec exec)
 	arguments = (char **)exec.cmd->cmd->darray;
 	if (!ft_strncmp(arguments[0], "echo", ft_strlen("echo")))
 		echo(arguments);
-	else if (!ft_strncmp(arguments[0], "export", ft_strlen("export")))
-		export(arguments);
+	// else if (!ft_strncmp(arguments[0], "export", ft_strlen("export")))
+	// 	export(arguments);
+	return (0);
 }
 
 int	execute_child(t_exec exec_vars)

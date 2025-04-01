@@ -2,7 +2,6 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	int			i = 0;
 	t_darray	*tokens_array;
 	char		**tokens_strings;
 	t_token		*token_stream;
@@ -10,6 +9,8 @@ int	main(int argc, char **argv, char **env)
 	
 	t_dictionary	*hash_env = get_env(env);
 
+	(void)argc;
+	(void)argv;
 	while ((line = readline("> ")))
 	{
 		add_history(line);
@@ -21,7 +22,7 @@ int	main(int argc, char **argv, char **env)
 		t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream);
 		if (sequence)
 		{
-			int	status = executor(sequence, hash_env);
+			executor(sequence, hash_env, env);
 		}
 
 		free(line);

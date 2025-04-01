@@ -40,7 +40,6 @@ void	expand_ix(t_io_redir *ix, t_dictionary *env)
 
 void	expand_pipe_seq(t_cmd_pipe *sequence, t_dictionary *env)
 {
-	t_io_redir	*ix;
 	char		*tmp;
 	char		**cmd;
 	int			i;
@@ -62,7 +61,7 @@ void	expand_pipe_seq(t_cmd_pipe *sequence, t_dictionary *env)
 	}
 }
 
-int	executor(t_cmd_pipe *sequence, t_dictionary *env)
+int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 {
 	t_exec		exec_vars;
 	int			status;
@@ -72,14 +71,14 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env)
 	expand_pipe_seq(sequence, env);
 	if (n_cmd == 1 && is_builtin(sequence->cmd->cmd->darray))
 	{
-		exec_vars = (t_exec) {sequence->cmd, env};
+		exec_vars = (t_exec) {sequence->cmd, env, main_env};
 		status = run_builtin(exec_vars);
 	}
 	else
 	{
 		while (sequence)
 		{
-			exec_vars = (t_exec) {sequence->cmd, env};
+			exec_vars = (t_exec) {sequence->cmd, env, main_env};
 			status = execute_child(exec_vars);
 			sequence = sequence->next;
 		}

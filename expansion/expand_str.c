@@ -29,7 +29,6 @@ char	*expand_str(char *str, t_dictionary *env)
 
 	// Para la expansión de Variable
 	int		len_env_var;
-	char	*tmp_expand_str;
 	char	*env_var_name;
 	char	*env_var_value;
 

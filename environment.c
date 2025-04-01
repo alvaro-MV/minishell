@@ -45,3 +45,4 @@ t_dictionary	*get_env(char **env)
 // 	t_dictionary	*hash_env = get_env(env);
 // 	printf("user: %s\n", dict_get(hash_env, "USER"));
 // }
+
