@@ -103,4 +103,9 @@ void tester_parser(char *line, char *expected, int n)
 // 		"{ echo \"env | /usr/bin/wc -l\" } | \n{ env -i $minishell_path\"/\"$executable } ", 19);
 // 	tester_parser("echo >>< 'echo'", "minishell: syntax error near unexpected token <", 20);
 // 	tester_parser("echo segfault < \" < < < \" < < amazing", "minishell: syntax error near unexpected token <", 21);
+// 	tester_parser("<'<'>hola>hola2 cat", "(< '<') (> hola) (> hola2) { cat } ", 22); //En este caso el cat lee, en vez de salir completamente de la ejecución o pasar a la siguiente pipe.
+// 	tester_parser("<'>>' echo hola", "(< '>>') { echo hola } ", 23);
+// 	tester_parser("<'<'cat>hola>hola2", "(< '<'cat) (> hola) (> hola2) { } ", 24); //En este caso tendría que salir con sytax error y pirarse.
+// 	tester_parser("< infile", "(< infile) { } ", 25);
+// 	tester_parser("<< $INEXISTENTE", "(<< $INEXISTENTE) { } ", 26);
 // }
