@@ -1,10 +1,14 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
+
+
 struct s_exec;
 typedef struct s_exec t_exec;
 
 # include "../minishell.h"
+# include <stddef.h>
+# include <unistd.h>
 
 typedef enum echo_states
 {

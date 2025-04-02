@@ -13,6 +13,7 @@ SRC =  	data_structs/dictionary.c \
 		execution/exec_io_redir.c \
 		execution/exec_utils.c \
 		execution/executor.c \
+		execution/heredoc.c \
 		expansion/expand_str.c \
 		parser/buffer_AST.c \
 		parser/free_AST.c \
@@ -26,6 +27,12 @@ SRC =  	data_structs/dictionary.c \
 		environment.c \
 		main.c \
 		builtins/echo.c \
+		builtins/cd.c \
+		builtins/exit.c \
+		builtins/pwd.c \
+		builtins/unset.c \
+		# builtins/export.c \
+		
 
 LIB = libft/libft.a
 

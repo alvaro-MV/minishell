@@ -189,115 +189,116 @@ int	compare_token_arr(t_token *actual, t_test expected, int len)
 	return (1);
 }
 
-//int	main(void)
-//{
-	//t_token	*actual;
-	//size_t	i = 0;
+// int	main(void)
+// {
+// 	t_token	*actual;
+// 	size_t	i = 0;
 
-	//t_test tests[] = {
-		//{
- 			//.input = "Mini chele",
- 			//.expected_values = (char*[]){"Mini", "chele"},
- 			//.expected_types = (token_type[]){COMMAND, COMMAND},
- 			//.length = 2
- 		//},
- 		//{
- 			//.input = "ls | cat -e > outfile",
- 			//.expected_values = (char*[]){"ls", "|", "cat", "-e", ">", "outfile"},
- 			//.expected_types = (token_type[]){
- 			//COMMAND, PIPE_OPERATOR, COMMAND, COMMAND,
- 			//IO_OPERATOR, FILENAME
- 			//},
- 			//.length = 6
- 		//},
- 		//{
- 			//.input = "ls | cat | epa",
- 			//.expected_values = (char*[]){"ls", "|", "cat", "|", "epa"},
- 			//.expected_types = (token_type[]){
- 			//COMMAND, PIPE_OPERATOR, COMMAND, PIPE_OPERATOR, COMMAND
- 			//},
- 			//.length = 5
- 		//},
- 		//{
- 			//.input = "echo '$' | cat< outfile >>> l",
- 			//.expected_values = (char*[]){"echo", "'$'", "|" , "cat", "<", "outfile", ">>", ">", "l"},
- 			//.expected_types = (token_type[]){
- 			//COMMAND, COMMAND, PIPE_OPERATOR, COMMAND, IO_OPERATOR, FILENAME,
- 			//IO_OPERATOR, IO_OPERATOR, FILENAME
- 			//},
- 			//.length = 9
- 		//},
- 		//{
- 			//.input = "echo \"$ <infile | grep 00\" | cat -e",
- 			//.expected_values = (char*[]){"echo", "\"$ <infile | grep 00\"", "|" , "cat", "-e"},
- 			//.expected_types = (token_type[]){
- 			//COMMAND, COMMAND, PIPE_OPERATOR, COMMAND, COMMAND
- 			//},	
- 			//.length = 5
- 		//},
- 		//{
- 			//.input = "ls >\"./outfiles/outfile\" \"1\" \"2\" \"3\" \"4\" \"5\"",
- 			//.expected_values = (char*[]){"ls", ">", "\"./outfiles/outfile\"", 
- 				//"\"1\"", "\"2\"", "\"3\"", "\"4\"", "\"5\""},
- 			//.expected_types = (token_type[]){COMMAND, IO_OPERATOR, FILENAME, COMMAND, COMMAND,
- 								//COMMAND, COMMAND, COMMAND},
- 			//.length = 8
- 		//},
- 		//{
- 			//.input = "ls >\"./outfiles/outfile\"\"1\"\"2\"\"3\"\"4\"\"5\"",
- 			//.expected_values = (char*[]){"ls", ">", 
- 				//"\"./outfiles/outfile\"\"1\"\"2\"\"3\"\"4\"\"5\""},
- 			//.expected_types = (token_type[]){COMMAND, IO_OPERATOR, FILENAME},
- 			//.length = 3
- 		//},
- 		//{
- 			//.input = "echo hi >./outfiles/outfile01 >./outfiles/outfile02 | echo bye",
- 			//.expected_values = (char*[]){"echo", "hi", ">", "./outfiles/outfile01", 
- 				//">", "./outfiles/outfile02", "|", "echo", "bye"},
- 			//.expected_types = (token_type[]){COMMAND, COMMAND, IO_OPERATOR, FILENAME,
- 				//IO_OPERATOR, FILENAME, PIPE_OPERATOR, COMMAND, COMMAND},
- 			//.length = 9
- 		//},
- 		//{
- 			//.input = "/bin/echo \"'\"'$USER'\"'\"",
- 			//.expected_values = (char*[]){"/bin/echo", "\"'\"'$USER'\"'\""},
- 			//.expected_types = (token_type[]){COMMAND, COMMAND},
- 			//.length = 2
- 		//},
-		//{
-			//.input = "echo hi |  \"|\"",
-			//.expected_values = (char*[]){"echo", "hi", "|", "\"|\""},
-			//.expected_types = (token_type[]){COMMAND, COMMAND, PIPE_OPERATOR, COMMAND},
-			//.length = 4
-		//},
-		//{
-			//.input = ">| echo sure",
-			//.expected_values = (char*[]){">", "|", "echo", "sure"},
-			//.expected_types = (token_type[]){IO_OPERATOR, PIPE_OPERATOR, COMMAND, COMMAND},
-			//.length = 4
-		//},
-		//{
-			//.input = "<>",
-			//.expected_values = (char*[]){"<", ">"},
-			//.expected_types = (token_type[]){IO_OPERATOR, IO_OPERATOR},
-			//.length = 2
-		//},
-		//{
-			//.input = "><",
-			//.expected_values = (char*[]){">", "<"},
-			//.expected_types = (token_type[]){IO_OPERATOR, IO_OPERATOR},
-			//.length = 2
-		//}
-	//};
-	//while (i < sizeof(tests) / sizeof(t_test))
-	//{
-		//actual = tester_token(tests[i].input);
-		//if (compare_token_arr(actual, tests[i], tests[i].length))
-			//ft_printf("\033[32m%l[OK]\n\033[0m");
-		//else
-			//ft_printf("\033[31m%l[KO]\n\033[0m");
-		//free_tokens(actual);
-		//i++;
-	//}
-	//return (0);
-//}
+// 	t_test tests[] = {
+// 		{
+//  			.input = "Mini chele",
+//  			.expected_values = (char*[]){"Mini", "chele"},
+//  			.expected_types = (token_type[]){COMMAND, COMMAND},
+//  			.length = 2
+//  		},
+//  		{
+//  			.input = "ls | cat -e > outfile",
+//  			.expected_values = (char*[]){"ls", "|", "cat", "-e", ">", "outfile"},
+//  			.expected_types = (token_type[]){
+//  			COMMAND, PIPE_OPERATOR, COMMAND, COMMAND,
+//  			IO_OPERATOR, FILENAME
+//  			},
+//  			.length = 6
+//  		},
+//  		{
+//  			.input = "ls | cat | epa",
+//  			.expected_values = (char*[]){"ls", "|", "cat", "|", "epa"},
+//  			.expected_types = (token_type[]){
+//  			COMMAND, PIPE_OPERATOR, COMMAND, PIPE_OPERATOR, COMMAND
+//  			},
+//  			.length = 5
+//  		},
+//  		{
+//  			.input = "echo '$' | cat< outfile >>> l",
+//  			.expected_values = (char*[]){"echo", "'$'", "|" , "cat", "<", "outfile", ">>", ">", "l"},
+//  			.expected_types = (token_type[]){
+//  			COMMAND, COMMAND, PIPE_OPERATOR, COMMAND, IO_OPERATOR, FILENAME,
+//  			IO_OPERATOR, IO_OPERATOR, FILENAME
+//  			},
+//  			.length = 9
+//  		},
+//  		{
+//  			.input = "echo \"$ <infile | grep 00\" | cat -e",
+//  			.expected_values = (char*[]){"echo", "\"$ <infile | grep 00\"", "|" , "cat", "-e"},
+//  			.expected_types = (token_type[]){
+//  			COMMAND, COMMAND, PIPE_OPERATOR, COMMAND, COMMAND
+//  			},	
+//  			.length = 5
+//  		},
+//  		{
+//  			.input = "ls >\"./outfiles/outfile\" \"1\" \"2\" \"3\" \"4\" \"5\"",
+//  			.expected_values = (char*[]){"ls", ">", "\"./outfiles/outfile\"", 
+//  				"\"1\"", "\"2\"", "\"3\"", "\"4\"", "\"5\""},
+//  			.expected_types = (token_type[]){COMMAND, IO_OPERATOR, FILENAME, COMMAND, COMMAND,
+//  								COMMAND, COMMAND, COMMAND},
+//  			.length = 8
+//  		},
+//  		{
+//  			.input = "ls >\"./outfiles/outfile\"\"1\"\"2\"\"3\"\"4\"\"5\"",
+//  			.expected_values = (char*[]){"ls", ">", 
+//  				"\"./outfiles/outfile\"\"1\"\"2\"\"3\"\"4\"\"5\""},
+//  			.expected_types = (token_type[]){COMMAND, IO_OPERATOR, FILENAME},
+//  			.length = 3
+//  		},
+//  		{
+//  			.input = "echo hi >./outfiles/outfile01 >./outfiles/outfile02 | echo bye",
+//  			.expected_values = (char*[]){"echo", "hi", ">", "./outfiles/outfile01", 
+//  				">", "./outfiles/outfile02", "|", "echo", "bye"},
+//  			.expected_types = (token_type[]){COMMAND, COMMAND, IO_OPERATOR, FILENAME,
+//  				IO_OPERATOR, FILENAME, PIPE_OPERATOR, COMMAND, COMMAND},
+//  			.length = 9
+//  		},
+//  		{
+//  			.input = "/bin/echo \"'\"'$USER'\"'\"",
+//  			.expected_values = (char*[]){"/bin/echo", "\"'\"'$USER'\"'\""},
+//  			.expected_types = (token_type[]){COMMAND, COMMAND},
+//  			.length = 2
+//  		},
+// 		{
+// 			.input = "echo hi |  \"|\"",
+// 			.expected_values = (char*[]){"echo", "hi", "|", "\"|\""},
+// 			.expected_types = (token_type[]){COMMAND, COMMAND, PIPE_OPERATOR, COMMAND},
+// 			.length = 4
+// 		},
+// 		{
+// 			.input = ">| echo sure",
+// 			.expected_values = (char*[]){">", "|", "echo", "sure"},
+// 			.expected_types = (token_type[]){IO_OPERATOR, PIPE_OPERATOR, COMMAND, COMMAND},
+// 			.length = 4
+// 		},
+// 		{
+// 			.input = "<>",
+// 			.expected_values = (char*[]){"<", ">"},
+// 			.expected_types = (token_type[]){IO_OPERATOR, IO_OPERATOR},
+// 			.length = 2
+// 		},
+// 		{
+// 			.input = "><",
+// 			.expected_values = (char*[]){">", "<"},
+// 			.expected_types = (token_type[]){IO_OPERATOR, IO_OPERATOR},
+// 			.length = 2
+// 		}
+// 	};
+// 	while (i < sizeof(tests) / sizeof(t_test))
+// 	{
+// 		actual = tester_token(tests[i].input);
+// 		if (compare_token_arr(actual, tests[i], tests[i].length))
+// 			ft_printf("\033[32m%l[OK]\n\033[0m");
+// 		else
+// 			ft_printf("\033[31m%l[KO]\n\033[0m");
+// 		free_tokens(actual);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+// -> cc tokenizer/*.c data_structs/*.c libft/*.c

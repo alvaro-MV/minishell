@@ -1,4 +1,4 @@
-int
+/*int
 set_or_show_attributes (
      register WORD_LIST *list,
      int attribute,
@@ -19,7 +19,7 @@ set_or_show_attributes (
 
   functions_only = arrays_only = assoc_only = 0;
   undo = any_failed = assign_error = 0;
-  /* Read arguments from the front of the list. */
+//Read arguments from the front of the list.
   reset_internal_getopt ();
   while ((opt = internal_getopt (list, ATTROPTS)) != -1)
     {
@@ -54,7 +54,7 @@ set_or_show_attributes (
       if (attribute & att_exported)
 	array_needs_making = 1;
 
-      /* Cannot undo readonly status, silently disallowed. */
+      // Cannot undo readonly status, silently disallowed.
       if (undo && (attribute & att_readonly))
 	attribute &= ~att_readonly;
 
@@ -62,7 +62,7 @@ set_or_show_attributes (
 	{
 	  name = list->word->word;
 
-	  if (functions_only)		/* xxx -f name */
+	  if (functions_only)		// xxx -f name 
 	    {
 	      var = find_function (name);
 	      if (var == 0)
@@ -82,7 +82,7 @@ set_or_show_attributes (
 	      continue;
 	    }
 
-	  /* xxx [-np] name[=value] */
+	  // xxx [-np] name[=value] 
 	  assign = assignment (name, 0);
 
 	  aflags = 0;
@@ -107,20 +107,20 @@ set_or_show_attributes (
 	      continue;
 	    }
 
-	  if (assign)	/* xxx [-np] name=value */
+	  if (assign)	// xxx [-np] name=value 
 	    {
 	      name[assign] = '=';
 	      if (aflags & ASS_APPEND)
 		name[assign - 1] = '+';
 #if defined (ARRAY_VARS)
-	      /* Let's try something here.  Turn readonly -a xxx=yyy into
-		 declare -ra xxx=yyy and see what that gets us. */
+	      / Let's try something here.  Turn readonly -a xxx=yyy into
+		 //declare -ra xxx=yyy and see what that gets us.
 	      if (arrays_only || assoc_only)
 		{
 		  tlist = list->next;
 		  list->next = (WORD_LIST *)NULL;
-		  /* Add -g to avoid readonly/export creating local variables:
-		     only local/declare/typeset create local variables */
+		  // Add -g to avoid readonly/export creating local variables:
+		    // only local/declare/typeset create local variables
 		  opti = 0;
 		  optw[opti++] = '-';
 		  optw[opti++] = 'g';
@@ -146,10 +146,10 @@ set_or_show_attributes (
 		}
 	      else
 #endif
-	      /* This word has already been expanded once with command
-		 and parameter expansion.  Call do_assignment_no_expand (),
-		 which does not do command or parameter substitution.  If
-		 the assignment is not performed correctly, flag an error. */
+	      // This word has already been expanded once with command
+		 //and parameter expansion.  Call do_assignment_no_expand (),
+		 //which does not do command or parameter substitution.  If
+		 //the assignment is not performed correctly, flag an error.
 	      if (do_assignment_no_expand (name) == 0)
 		assign_error++;
 	      name[assign] = '\0';
@@ -158,7 +158,7 @@ set_or_show_attributes (
 	    }
 
 	  set_var_attribute (name, attribute, undo);
-	  if (assign)		/* restore word */
+	  if (assign)		// restore word 
 	    {
 	      name[assign] = '=';
 	      if (aflags & ASS_APPEND)
@@ -176,7 +176,7 @@ set_or_show_attributes (
 	{
 	  variable_list = all_shell_functions ();
 	  if (attribute != att_function)
-	    attribute &= ~att_function;	/* so declare -xf works, for example */
+	    attribute &= ~att_function;	// so declare -xf works, for example
 	}
       else
 	variable_list = all_shell_variables ();
@@ -207,8 +207,8 @@ set_or_show_attributes (
 		continue;
 #endif
 
-	      /* If we imported a variable that's not a valid identifier, don't
-		 show it in any lists. */
+	      //If we imported a variable that's not a valid identifier, don't
+		 //show it in any lists.
 	      if ((var->attributes & (att_invisible|att_imported)) == (att_invisible|att_imported))
 		continue;
 
@@ -228,8 +228,8 @@ set_or_show_attributes (
   					    : EXECUTION_FAILURE));
 }
 
-/* Show all variable variables (v == 1) or functions (v == 0) with
-   attributes. */
+// Show all variable variables (v == 1) or functions (v == 0) with
+//   attributes.
 int
 show_all_var_attributes (
      int v,
@@ -252,4 +252,4 @@ show_all_var_attributes (
     }
   free (variable_list);
   return (any_failed == 0 ? EXECUTION_SUCCESS : EXECUTION_FAILURE);
-}
+}*/
