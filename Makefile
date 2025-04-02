@@ -13,7 +13,6 @@ SRC =  	data_structs/dictionary.c \
 		execution/exec_io_redir.c \
 		execution/exec_utils.c \
 		execution/executor.c \
-		execution/heredoc.c \
 		expansion/expand_str.c \
 		parser/buffer_AST.c \
 		parser/free_AST.c \

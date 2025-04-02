@@ -70,6 +70,7 @@ int	execute_child(t_exec exec_vars)
 		if (exec_vars.cmd->fds[1] != 1 && dup2(exec_vars.cmd->fds[1], 1) == -1)
 			write(1, "Nooooooooo\n", 12); // Liberar lo anterior y pirarte.
 		execute_io_redir(exec_vars); // Basicamente, intercambian un fd por otro.
+		
 		if (is_builtin(exec_vars.cmd->cmd->darray))
 			status = run_builtin(exec_vars);
 		else

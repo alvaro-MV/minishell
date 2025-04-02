@@ -126,8 +126,6 @@ void	expand_tester(t_dictionary *env);
 // 	dict_delete(hash_env);
 // 	return (0);
 // }
-//cc expansion/*.c  parser/*.c tokenizer/*.c data_structs/*.c libft/*.c
-
 
 void	print_result(int condition)
 {
