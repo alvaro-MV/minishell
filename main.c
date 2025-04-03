@@ -11,17 +11,21 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	
 	while ((line = readline("> ")))
 	{
+		signals(line); // aqui porque no sabia donde meterlo
 		add_history(line);
 		tokens_array = tokenizer_str(line);
 		tokens_strings = (char **) tokens_array->darray;
 		token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
 		t_token	*tokens_for_free = token_stream;
 		t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream);
+		
 		if (sequence)
 		{
 			executor(sequence, hash_env, env);
+			
 		}
 
 		free(line);

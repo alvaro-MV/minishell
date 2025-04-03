@@ -2,7 +2,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -v
+CFLAGS = -Wall -Wextra -Werror
 
 RM = rm -f
 
@@ -31,7 +31,9 @@ SRC =  	data_structs/dictionary.c \
 		builtins/exit.c \
 		builtins/pwd.c \
 		builtins/unset.c \
+		signals.c \
 		# builtins/export.c \
+
 		
 
 LIB = libft/libft.a

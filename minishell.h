@@ -16,9 +16,14 @@
 # include "expansion/expansion.h"
 # include "execution/execution.h"
 # include "builtins/builtins.h"
+# include <signal.h>
+
 
 int		executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env);
 char	*expand_str(char *str, t_dictionary *env);
-int		main(int argc, char **argv, char **env);
+void	handle_sigint(int sig);
+void	handle_sigquit(int sig);
+void	signals(char *line);
+
 
 #endif
