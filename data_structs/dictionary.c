@@ -18,6 +18,7 @@ t_dictionary	*dict_init(int capacity)
 	t_dic_entry		**entries;
 	int				dic_capacity;
 
+	dic_capacity = 0;
 	dic = (t_dictionary *) malloc(sizeof(t_dictionary));
 	if (!dic)
 		return (NULL);
@@ -29,10 +30,7 @@ t_dictionary	*dict_init(int capacity)
 	dic->n_elements = 0;
 	entries = (t_dic_entry **) malloc(dic_capacity * sizeof(t_dic_entry *));
 	if (!entries)
-	{
-		free(dic);
-		return (NULL);
-	}
+		return (free(dic), NULL);
 	dic->entries = entries;
 	while (dic_capacity--)
 		dic->entries[dic_capacity] = NULL;

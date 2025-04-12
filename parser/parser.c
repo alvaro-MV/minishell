@@ -108,4 +108,6 @@ void tester_parser(char *line, char *expected, int n)
 // 	tester_parser("<'<'cat>hola>hola2", "(< '<'cat) (> hola) (> hola2) { } ", 24); //En este caso tendría que salir con sytax error y pirarse.
 // 	tester_parser("< infile", "(< infile) { } ", 25);
 // 	tester_parser("<< $INEXISTENTE", "(<< $INEXISTENTE) { } ", 26);
+// 	tester_parser("< README.md cat > outfile", "(< README.md) (> outfile) { cat } ", 27);
+// 	tester_parser(">'<'>hola>hola2", "(> '<') (> hola) (> hola2) { } ", 28);
 // }

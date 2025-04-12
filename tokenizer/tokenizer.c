@@ -35,7 +35,7 @@ size_t	count_n_tokens(char *argv)
 		}
 		i++;
 	}
-	if (!is_double_operator(argv[i - 1]))
+	if (i > 0 && !is_double_operator(argv[i - 1]))
 		++n_op;
 	return (n_op);
 }

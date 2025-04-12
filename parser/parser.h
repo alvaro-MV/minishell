@@ -47,10 +47,6 @@ void		free_cmd(t_cmd *cmd);
 void		free_io_redir(t_io_redir *io_redir);
 int			add_command(command **cmd, char *element);
 
-//    Get environment    
-t_dictionary	*get_env(char **env);
-
-
 //    Testeo
 void	print_AST(t_cmd_pipe *sequence);
 

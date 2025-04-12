@@ -214,7 +214,13 @@ void	expand_tester(t_dictionary *env)
 	make_test("$SHELL$DISPLAY", env, "/usr/bin/zsh:0");
 	ft_printf("\n----------------------\n");
 
-	make_test("$1234$", env, "$");
+	make_test("$1234$", env, "234$");
+	ft_printf("\n----------------------\n");
+
+	make_test("$a1234$", env, "$");
+	ft_printf("\n----------------------\n");
+
+	make_test("echo $023$", env, "bash23$");
 	ft_printf("\n----------------------\n");
 	
 	make_test("APA$=jesulin", env, "APA$=jesulin");

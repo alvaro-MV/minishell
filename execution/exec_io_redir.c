@@ -23,7 +23,9 @@ int	override_fd(t_exec exec, t_io_redir *redir, int flags, int idx)
 		if (!(file_stat.st_mode & S_IWUSR) || !(file_stat.st_mode & S_IRUSR))
 		{
 			perror(redir->filename->text);
-			return (1);
+			free_cmd(exec.cmd);
+			dict_delete(exec.env);
+			exit (1);
 		}
 	}
 	else

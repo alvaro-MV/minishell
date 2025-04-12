@@ -5,6 +5,8 @@ int	is_builtin(char **cmd_args)
 	char	*cmd_name;
 
 	cmd_name = cmd_args[0];
+	if (!cmd_name)
+		return (0);
 	if (!ft_strncmp(cmd_name, "echo", ft_strlen("echo")))
 		return (1);
 	else if (!ft_strncmp(cmd_name, "export", ft_strlen("export")))

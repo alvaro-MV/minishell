@@ -4,40 +4,39 @@ void	insert_special_params(t_dictionary **env)
 {
 	t_dic_entry		*env_var;
 
-	env_var = dict_create_entry("@", "");
+	env_var = dict_create_entry(ft_strdup("@"), ft_strdup(""));
 	dict_insert(env, env_var);
-	env_var = dict_create_entry("*", "");
+	env_var = dict_create_entry(ft_strdup("*"), ft_strdup(""));
 	dict_insert(env, env_var);
-	env_var = dict_create_entry("#", "0");
+	env_var = dict_create_entry(ft_strdup("#"), ft_strdup("0"));
 	dict_insert(env, env_var);
-	env_var = dict_create_entry("?", "0");
+	env_var = dict_create_entry(ft_strdup("?"), ft_strdup("0"));
 	dict_insert(env, env_var);
-	env_var = dict_create_entry("-", "himBh");
+	env_var = dict_create_entry(ft_strdup("-"), ft_strdup("himBh"));
 	dict_insert(env, env_var);
-	env_var = dict_create_entry("$", "(missing)");
+	env_var = dict_create_entry(ft_strdup("$"), ft_strdup("(missing)"));
 	dict_insert(env, env_var);
-	env_var = dict_create_entry("!", "(missing)");
+	env_var = dict_create_entry(ft_strdup("!"), ft_strdup("(missing)"));
 	dict_insert(env, env_var);
-	env_var = dict_create_entry("0", "minishell");
+	env_var = dict_create_entry(ft_strdup("0"), ft_strdup("minishell"));
 	dict_insert(env, env_var);
 }
 
-t_dictionary	*get_env(char **env)
+void	get_env(t_dictionary **hash_env, char **env)
 {
-	t_dictionary	*hash_env;
 	t_dic_entry		*env_var;
 	char			**env_var_array;
 
-	hash_env = dict_init(23);
+	*hash_env = dict_init(230);
 	while (*env)
 	{
 		env_var_array = ft_split(*env, '=');
 		env_var = dict_create_entry(env_var_array[0], env_var_array[1]); //funcion para crear una entrada que se le comparte al dic_insert
-		dict_insert(&hash_env, env_var); // funcion para meter una variable o modificarla si ya existe 
+		// ft_free_array(env_var_array);
+		dict_insert(hash_env, env_var); // funcion para meter una variable o modificarla si ya existe 
 		env++;
 	}
-	insert_special_params(&hash_env);
-	return (hash_env);
+	// insert_special_params(hash_env);
 }
 
 // int main(int argc, char **argv, char **env)

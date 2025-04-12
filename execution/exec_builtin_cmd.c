@@ -37,7 +37,9 @@ int	call_execve(t_exec exec)
 	arguments[0] = find_exec_in_path(ft_split(dict_get(exec.env, "PATH"), ':'), arguments[0]);
 	execve(((char **)exec.cmd->cmd->darray)[0], arguments, NULL);
 	ft_putstr_fd(arguments[0], 2);
-	ft_putstr_fd(": command 42\n", 2);
+	ft_putstr_fd(": command not found\n", 2);
+	free_cmd(exec.cmd);
+	dict_delete(exec.env);
 	ft_free_array(arguments);
 	exit(127);
 }
@@ -59,8 +61,8 @@ int	execute_child(t_exec exec_vars)
 	int	ret;
 	int	status;
 
-	ret = fork();
 	status = 0;
+	ret = fork();
 	// if (ret == -1)
 	// 	//Pirarte
 	if (ret == 0)
@@ -71,10 +73,14 @@ int	execute_child(t_exec exec_vars)
 			write(1, "Nooooooooo\n", 12); // Liberar lo anterior y pirarte.
 		status = execute_io_redir(exec_vars); // Basicamente, intercambian un fd por otro.
 		if (status != 0)
+		{
+			// ft_printf("PERO TE PIRAS O NO TE PIRAS JODER: %d\n", status);
+			close_cmd_fds(exec_vars.cmd);
 			return (status);
-		if (is_builtin(exec_vars.cmd->cmd->darray))
+		}
+		if (!status && is_builtin(exec_vars.cmd->cmd->darray))
 			status = run_builtin(exec_vars);
-		else
+		else if (!status && !is_builtin(exec_vars.cmd->cmd->darray))
 			status = call_execve(exec_vars); // funcion para determinar si se ejecuta con execve o es un built-in.
 		close_cmd_fds(exec_vars.cmd);
 	}
@@ -82,3 +88,19 @@ int	execute_child(t_exec exec_vars)
 		close_cmd_fds(exec_vars.cmd);
 	return (status);
 }
+
+// bool handle_redirection(t_exec exec_vars)
+// {
+//     if (exec_vars.cmd->fds[1] > 1) {  // Redirección de salida
+//         if (access(exec_vars.cmd->, F_OK) == -1) {
+//             // Si el archivo no existe, verificar permisos del directorio
+//             char *dir = dirname(exec_vars.cmd->outfile);
+//             if (access(dir, W_OK) != 0) {
+//                 return false;
+//             }
+//         } else if (access(exec_vars.cmd->outfile, W_OK) != 0) {
+//             return false;  // No hay permisos de escritura
+//         }
+//     }
+//     return true;
+// }

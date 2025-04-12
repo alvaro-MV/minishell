@@ -120,15 +120,15 @@ char	**dict_get_keys(t_dictionary *dict)
 // 		printf("%s\n", *env);
 // 		env++;
 // 	}
-// 	// t_dictionary *dict = dict_init(5);
-// 	// char *path = ft_strdup("PATH");
-// 	// char *path_value = ft_strdup("bin:/usr/bin");
-// 	// t_dic_entry *entry = dict_create_entry(path, path_value);
-// 	// if (!entry)
-// 	// 	return (dict_delete(dict), 1);
-// 	// dict_insert(&dict, entry);
-// 	// printf("PATH=%s", dict_get(dict, path));
-// 	// dict_delete_key(dict, path);
-// 	// printf("PATH=%s", dict_get(dict, "PATH"));
-// 	// dict_delete(dict);
+// 	t_dictionary *dict = dict_init(5);
+// 	char *path = ft_strdup("PATH");
+// 	char *path_value = ft_strdup("bin:/usr/bin");
+// 	t_dic_entry *entry = dict_create_entry(path, path_value);
+// 	if (!entry)
+// 		return (dict_delete(dict), 1);
+// 	dict_insert(&dict, entry);
+// 	printf("PATH=%s", dict_get(dict, path));
+// 	dict_delete_key(dict, path);
+// 	printf("PATH=%s", dict_get(dict, "PATH"));
+// 	dict_delete(dict);
 // }
