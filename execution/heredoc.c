@@ -29,7 +29,7 @@ int	here_doc(char *delimiter, t_dictionary *env)
 	free(delimiter);
 	close(infd[1]);
 	dup2(infd[0], 0);
-	return (infd[0]);
+	return (0);
 }
 
 //por que no esta funcionando???

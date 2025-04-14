@@ -11,6 +11,8 @@ int	is_builtin(char **cmd_args)
 		return (1);
 	else if (!ft_strncmp(cmd_name, "export", ft_strlen("export")))
 		return (1);
+	else if (!ft_strncmp(cmd_name, "pwd", ft_strlen("pwd")))
+		return (1);
 	//Meter el resto
 	return (0);
 }

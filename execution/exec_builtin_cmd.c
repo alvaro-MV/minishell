@@ -53,6 +53,8 @@ int	run_builtin(t_exec exec)
 		echo(arguments);
 	// else if (!ft_strncmp(arguments[0], "export", ft_strlen("export")))
 	// 	export(arguments);
+	else if (!ft_strncmp(arguments[0], "pwd", ft_strlen("pwd")))
+		pwd2(arguments);
 	return (0);
 }
 
@@ -76,7 +78,7 @@ int	execute_child(t_exec exec_vars)
 		{
 			// ft_printf("PERO TE PIRAS O NO TE PIRAS JODER: %d\n", status);
 			close_cmd_fds(exec_vars.cmd);
-			return (status);
+			exit(status);
 		}
 		if (!status && is_builtin(exec_vars.cmd->cmd->darray))
 			status = run_builtin(exec_vars);
