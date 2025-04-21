@@ -56,6 +56,14 @@ void	dict_insert(t_dictionary **dic_p, t_dic_entry *entry)
 	index = hash_entry % dic->capacity;
 	while (dic->entries[index] != NULL)
 	{
+		if (!ft_strcmp(dic->entries[index]->key, entry->key))
+		{
+			free(dic->entries[index]->value);
+			dic->entries[index]->value = entry->value;
+			free(entry->key);
+			free(entry);
+			return ;
+		}
 		index++;
 		if (index == dic->capacity - 1)
 			index = 0;

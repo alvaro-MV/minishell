@@ -88,7 +88,9 @@ void	export(t_exec *exec)
 	t_dic_entry	*entry;
 	char	**arguments;
 	char	**var;
+	char 	*value;
 	char	**env_keys;
+	char	*value_for_printing;
 	int		i;
 
 	i = -1;
@@ -98,7 +100,13 @@ void	export(t_exec *exec)
 		env_keys = dict_get_keys(exec->env);
 		sort_strings(env_keys, exec->env->capacity);
 		while (env_keys[++i])
-			ft_printf("declare -x %s=%s\n", env_keys[i], dict_get(exec->env, env_keys[i]));
+		{
+			value_for_printing = dict_get(exec->env, env_keys[i]);
+			ft_printf("declare -x %s", env_keys[i]);
+			if (value_for_printing != NULL)
+				ft_printf("=\"%s\"", value_for_printing);
+			ft_printf("\n");
+		}
 		return ;
 	}
 	i = 1;
@@ -109,7 +117,11 @@ void	export(t_exec *exec)
 			return ;
 		if (is_valid_name(var[0]))
 		{
-			entry = dict_create_entry(ft_strdup(var[0]), ft_strdup(var[1]));
+			if (var[1] == NULL && ft_strchr(arguments[i], '='))
+				value = "";
+			else
+				value = var[1];
+			entry = dict_create_entry(ft_strdup(var[0]), ft_strdup(value));
 			dict_insert(&exec->env, entry);
 		}
 		else 

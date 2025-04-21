@@ -115,11 +115,7 @@ char	**dict_get_keys(t_dictionary *dict)
 
 // int	main(int argc, char **argv, char **env)
 // {
-// 	while (*env)
-// 	{
-// 		printf("%s\n", *env);
-// 		env++;
-// 	}
+
 // 	t_dictionary *dict = dict_init(5);
 // 	char *path = ft_strdup("PATH");
 // 	char *path_value = ft_strdup("bin:/usr/bin");
@@ -127,8 +123,13 @@ char	**dict_get_keys(t_dictionary *dict)
 // 	if (!entry)
 // 		return (dict_delete(dict), 1);
 // 	dict_insert(&dict, entry);
-// 	printf("PATH=%s", dict_get(dict, path));
-// 	dict_delete_key(dict, path);
-// 	printf("PATH=%s", dict_get(dict, "PATH"));
+// 	printf("PATH=%s\n", dict_get(dict, "PATH"));
+	
+	
+// 	entry = dict_create_entry(ft_strdup("PATH"), ft_strdup("home/wachowsky:perico"));
+	
+// 	dict_insert(&dict, entry);
+// 	printf("PATH=%s\n", dict_get(dict, "PATH"));
+
 // 	dict_delete(dict);
 // }
