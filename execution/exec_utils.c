@@ -7,11 +7,13 @@ int	is_builtin(char **cmd_args)
 	cmd_name = cmd_args[0];
 	if (!cmd_name)
 		return (0);
-	if (!ft_strncmp(cmd_name, "echo", ft_strlen("echo")))
+	if (!ft_strcmp(cmd_name, "echo"))
 		return (1);
-	else if (!ft_strncmp(cmd_name, "export", ft_strlen("export")))
+	else if (!ft_strcmp(cmd_name, "export"))
 		return (1);
-	else if (!ft_strncmp(cmd_name, "pwd", ft_strlen("pwd")))
+	else if (!ft_strcmp(cmd_name, "pwd"))
+		return (1);
+	else if (!ft_strcmp(cmd_name, "env"))
 		return (1);
 	//Meter el resto
 	return (0);

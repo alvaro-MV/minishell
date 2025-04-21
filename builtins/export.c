@@ -68,20 +68,19 @@
 int	is_valid_name(char *name)
 {
 	if (legal_variable_starter(*name))
-		return (0);
+		return (1);
 	while (*name)
 	{
 		if (legal_variable_char(*name))
-			return (0);
+			return (1);
 		name++;
 	}
-	return (1);
+	return (0);
 }
 
 void	export_error(char *name)
 {
-	ft_printf("minishell: export: `%s': not a valid identifier",
-		name);
+	ft_printf("minishell: export: `%s': not a valid identifier\n", name);
 }
 
 void	export(t_exec *exec)
@@ -96,7 +95,7 @@ void	export(t_exec *exec)
 	arguments = (char **) exec->cmd->cmd->darray;
 	if (arguments[1] == NULL)
 	{
-		env_keys = dict_get_keys(exec->cmd);
+		env_keys = dict_get_keys(exec->env);
 		sort_strings(env_keys, exec->env->capacity);
 		while (env_keys[i])
 			ft_printf("%s=%s\n", env_keys[i], dict_get(exec->env, env_keys[i]));
@@ -113,7 +112,7 @@ void	export(t_exec *exec)
 			entry = dict_create_entry(arguments[i], var);
 			dict_insert(&exec->env, entry);
 		}
-		else
+		else 
 			export_error(arguments[i]);
 		i++;
 	}

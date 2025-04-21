@@ -49,12 +49,16 @@ int	run_builtin(t_exec exec)
 	char	**arguments;
 
 	arguments = (char **)exec.cmd->cmd->darray;
-	if (!ft_strncmp(arguments[0], "echo", ft_strlen("echo")))
+	if (!ft_strcmp(arguments[0], "echo"))
 		echo(arguments);
-	// else if (!ft_strncmp(arguments[0], "export", ft_strlen("export")))
-	// 	export(arguments);
-	else if (!ft_strncmp(arguments[0], "pwd", ft_strlen("pwd")))
-		pwd2(arguments);
+	else if (!ft_strcmp(arguments[0], "export"))
+		export(&exec);
+	else if (!ft_strcmp(arguments[0], "pwd"))
+		pwd2();
+	else if (!ft_strcmp(arguments[0], "env"))
+		ft_env(arguments, exec.main_env);
+	else
+		ft_printf("Command not found\n");
 	return (0);
 }
 

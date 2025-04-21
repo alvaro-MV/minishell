@@ -18,7 +18,9 @@ typedef enum echo_states
 }	echo_states;
 
 void	echo(char	**arguments);
-void	export(t_exec *exec);
 int		pwd2(void);
-
+int	ft_env(char **args, char **environment);
+int	is_valid_name(char *name);
+void	export_error(char *name);
+void	export(t_exec *exec);
 #endif

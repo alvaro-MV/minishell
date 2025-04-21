@@ -27,6 +27,7 @@ SRC =  	data_structs/dictionary.c \
 		environment.c \
 		main.c \
 		builtins/echo.c \
+		builtins/export.c \
 		builtins/env.c \
 		builtins/cd.c \
 		builtins/exit.c \
