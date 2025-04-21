@@ -85,7 +85,7 @@ int	execute_child(t_exec exec_vars)
 			exit(status);
 		}
 		if (!status && is_builtin(exec_vars.cmd->cmd->darray))
-			status = run_builtin(exec_vars);
+			exit(run_builtin(exec_vars));
 		else if (!status && !is_builtin(exec_vars.cmd->cmd->darray))
 			status = call_execve(exec_vars); // funcion para determinar si se ejecuta con execve o es un built-in.
 		close_cmd_fds(exec_vars.cmd);

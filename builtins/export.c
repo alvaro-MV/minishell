@@ -87,33 +87,34 @@ void	export(t_exec *exec)
 {
 	t_dic_entry	*entry;
 	char	**arguments;
-	char	*var;
+	char	**var;
 	char	**env_keys;
 	int		i;
 
-	i = 0;
+	i = -1;
 	arguments = (char **) exec->cmd->cmd->darray;
 	if (arguments[1] == NULL)
 	{
 		env_keys = dict_get_keys(exec->env);
 		sort_strings(env_keys, exec->env->capacity);
-		while (env_keys[i])
-			ft_printf("%s=%s\n", env_keys[i], dict_get(exec->env, env_keys[i]));
+		while (env_keys[++i])
+			ft_printf("declare -x %s=%s\n", env_keys[i], dict_get(exec->env, env_keys[i]));
 		return ;
 	}
+	i = 1;
 	while (arguments[i])
 	{
-		if (ft_strchr(arguments[i], '='))
-			var = ft_strchr(arguments[i], '=') + 1;
-		else
-			var = NULL;
-		if (is_valid_name(arguments[i]))
+		var = ft_split(arguments[i], '=');
+		if (!var)
+			return ;
+		if (is_valid_name(var[0]))
 		{
-			entry = dict_create_entry(arguments[i], var);
+			entry = dict_create_entry(ft_strdup(var[0]), ft_strdup(var[1]));
 			dict_insert(&exec->env, entry);
 		}
 		else 
 			export_error(arguments[i]);
+		ft_free_array(var);
 		i++;
 	}
 }

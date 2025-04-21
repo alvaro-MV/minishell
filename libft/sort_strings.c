@@ -7,12 +7,12 @@ void	sort_strings(char **strings, int n)
 	int 	j;
 
 	i = 0;
-	j = 0;
 	while (i < n - 1)
 	{
+		j = 0;
 		while (j < n)
 		{
-			if (ft_strcmp(strings[i], strings[j]) > 0)
+			if (ft_strcmp(strings[i], strings[j]) < 0)
 			{
 				temp = strings[i];
 				strings[i] = strings[j];
@@ -23,3 +23,4 @@ void	sort_strings(char **strings, int n)
 		i++;
 	}
 }
+
