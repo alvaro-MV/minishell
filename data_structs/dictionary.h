@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dictionary.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:08:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/04/01 13:20:40 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/04/22 10:50:47 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_t_dic_entry
 {
 	char	*key;
 	char	*value;
+	int		export;
 }			t_dic_entry;
 
 typedef struct dict

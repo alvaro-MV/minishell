@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:09:28 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/04/22 10:29:14 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/04/22 10:50:34 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_dic_entry	*dict_create_entry(char *key, char *value)
 {
 	t_dic_entry	*ret_entry;
 
-	ret_entry = malloc(sizeof(t_dic_entry));
+	ret_entry = ft_calloc(1, sizeof(t_dic_entry));
 	if (!ret_entry)
 		return (NULL);
 	ret_entry->key = key;

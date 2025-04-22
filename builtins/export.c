@@ -122,6 +122,8 @@ void	export(t_exec *exec)
 			else
 				value = var[1];
 			entry = dict_create_entry(ft_strdup(var[0]), ft_strdup(value));
+			if (ft_strchr(arguments[i], '='))
+				entry->export = 1;
 			dict_insert(&exec->env, entry);
 		}
 		else 
