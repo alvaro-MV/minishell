@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:09:28 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/03/15 15:21:31 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/04/22 10:29:14 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	dict_delete_key(t_dictionary *dict, char *key)
 	unsigned int	counter;
 
 	if (key == NULL)
-		;
+		write(1, "", 0);
 	index = dict_hash(key) % dict->capacity;
 	counter = 0;
 	while (counter < dict->capacity - 1)
@@ -109,7 +109,7 @@ char	**dict_get_keys(t_dictionary *dict)
 		}
 		counter++;
 	}
-	tmp = NULL;
+	*tmp = NULL;
 	return (ret);
 }
 

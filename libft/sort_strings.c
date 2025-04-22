@@ -10,7 +10,7 @@ void	sort_strings(char **strings, int n)
 	while (i < n - 1)
 	{
 		j = 0;
-		while (j < n)
+		while (j < n - 1)
 		{
 			if (ft_strcmp(strings[i], strings[j]) < 0)
 			{

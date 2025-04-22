@@ -8,7 +8,6 @@
 
 // // funcion permitida signal
 // // signal(SIGINT, manejador_para_ctrl_c);  // Captura Ctrl+C
-// //signal(SIGQUIT, manejador_para_ctrl_quit);  // Captura Ctrl+\
 
 
 // // FUNCION main:
@@ -57,7 +56,7 @@ void signals(char **input)
 
     // Configurar manejadores de señales
     signal(SIGINT, handle_sigint);  // Capturar Ctrl+C
-    signal(SIGQUIT, handle_sigquit); // Ignorar Ctrl+\
+    signal(SIGQUIT, handle_sigquit); 
 
     // Bucle principal para el shell interactivo
     // while (1)
