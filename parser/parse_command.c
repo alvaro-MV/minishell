@@ -1,6 +1,6 @@
 #include "parser.h"
 
-int	alloc_cmd(t_cmd **ptr_cmd)
+static int	alloc_cmd(t_cmd **ptr_cmd)
 {
 	*ptr_cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!(*ptr_cmd))

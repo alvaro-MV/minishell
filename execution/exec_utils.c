@@ -1,5 +1,32 @@
 #include "execution.h"
 
+char	**create_sequence_cmd(t_cmd *cmd)
+{
+	char	**command_list;
+	command	*ret_array;
+	char	**tmp_array;
+	size_t	i;
+
+	ret_array = alloc_darray(10, sizeof(char *));
+	if (!ret_array)
+		return (NULL);
+	while (cmd)
+	{
+		i = 0;
+		command_list = (char **) cmd->cmd->darray;
+		while (command_list && command_list[i])
+		{
+			if (!append_darray(&ret_array, &command_list[i]))
+				return (NULL);
+			i++;
+		}
+		cmd = cmd->next;
+	}
+	tmp_array = (char **) ret_array->darray;
+	free(ret_array);
+	return (tmp_array);
+}
+
 int	is_builtin(char **cmd_args)
 {
 	char	*cmd_name;

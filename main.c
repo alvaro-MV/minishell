@@ -33,7 +33,7 @@ int	main(int argc, char **argv, char **env)
 		t_token	*tokens_for_free = token_stream;
 		t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream);
 		print_AST(sequence);
-		
+
 		if (sequence)
 		{
 			insert_status(executor(sequence, hash_env, env), &hash_env);

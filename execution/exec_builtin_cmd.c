@@ -32,11 +32,12 @@ char	*find_exec_in_path(char **path, char *exec)
 int	call_execve(t_exec exec)
 {
 	char	**arguments;
+	char	**execve_args;
 
 	arguments = (char **)exec.cmd->cmd->darray;
-	ft_printf("VAMOS A COMPROBAR QUE EL CAT FUNCIONA: %s    %s\n\n\n\n", arguments[0], arguments[1]);
 	arguments[0] = find_exec_in_path(ft_split(dict_get(exec.env, "PATH"), ':'), arguments[0]);
-	execve(((char **)exec.cmd->cmd->darray)[0], arguments, NULL);
+	execve_args = create_sequence_cmd(exec.cmd);
+	execve(execve_args[0], execve_args, NULL);
 	ft_putstr_fd(arguments[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
 	free_cmd(exec.cmd);

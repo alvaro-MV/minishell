@@ -19,5 +19,6 @@ int		execute_child(t_exec exec_vars);
 void	close_cmd_fds(t_cmd *cmd);
 int		here_doc(char *delimiter, t_dictionary *env);
 int		traverse_io_redir(t_io_redir *ix, t_exec exec);
+char	**create_sequence_cmd(t_cmd *cmd);
 
 #endif
