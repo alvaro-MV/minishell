@@ -36,7 +36,7 @@ int	call_execve(t_exec exec)
 
 	arguments = (char **)exec.cmd->cmd->darray;
 	arguments[0] = find_exec_in_path(ft_split(dict_get(exec.env, "PATH"), ':'), arguments[0]);
-	execve_args = create_sequence_cmd(exec.cmd);
+	execve_args = create_execve_args(exec.cmd);
 	execve(execve_args[0], execve_args, NULL);
 	ft_putstr_fd(arguments[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
@@ -76,9 +76,9 @@ int	execute_child(t_exec exec_vars)
 	if (ret == 0)
 	{
 		if (exec_vars.cmd->fds[0] != 0 && dup2(exec_vars.cmd->fds[0], 0) == -1)
-			write(1, "Nooooooooo\n", 12); // Liberar lo anterior y pirarte.
+			write(1, "Siiiiiiiiiiiii\n", 12); // Liberar lo anterior y pirarte.
 		if (exec_vars.cmd->fds[1] != 1 && dup2(exec_vars.cmd->fds[1], 1) == -1)
-			write(1, "Nooooooooo\n", 12); // Liberar lo anterior y pirarte.
+			write(1, "Siiiiiiiiiiiii\n", 12); // Liberar lo anterior y pirarte.
 		status = execute_io_redir(exec_vars); // Basicamente, intercambian un fd por otro.
 		if (status != 0)
 		{

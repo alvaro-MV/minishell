@@ -1,6 +1,6 @@
 #include "execution.h"
 
-char	**create_sequence_cmd(t_cmd *cmd)
+char	**create_execve_args(t_cmd *cmd)
 {
 	char	**command_list;
 	command	*ret_array;

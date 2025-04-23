@@ -81,8 +81,8 @@ void tester_parser(char *line, char *expected, int n)
 // {
 // 	tester_parser("ls | cat", "{ ls } | \n{ cat } ", 1);
 // 	tester_parser("ls | cat | echo Hola", "{ ls } | \n{ cat } | \n{ echo Hola } ", 2);
-// 	tester_parser("export | sort | grep -v SHLVL | grep -v \"declare -x _\" | grep -v \"PS.=\"", 
-// 		"{ export } | \n{ sort } | \n{ grep -v SHLVL } | \n{ grep -v \"declare -x _\" } | \n{ grep -v \"PS.=\" } ", 3);
+	// tester_parser("export | sort | grep -v SHLVL | grep -v \"declare -x _\" | grep -v \"PS.=\"", 
+	// 	"{ export } | \n{ sort } | \n{ grep -v SHLVL } | \n{ grep -v \"declare -x _\" } | \n{ grep -v \"PS.=\" } ", 3);
 // 	tester_parser("echo hi | \"|\"", "{ echo hi } | \n{ \"|\" } ", 4);
 // 	tester_parser("\"			\"", "{ \"			\" } ", 5);
 // 	tester_parser("cat <\"./whatever\" >\"./whatever\"", "(< \"./whatever\") (> \"./whatever\") { cat } ", 6);
