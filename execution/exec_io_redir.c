@@ -38,19 +38,6 @@ int	override_fd(t_exec exec, t_io_redir *redir, int flags, int idx)
 	return (0);
 }
 
-// int	override_fd_here_doc(t_exec exec, t_io_redir *ix)
-// {
-// 	int	fd;
-// 	fd = heredoc(ix->filename); //filename es el delitimador.
-// 	if (fd == -1)
-// 		; //Pirarte y liberar
-// 	else
-// 	{
-// 		close(exec.cmd->fds[0]);
-// 		exec.cmd->fds[0] = fd;
-// 	}
-// }
-
 int	traverse_io_redir(t_io_redir *ix, t_exec exec)
 {
 	int status;

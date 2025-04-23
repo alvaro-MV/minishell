@@ -110,4 +110,5 @@ void tester_parser(char *line, char *expected, int n)
 // 	tester_parser("<< $INEXISTENTE", "(<< $INEXISTENTE) { } ", 26);
 // 	tester_parser("< README.md cat > outfile", "(< README.md) (> outfile) { cat } ", 27);
 // 	tester_parser(">'<'>hola>hola2", "(> '<') (> hola) (> hola2) { } ", 28);
+// 	tester_parser("cat <./test_files/infile_big ./test_files/infile", "(< ./test_files/infile_big) { cat ./test_files/infile } ", 29);
 // }

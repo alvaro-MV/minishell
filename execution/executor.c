@@ -84,6 +84,7 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 		while (sequence)
 		{
 			exec_vars = (t_exec) {sequence->cmd, env};
+			// ft_printf("VAMOS A COMPROBAR: %s\n", ((char **) sequence->cmd->cmd->darray)[1]);
 			status = execute_child(exec_vars);
 
 			sequence = sequence->next;
