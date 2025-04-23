@@ -37,7 +37,7 @@ void	get_env(t_dictionary **hash_env, char **env)
 		dict_insert(hash_env, env_var); // funcion para meter una variable o modificarla si ya existe 
 		env++;
 	}
-	// insert_special_params(hash_env);
+	insert_special_params(hash_env);
 }
 
 // int main(int argc, char **argv, char **env)

@@ -1,5 +1,10 @@
 #include "minishell.h"
 
+void insert_status(int status, t_dictionary **dict)
+{
+	dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_darray	*tokens_array;
@@ -30,8 +35,7 @@ int	main(int argc, char **argv, char **env)
 		
 		if (sequence)
 		{
-			executor(sequence, hash_env, env);
-			
+			insert_status(executor(sequence, hash_env, env), &hash_env);
 		}
 
 		free(line);

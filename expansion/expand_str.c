@@ -19,6 +19,14 @@ void	join_char(char **expanded_str, char *str)
 	free(tmp_str);
 }
 
+static int is_special_var(char *var)
+{
+	if (!ft_strncmp(var, "?", 2)
+		|| !ft_strncmp(var, "0", 2))
+		return (1);
+	return (0);
+}
+
 char	*expand_str(char *str, t_dictionary *env)
 {
 	int				i;
@@ -48,7 +56,8 @@ char	*expand_str(char *str, t_dictionary *env)
 			else if (str[i] == '\'')
 				state = SINGLE_QUOTE;
 			else if ((str[i] == '$' && ft_isalnum(str[i + 1]))
-					|| (str[i] == '$' && str[i + 1] == '\''))
+					|| (str[i] == '$' && str[i + 1] == '\'')
+					|| (str[i] == '$' && is_special_var(&str[i + 1])))
 				state = ENV_VAR;
 			else
 				join_char(&expanded_str, &str[i]);
@@ -58,7 +67,8 @@ char	*expand_str(char *str, t_dictionary *env)
 			old_state = state;
 			if (str[i] == '"')
 				state = WORD;
-			else if (str[i] == '$' && ft_isalpha(str[i + 1]))
+			else if ((str[i] == '$' && ft_isalpha(str[i + 1]))
+					|| (str[i] == '$' && is_special_var(&str[i + 1])))
 				state = ENV_VAR;
 			else
 				join_char(&expanded_str, &str[i]);
@@ -83,7 +93,7 @@ char	*expand_str(char *str, t_dictionary *env)
 			}
 			else
 			{
-				while (ft_isalnum(str[len_env_var]))
+				while (ft_isalnum(str[len_env_var]) || is_special_var(&str[len_env_var]))
 					len_env_var++;
 				tmp_str = expanded_str;
 				env_var_name = ft_substr(str, i, len_env_var - i);

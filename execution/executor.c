@@ -89,8 +89,7 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 			sequence = sequence->next;
 		}
 		while (n_cmd--)
-			wait(NULL);
+			wait(&status);
 	}
-	// cerrar todos los fds de las pipes.
 	return (status);
 }
