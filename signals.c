@@ -63,6 +63,7 @@ void signals(char **input)
         *input = readline("minishell> "); // Mostrar prompt y leer entrada
 
         // Manejar Ctrl+D (EOF)
+
         if (!*input) // Si readline devuelve NULL, se presionó Ctrl+D
         {
             ft_printf("exit\n");

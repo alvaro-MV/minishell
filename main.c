@@ -16,6 +16,11 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		signals(&line); // aqui porque no sabia donde meterlo
+		if (*line == '\0')
+		{
+			free(line);
+			continue ;
+		}
 		add_history(line);
 		tokens_array = tokenizer_str(line);
 		tokens_strings = (char **) tokens_array->darray;
@@ -29,11 +34,11 @@ int	main(int argc, char **argv, char **env)
 			
 		}
 
-		// free(line);
+		free(line);
 		free_AST(sequence);
 		free(tokens_array);
 		free(tokens_for_free);
 	}
-	// dict_delete(hash_env);
+	dict_delete(hash_env);
 	return (0);
 }

@@ -67,11 +67,12 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 	int			status;
 	int			n_cmd;
 
+	(void) main_env;
 	n_cmd = create_pipe_and_fds(sequence);
 	expand_pipe_seq(sequence, env);
 	if (n_cmd == 1 && is_builtin(sequence->cmd->cmd->darray))
 	{
-		exec_vars = (t_exec) {sequence->cmd, env, main_env};
+		exec_vars = (t_exec) {sequence->cmd, env};
 		status = execute_io_redir(exec_vars); // Basicamente, intercambian un fd por otro.
 		if (status != 0)
 			return (status);
@@ -82,7 +83,7 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 	{
 		while (sequence)
 		{
-			exec_vars = (t_exec) {sequence->cmd, env, main_env};
+			exec_vars = (t_exec) {sequence->cmd, env};
 			status = execute_child(exec_vars);
 
 			sequence = sequence->next;

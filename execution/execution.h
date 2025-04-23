@@ -8,7 +8,7 @@ typedef struct s_exec
 {
 	t_cmd			*cmd;
 	t_dictionary	*env;
-	char			**main_env;
+	// char			**main_env;
 }					t_exec;
 
 int		executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env);
