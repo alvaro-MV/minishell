@@ -67,15 +67,15 @@
 
 int	is_valid_name(char *name)
 {
-	if (legal_variable_starter(*name))
-		return (1);
+	if (!legal_variable_starter(*name))
+		return (0);
 	while (*name)
 	{
-		if (legal_variable_char(*name))
-			return (1);
+		if (!legal_variable_char(*name))
+			return (0);
 		name++;
 	}
-	return (0);
+	return (1);
 }
 
 void	export_error(char *name)

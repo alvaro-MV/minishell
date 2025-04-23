@@ -21,8 +21,8 @@ void	join_char(char **expanded_str, char *str)
 
 static int is_special_var(char *var)
 {
-	if (!ft_strncmp(var, "?", 2)
-		|| !ft_strncmp(var, "0", 2))
+	if (!ft_strncmp(var, "?", 1)
+		|| !ft_strncmp(var, "0", 1))
 		return (1);
 	return (0);
 }
