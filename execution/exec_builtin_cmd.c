@@ -56,7 +56,7 @@ int	run_builtin(t_exec exec)
 	else if (!ft_strcmp(arguments[0], "pwd"))
 		pwd2();
 	else if (!ft_strcmp(arguments[0], "env"))
-		ft_env(arguments, exec.main_env);
+		ft_env(arguments, &exec);
 	else
 		ft_printf("Command not found\n");
 	return (0);

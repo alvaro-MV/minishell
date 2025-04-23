@@ -31,8 +31,9 @@ void	get_env(t_dictionary **hash_env, char **env)
 	while (*env)
 	{
 		env_var_array = ft_split(*env, '=');
-		env_var = dict_create_entry(env_var_array[0], env_var_array[1]); //funcion para crear una entrada que se le comparte al dic_insert
-		// ft_free_array(env_var_array);
+		env_var = dict_create_entry(ft_strdup(env_var_array[0]), ft_strdup(env_var_array[1])); //funcion para crear una entrada que se le comparte al dic_insert
+		env_var->export = 1;
+		ft_free_array(env_var_array);
 		dict_insert(hash_env, env_var); // funcion para meter una variable o modificarla si ya existe 
 		env++;
 	}
