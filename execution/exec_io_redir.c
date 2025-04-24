@@ -13,7 +13,7 @@ int	override_fd(t_exec exec, t_io_redir *redir, int flags, int idx)
 		if (access(redir->filename->text, F_OK))
 		{
 			perror(redir->filename->text);
-			return (2);
+			return (1);
 		}
 		if (stat(redir->filename->text, &file_stat) == -1)
 		{
@@ -34,8 +34,7 @@ int	override_fd(t_exec exec, t_io_redir *redir, int flags, int idx)
 		if (dup2(fd, idx) == -1)
 			return (1); // Me joden
 		exec.cmd->fds[idx] = fd;
-		close(fd);
-		rl_reset_terminal(NULL);
+		// close(fd);
 	}
 	return (0);
 }

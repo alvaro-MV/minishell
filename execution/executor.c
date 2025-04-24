@@ -29,7 +29,7 @@ void	expand_ix(t_io_redir *ix, t_dictionary *env)
 {
 	char		*tmp;
 
-	while (ix->next)
+	while (ix && ix->next)
 	{
 		tmp = ix->filename->text;
 		ix->filename->text = expand_str(tmp, env);
@@ -41,22 +41,27 @@ void	expand_ix(t_io_redir *ix, t_dictionary *env)
 void	expand_pipe_seq(t_cmd_pipe *sequence, t_dictionary *env)
 {
 	char		*tmp;
-	char		**cmd;
+	t_cmd		*cmd;
+	char		**cmd_array;
 	int			i;
 
 	while (sequence)
 	{
-		i = 0;
-		cmd = (char **) sequence->cmd->cmd->darray;
-		while (cmd[i])
+		cmd = sequence->cmd;
+		while (cmd)
 		{
-			tmp = cmd[i];
-			cmd[i] = expand_str(tmp, env);
-			free(tmp);
-			i++;
+			i = -1;
+			cmd_array = (char **) cmd->cmd->darray;
+			while (cmd_array[++i])
+			{
+				tmp = cmd_array[i];
+				cmd_array[i] = expand_str(tmp, env);
+				free(tmp);
+			}
+			expand_ix(cmd->cmd_prefix, env);
+			expand_ix(cmd->cmd_suffix, env);
+			cmd = cmd->next;
 		}
-		expand_ix(sequence->cmd->cmd_prefix, env);
-		expand_ix(sequence->cmd->cmd_suffix, env);
 		sequence = sequence->next;
 	}
 }
@@ -91,6 +96,8 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 			wait(&status);
 		if (WIFSIGNALED(status))
 			return (127);
+		else
+			return (WEXITSTATUS(status));
 	}
 	return (status);
 }
