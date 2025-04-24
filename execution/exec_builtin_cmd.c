@@ -60,6 +60,8 @@ int	run_builtin(t_exec exec)
 		pwd2();
 	else if (!ft_strcmp(arguments[0], "env"))
 		ft_env(arguments, &exec);
+	else if (!ft_strcmp(arguments[0], "exit"))
+		ft_exit(arguments);
 	else
 		ft_printf("minishell: command not found\n");
 	return (0);
