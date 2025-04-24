@@ -29,6 +29,7 @@ int	here_doc(char *delimiter, t_dictionary *env)
 	free(delimiter);
 	close(infd[1]);
 	dup2(infd[0], 0);
+	close(infd[0]);
 	return (0);
 }
 

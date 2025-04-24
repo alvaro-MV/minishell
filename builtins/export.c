@@ -83,10 +83,9 @@ void	export_error(char *name)
 	ft_printf("minishell: export: `%s': not a valid identifier\n", name);
 }
 
-void	export(t_exec *exec)
+void	export(t_exec *exec, char **arguments)
 {
 	t_dic_entry	*entry;
-	char	**arguments;
 	char	**var;
 	char 	*value;
 	char	**env_keys;
@@ -94,7 +93,6 @@ void	export(t_exec *exec)
 	int		i;
 
 	i = -1;
-	arguments = (char **) exec->cmd->cmd->darray;
 	if (arguments[1] == NULL)
 	{
 		env_keys = dict_get_keys(exec->env);

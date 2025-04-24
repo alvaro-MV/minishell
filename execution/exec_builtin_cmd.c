@@ -36,7 +36,8 @@ int	call_execve(t_exec exec)
 
 	arguments = (char **)exec.cmd->cmd->darray;
 	arguments[0] = find_exec_in_path(ft_split(dict_get(exec.env, "PATH"), ':'), arguments[0]);
-	execve_args = create_execve_args(exec.cmd);
+	execve_args = create_args(exec.cmd);
+	//Controlar el caso donde sea ruta relativa o absoluta que este mal.
 	execve(execve_args[0], execve_args, NULL);
 	ft_putstr_fd(arguments[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
@@ -50,17 +51,17 @@ int	run_builtin(t_exec exec)
 {
 	char	**arguments;
 
-	arguments = (char **)exec.cmd->cmd->darray;
+	arguments = create_args(exec.cmd);
 	if (!ft_strcmp(arguments[0], "echo"))
 		echo(arguments);
 	else if (!ft_strcmp(arguments[0], "export"))
-		export(&exec);
+		export(&exec, arguments);
 	else if (!ft_strcmp(arguments[0], "pwd"))
 		pwd2();
 	else if (!ft_strcmp(arguments[0], "env"))
 		ft_env(arguments, &exec);
 	else
-		ft_printf("Command not found\n");
+		ft_printf("minishell: command not found\n");
 	return (0);
 }
 

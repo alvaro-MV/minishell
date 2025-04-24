@@ -34,6 +34,8 @@ int	override_fd(t_exec exec, t_io_redir *redir, int flags, int idx)
 		if (dup2(fd, idx) == -1)
 			return (1); // Me joden
 		exec.cmd->fds[idx] = fd;
+		close(fd);
+		rl_reset_terminal(NULL);
 	}
 	return (0);
 }

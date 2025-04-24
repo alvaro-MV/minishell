@@ -18,15 +18,26 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+
+	int saved_stdin;
+	// int tty_fd = open("/dev/tty", O_RDONLY);
+	// if (tty_fd < 0) {
+	// 	perror("open /dev/tty");
+	// 	exit(1);
+	// }
 	
 	while (1)
 	{
+		saved_stdin = dup(STDIN_FILENO);
+		// dup2(tty_fd, STDIN_FILENO);
+
 		signals(&line); // aqui porque no sabia donde meterlo
 		if (*line == '\0')
 		{
 			free(line);
 			continue ;
 		}
+
 		add_history(line);
 		tokens_array = tokenizer_str(line);
 		tokens_strings = (char **) tokens_array->darray;
@@ -39,11 +50,14 @@ int	main(int argc, char **argv, char **env)
 			insert_status(executor(sequence, hash_env, env), &hash_env);
 		}
 
+    	dup2(saved_stdin, STDIN_FILENO);
+		close(saved_stdin);
 		free(line);
 		free_AST(sequence);
 		free(tokens_array);
 		free(tokens_for_free);
 	}
+	// close(tty_fd);
 	dict_delete(hash_env);
 	return (0);
 }
