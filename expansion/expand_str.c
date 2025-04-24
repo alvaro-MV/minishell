@@ -93,8 +93,17 @@ char	*expand_str(char *str, t_dictionary *env)
 			}
 			else
 			{
-				while (ft_isalnum(str[len_env_var]) || is_special_var(&str[len_env_var]))
+				if (is_special_var(&str[len_env_var]))
 					len_env_var++;
+				else
+				{
+					while (ft_isalnum(str[len_env_var]))
+					{
+						len_env_var++;
+						if (!ft_isalpha(str[i]))
+							break ;
+					}
+				}
 				tmp_str = expanded_str;
 				env_var_name = ft_substr(str, i, len_env_var - i);
 				if (!env_var_name)
@@ -132,6 +141,7 @@ void	expand_tester(t_dictionary *env);
 // 		dict_insert(&hash_env, env_var);
 // 		env++;
 // 	}
+// 	insert_special_params(&hash_env);
 // 	expand_tester(hash_env);
 // 	dict_delete(hash_env);
 // 	return (0);
@@ -194,8 +204,8 @@ void	expand_tester(t_dictionary *env)
 	make_test(str, env, "pathooDISPLAY");
 	ft_printf("\n----------------------\n");
 	
-	// make_test("\"$?\"", env, "0");
-	// ft_printf("\n----------------------\n");
+	make_test("\"$?\"", env, "0");
+	ft_printf("\n----------------------\n");
 
 	make_test("\"$SHELL$\"", env, "/usr/bin/zsh$");
 	ft_printf("\n----------------------\n");
@@ -230,9 +240,12 @@ void	expand_tester(t_dictionary *env)
 	make_test("$a1234$", env, "$");
 	ft_printf("\n----------------------\n");
 
-	make_test("echo $023$", env, "bash23$");
+	make_test("$023$", env, "minishell23$");
 	ft_printf("\n----------------------\n");
 	
 	make_test("APA$=jesulin", env, "APA$=jesulin");
+	ft_printf("\n----------------------\n");
+
+	make_test("$?HELLO", env, "0HELLO");
 	ft_printf("\n----------------------\n");
 }

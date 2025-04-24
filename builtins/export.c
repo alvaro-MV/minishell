@@ -32,41 +32,10 @@
 #define legal_variable_starter(c) (ISALPHA(c) || (c == '_'))
 #define legal_variable_char(c)	(ISALNUM(c) || c == '_')
 
-//  aflags = 0;
-// 	  if (assign)
-// 	    {
-// 	      name[assign] = '\0';
-// 	      if (name[assign - 1] == '+')
-// 		{
-// 		  aflags |= ASS_APPEND;
-// 		  name[assign - 1] = '\0';
-// 		}
-// 	    }
-
-// 	  if (legal_identifier (name) == 0)
-// 	    {
-// 	      sh_invalidid (name);
-// 	      if (assign)
-// 		assign_error++;
-// 	      else
-// 		any_failed++;
-// 	      list = list->next;
-// 	      continue;
-// 	    }
-// if (assign)	/* xxx [-np] name=value */
-// 	    {
-// 	      name[assign] = '=';
-// 	      if (aflags & ASS_APPEND)
-// 		name[assign - 1] = '+';
-// 	if (do_assignment_no_expand (name) == 0)
-// 		assign_error++;
-// 	      name[assign] = '\0';
-// 	      if (aflags & ASS_APPEND)
-// 		name[assign - 1] = '\0';
-// }
-
 int	is_valid_name(char *name)
 {
+	if (!name)
+		return (0);
 	if (!legal_variable_starter(*name))
 		return (0);
 	while (*name)
@@ -83,19 +52,23 @@ void	export_error(char *name)
 	ft_printf("minishell: export: `%s': not a valid identifier\n", name);
 }
 
-void	export(t_exec *exec, char **arguments)
+int	export(t_exec *exec, char **arguments)
 {
 	t_dic_entry	*entry;
 	char	**var;
 	char 	*value;
 	char	**env_keys;
 	char	*value_for_printing;
+	int		status;
 	int		i;
 
 	i = -1;
+	status = 0;
 	if (arguments[1] == NULL)
 	{
 		env_keys = dict_get_keys(exec->env);
+		if (!env_keys)
+			return (1);
 		sort_strings(env_keys, exec->env->capacity);
 		while (env_keys[++i])
 		{
@@ -105,14 +78,14 @@ void	export(t_exec *exec, char **arguments)
 				ft_printf("=\"%s\"", value_for_printing);
 			ft_printf("\n");
 		}
-		return ;
+		return (0);
 	}
 	i = 1;
 	while (arguments[i])
 	{
 		var = ft_split(arguments[i], '=');
 		if (!var)
-			return ;
+			return (1);
 		if (is_valid_name(var[0]))
 		{
 			if (var[1] == NULL && ft_strchr(arguments[i], '='))
@@ -125,46 +98,12 @@ void	export(t_exec *exec, char **arguments)
 			dict_insert(&exec->env, entry);
 		}
 		else 
+		{
 			export_error(arguments[i]);
+			status = 1;
+		}
 		ft_free_array(var);
 		i++;
 	}
+	return (status);
 }
-/* 
-	El codigo de abajo es para comprobar SI un name contiene assignment.
-
-*/
-
-// int
-// assignment (
-//      const char *string,
-//      int flags
-// )
-// {
-//   register unsigned char c;
-//   register int newi, indx;
-
-//   c = string[indx = 0];
-//   if (legal_variable_starter (c) == 0)
-//     return (0);
-
-//   while (c = string[indx])
-//     {
-//       /* The following is safe.  Note that '=' at the start of a word
-// 	 is not an assignment statement. */
-//       if (c == '=')
-// 	return (indx);
-
-//       /* Check for `+=' */
-//       if (c == '+' && string[indx+1] == '=')
-// 	return (indx + 1);
-
-//       /* Variable names in assignment statements may contain only letters,
-// 	 digits, and `_'. */
-//       if (legal_variable_char (c) == 0)
-// 	return (0);
-
-//       indx++;
-//     }
-//   return (0);
-// }

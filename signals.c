@@ -50,7 +50,7 @@ void handle_sigquit(int sig)
 }
 
 // Función principal del shell
-void signals(char **input)
+void signals(char **input, int *exit)
 {
     // char *input;
 
@@ -67,11 +67,12 @@ void signals(char **input)
         if (!*input) // Si readline devuelve NULL, se presionó Ctrl+D
         {
             ft_printf("exit\n");
-            exit (0); // Terminar el bucle y cerrar el shell
+            *exit = 1;
+            // exit (0); // Terminar el bucle y cerrar el shell
         }
 
         // Si se proporciona una entrada válida, agregarla al historial
-        if (**input)
+        if (*input && **input)
             add_history(*input);
 
         // Procesar el comando (puedes implementar tu lógica aquí)

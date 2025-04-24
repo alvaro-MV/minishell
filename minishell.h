@@ -24,6 +24,7 @@ int     executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env);
 char    *expand_str(char *str, t_dictionary *env);
 void    handle_sigint(int sig);
 void    handle_sigquit(int sig);
-void    signals(char **input);
+void	insert_special_params(t_dictionary **env);
+void 	signals(char **input, int *exit);
 
 #endif

@@ -55,7 +55,7 @@ int	run_builtin(t_exec exec)
 	if (!ft_strcmp(arguments[0], "echo"))
 		echo(arguments);
 	else if (!ft_strcmp(arguments[0], "export"))
-		export(&exec, arguments);
+		return (export(&exec, arguments));
 	else if (!ft_strcmp(arguments[0], "pwd"))
 		pwd2();
 	else if (!ft_strcmp(arguments[0], "env"))
@@ -95,6 +95,7 @@ int	execute_child(t_exec exec_vars)
 	}
 	else
 		close_cmd_fds(exec_vars.cmd);
+	ft_printf("status: %d\n", status);
 	return (status);
 }
 
