@@ -2,7 +2,6 @@
 
 void insert_status(int status, t_dictionary **dict)
 {
-	// ft_pritnf("error: %d     wexit: %s\n", status, WEXITSTATUS(status))
 	dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
 }
 

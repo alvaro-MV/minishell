@@ -89,7 +89,8 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 		}
 		while (n_cmd--)
 			wait(&status);
-		status = WEXITSTATUS(status);
+		if (WIFSIGNALED(status))
+			return (127);
 	}
 	return (status);
 }

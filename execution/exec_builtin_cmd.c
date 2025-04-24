@@ -95,7 +95,6 @@ int	execute_child(t_exec exec_vars)
 	}
 	else
 		close_cmd_fds(exec_vars.cmd);
-	ft_printf("status: %d\n", status);
 	return (status);
 }
 
