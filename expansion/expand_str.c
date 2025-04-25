@@ -56,7 +56,7 @@ char	*expand_str(char *str, t_dictionary *env)
 			else if (str[i] == '\'')
 				state = SINGLE_QUOTE;
 			else if ((str[i] == '$' && ft_isalnum(str[i + 1]))
-					|| (str[i] == '$' && str[i + 1] == '\'')
+					|| (str[i] == '$' && (str[i + 1] == '\'' || str[i + 1] == '"'))
 					|| (str[i] == '$' && is_special_var(&str[i + 1])))
 				state = ENV_VAR;
 			else
