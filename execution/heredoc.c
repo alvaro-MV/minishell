@@ -1,6 +1,6 @@
 #include "execution.h"
 
-int	here_doc(char *delimiter, t_dictionary *env)
+int	here_doc(char *delimiter, t_exec *exec)
 {
 	char	*next_line;
 	char	*expanded_line;
@@ -13,11 +13,12 @@ int	here_doc(char *delimiter, t_dictionary *env)
 		if (delimiter == NULL)
 			return (-1);
 	}
+	close(exec->cmd->fds[0]);
 	while (1)
 	{
 		ft_printf("herdoc> ");
 		next_line = get_next_line(0);
-		expanded_line = expand_str(next_line, env);
+		expanded_line = expand_str(next_line, exec->env);
 		if (ft_strcmp(expanded_line, delimiter) == 0)
 		{
 			free(expanded_line);
