@@ -1,6 +1,6 @@
 #include "execution.h"
 
-int	here_doc(char *delimiter, t_exec *exec)
+int	here_doc(char *delimiter, t_dictionary *env)
 {
 	char	*next_line;
 	char	*expanded_line;
@@ -13,14 +13,17 @@ int	here_doc(char *delimiter, t_exec *exec)
 		if (delimiter == NULL)
 			return (-1);
 	}
+<<<<<<< HEAD
 	close(exec->cmd->fds[0]);
 	dup2(exec->saved_stdin, STDIN_FILENO);
 	close(exec->saved_stdin);
+=======
+>>>>>>> parent of 4827366 (Errors in heredoc, where multiple redirections o pipe exist.)
 	while (1)
 	{
 		ft_printf("herdoc> ");
 		next_line = get_next_line(0);
-		expanded_line = expand_str(next_line, exec->env);
+		expanded_line = expand_str(next_line, env);
 		if (ft_strcmp(expanded_line, delimiter) == 0)
 		{
 			free(expanded_line);

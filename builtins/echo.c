@@ -7,7 +7,7 @@ void	echo(char **arguments)
 {
 	int		i;
 	int		new_line;
-	// char	*trim_arg;
+	char	*trim_arg;
 	size_t	j;
 
 	i = 0;
@@ -15,35 +15,36 @@ void	echo(char **arguments)
 	new_line = 1;
 	arguments++;
 	// Detectar flags (-n)
+	ft_printf("echo arguments: %s\n", arguments[0]);
 	while (arguments[i] && (arguments[i][0] == '-' || isspace(arguments[i][0])))
 	{
-		j = 0;
-		while (arguments[i][j])
-		{
-			if (arguments[i][j] == '-' && arguments[i][j + 1] == 'n')
-				j++;
-			if (!isspace(arguments[i][j]) && arguments[i][j] != '-'
-				&& arguments[i][j] != 'n')
-				break ; 
-			j++;
-		}
-		if (arguments[i][j] != '\0')
-			break ;
-		new_line = 0;
 		// j = 0;
-		// free(trim_arg);
-		// trim_arg = ft_strtrim(arguments[i], " \t\r");
-		// if (trim_arg[0] != '-')
-		// 	break ;
-		// j++;
-		// while (trim_arg[j] == 'n') // Comprobar que todo sean 'n'
+		// while (arguments[i][j])
+		// {
+		// 	if (arguments[i][j] == '-' && arguments[i][j + 1] == 'n')
+		// 		j++;
+		// 	if (!isspace(arguments[i][j]) && arguments[i][j] != '-'
+		// 		&& arguments[i][j] != 'n')
+		// 		break ; 
 		// 	j++;
-		// if (trim_arg[j] != '\0') // Si hay algo más, no es un flag válido
+		// }
+		// if (arguments[i][j] != '\0')
 		// 	break ;
-		// new_line = 0; // Desactivar salto de línea
+
+		j = 0;
+		free(trim_arg);
+		trim_arg = ft_strtrim(arguments[i], " \t\r");
+		if (trim_arg[0] != '-')
+			break ;
+		j++;
+		while (trim_arg[j] == 'n') // Comprobar que todo sean 'n'
+			j++;
+		if (trim_arg[j] != '\0') // Si hay algo más, no es un flag válido
+			break ;
+		new_line = 0; // Desactivar salto de línea
 		i++;
 	}
-	// free(trim_arg);
+	free(trim_arg);
 	// Imprimir los argumentos restantes
 	while (arguments[i])
 	{
