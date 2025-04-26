@@ -14,6 +14,8 @@ int	here_doc(char *delimiter, t_exec *exec)
 			return (-1);
 	}
 	close(exec->cmd->fds[0]);
+	dup2(exec->saved_stdin, STDIN_FILENO);
+	close(exec->saved_stdin);
 	while (1)
 	{
 		ft_printf("herdoc> ");
@@ -29,6 +31,7 @@ int	here_doc(char *delimiter, t_exec *exec)
 	}
 	free(delimiter);
 	close(infd[1]);
+	// exec->saved_stdin = dup(STDIN_FILENO);
 	dup2(infd[0], 0);
 	close(infd[0]);
 	return (0);
