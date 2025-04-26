@@ -8,7 +8,6 @@ typedef struct s_exec
 {
 	t_cmd			*cmd;
 	t_dictionary	*env;
-	int				saved_stdin;
 	// char			**main_env;
 }					t_exec;
 

@@ -15,10 +15,13 @@ int	here_doc(char *delimiter, t_dictionary *env)
 	}
 <<<<<<< HEAD
 	close(exec->cmd->fds[0]);
+<<<<<<< HEAD
 	dup2(exec->saved_stdin, STDIN_FILENO);
 	close(exec->saved_stdin);
 =======
 >>>>>>> parent of 4827366 (Errors in heredoc, where multiple redirections o pipe exist.)
+=======
+>>>>>>> parent of 4b36d40 (heredoc working fine. with ls | cat << l)
 	while (1)
 	{
 		ft_printf("herdoc> ");
@@ -34,7 +37,6 @@ int	here_doc(char *delimiter, t_dictionary *env)
 	}
 	free(delimiter);
 	close(infd[1]);
-	// exec->saved_stdin = dup(STDIN_FILENO);
 	dup2(infd[0], 0);
 	close(infd[0]);
 	return (0);
