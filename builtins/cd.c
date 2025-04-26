@@ -31,9 +31,11 @@ int change_to_oldpwd(t_exec *exec, char *oldpwd, char *print_wd)
     //     perror("Error: cannot retrieve current directory");
     //     return (1);
     // }
+    memcpy(print_wd, dict_get(exec->env, "OLDPWD"), 1024);
+    oldpwd = ft_strdup(dict_get(exec->env, "PWD"));
     ft_printf("que es print_wd: %s\n", print_wd);
     ft_printf("que es oldpwd: %s\n", oldpwd);
-    if (chdir(oldpwd) != 0)
+    if (chdir(print_wd) != 0)
     {
         perror("Error: cannot change to old directory");
         return (1);
@@ -43,6 +45,7 @@ int change_to_oldpwd(t_exec *exec, char *oldpwd, char *print_wd)
     dict_insert(&exec->env, pwd_entry);
     dict_insert(&exec->env, oldpwd_entry);
     ft_printf("Es aqui donde no saca nadaaa %s\n", oldpwd);
+    free(oldpwd);
     return (0);
 }
 
@@ -77,6 +80,7 @@ int cd(t_exec *exec, char **arg)
     char current_wd[1024];
 	char *oldpwd;
 	char *path;
+    char *tmp_path;
 
     if (arg[1] && arg[1][0] == '-' && arg[1][1] == '\0')
     {
@@ -89,7 +93,12 @@ int cd(t_exec *exec, char **arg)
         return(change_to_oldpwd(exec, oldpwd, current_wd));
     }
     if (arg[1])
-		path = arg[1];
+    {
+		path = ft_strjoin(dict_get(exec->env, "PWD"), "/");
+        tmp_path = path;
+        path = ft_strjoin(path, arg[1]);
+        free(tmp_path);
+    }
 	else
 		path = dict_get(exec->env, "HOME");	
 	if (!path)
