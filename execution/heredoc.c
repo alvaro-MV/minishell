@@ -5,6 +5,7 @@ int	here_doc(char *delimiter, t_dictionary *env)
 	char	*next_line;
 	char	*expanded_line;
 	int		infd[2];
+	int		save_stdi;
 
 	pipe(infd);
 	if (delimiter[ft_strlen(delimiter)-1] != '\n')
@@ -13,15 +14,7 @@ int	here_doc(char *delimiter, t_dictionary *env)
 		if (delimiter == NULL)
 			return (-1);
 	}
-<<<<<<< HEAD
-	close(exec->cmd->fds[0]);
-<<<<<<< HEAD
-	dup2(exec->saved_stdin, STDIN_FILENO);
-	close(exec->saved_stdin);
-=======
->>>>>>> parent of 4827366 (Errors in heredoc, where multiple redirections o pipe exist.)
-=======
->>>>>>> parent of 4b36d40 (heredoc working fine. with ls | cat << l)
+	saved_stdin = dup(STDIN_FILENO);
 	while (1)
 	{
 		ft_printf("herdoc> ");
@@ -37,9 +30,9 @@ int	here_doc(char *delimiter, t_dictionary *env)
 	}
 	free(delimiter);
 	close(infd[1]);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdin);
 	dup2(infd[0], 0);
 	close(infd[0]);
 	return (0);
 }
-
-//por que no esta funcionando???

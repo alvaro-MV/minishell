@@ -77,11 +77,23 @@ void	dict_delete_key(t_dictionary *dict, char *key)
 	while (counter < dict->capacity - 1)
 	{
 		if (dict->entries[index] && !strcmp(dict->entries[index]->key, key))
-		{
-			free(dict->entries[index]);
-			dict->entries[index] = NULL;
-			return ;
-		}
+        {
+            if (dict->entries[index]->key)
+                free(dict->entries[index]->key);
+            if (dict->entries[index]->value)
+                free(dict->entries[index]->value);
+            free(dict->entries[index]);
+            dict->entries[index] = NULL;
+            return;
+        }
+		// if (dict->entries[index] && !strcmp(dict->entries[index]->key, key))
+		// {
+		// 	free(dict->entries[index]->key);
+		// 	free(dict->entries[index]->value);
+        //     free(dict->entries[index]);
+		// 	dict->entries[index] = NULL;
+		// 	return ;
+		// }
 		index++;
 		if (index == dict->capacity - 1)
 			index = 0;

@@ -42,6 +42,8 @@ int	is_builtin(char **cmd_args)
 		return (1);
 	else if (!ft_strcmp(cmd_name, "env"))
 		return (1);
+	else if (!ft_strcmp(cmd_name, "unset"))
+		return (1);
 	//Meter el resto
 	return (0);
 }

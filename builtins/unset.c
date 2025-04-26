@@ -1,5 +1,42 @@
 #include "builtins.h"
 
-// OBJETIVO = unset VAR
+int	unset(t_exec *exec, char **arg)
+{
+    int i;
+    int j;
+    int k;
 
-//unsetenv()
+    i = 1;
+    j = 0;
+    if (!arg[1])
+        return (0);
+    if (!exec->main_env || exec->main_env[0] == NULL)
+        return (0);
+    while (arg[i])
+    {
+        if (!is_valid_name(arg[i]))
+        {
+            export_error(arg[i]);
+            i++;
+            continue;
+        }
+        while (exec->main_env[j])
+        {
+            if (!ft_strncmp(exec->main_env[j], arg[i], ft_strlen(arg[i])) && exec->main_env[j][ft_strlen(arg[i])] == '=')
+            {
+                k = j;
+                while (exec->main_env[k])
+                {
+                    exec->main_env[k] = exec->main_env[k + 1];
+                    k++;
+                }
+                exec->main_env[k] = NULL;
+                dict_delete_key(exec->env, arg[i]);
+                break;
+            }
+            j++;
+        }
+        i++;
+    }
+    return (0);
+}
