@@ -1,34 +1,6 @@
 #include "../minishell.h"
 #include "builtins.h"
 
-// Ojear: env_var = dict_create_entry(env_var_array[0], env_var_array[1]) y dict_insert(&hash_env, env_var)
-// tambien split
-//void	sort_strings(char **strings, int n) para si me pasan export solo me ordene alfabeticamente el env
-// OBJETIVO = export VAR=value
-// la variable no puede empezar por algo que no sea letra, lo que continua si, ft_alpha(lib) y puede contener "_"
-//valor el que sea?
-// si ya existe= VAR+=var, valor nuevo detras del valor old
-// que pasa si no existe??
-
-//????????????? env | grep VAR -> nada || pero : export | grep VAR ->  declare -x VAR
-
-//setenv() no está permitida pero se puede recrear
-
-/* 
-	-SI pones: $-USER, entonces te expande a 569JNRXZghiklmsUSER Invalido
-	-Si poner: export APA$=jesulin, Invalido.
-	-Si poners: export apa solo, se genera apa='', pero no se ve en env.
-	-Si pones: export apa=, lo mismo del anterior.
-	-Si pones: export te saca todo.
-	-Si pones: export $#POLLAS=pollas, Invalido.
-	-Sipones: export 1234kaka=kaka, te da invalida identifier
-	-Si pones export VAR+=var, te lo coje.
-	
-	Basicamente la diferencia entre VAR= y VAR a secas, es que
-	en el primer caso pone ft_strdup(""), mientras que en el 
-	segundo ponemos NULL.
-*/
-
 #define legal_variable_starter(c) (ISALPHA(c) || (c == '_'))
 #define legal_variable_char(c)	(ISALNUM(c) || c == '_')
 

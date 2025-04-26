@@ -41,8 +41,6 @@ int ft_exit(char **args)
         ft_printf("exit: too many arguments\n");
         return (1);
     }
-    else
-        exit(0);
     status = ft_atoi(args[1]);
     exit(status);
     return (0);

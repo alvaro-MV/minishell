@@ -64,6 +64,8 @@ int	run_builtin(t_exec *exec)
 		ft_exit(arguments);
 	else if (!ft_strcmp(arguments[0], "unset"))
 		unset(exec, arguments);
+	else if (!ft_strcmp(arguments[0], "cd"))
+		cd(exec, arguments);
 	else
 		ft_printf("minishell: command not found\n");
 	return (0);

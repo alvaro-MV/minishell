@@ -25,6 +25,8 @@ void	export_error(char *name);
 int		export(t_exec *exec, char **arguments);
 int		is_numeric(const char *str);
 int		ft_exit(char **args);
-int	unset(t_exec *exec, char **arg);
+int		unset(t_exec *exec, char **arg);
+int 	cd(t_exec *exec, char **arg);
+
 
 #endif
