@@ -29,20 +29,20 @@ char	*find_exec_in_path(char **path, char *exec)
 	return (exec);
 }
 
-int	call_execve(t_exec exec)
+int	call_execve(t_exec *exec)
 {
 	char	**arguments;
 	char	**execve_args;
 
-	arguments = (char **)exec.cmd->cmd->darray;
-	arguments[0] = find_exec_in_path(ft_split(dict_get(exec.env, "PATH"), ':'), arguments[0]);
-	execve_args = create_args(exec.cmd);
+	arguments = (char **)exec->cmd->cmd->darray;
+	arguments[0] = find_exec_in_path(ft_split(dict_get(exec->env, "PATH"), ':'), arguments[0]);
+	execve_args = create_args(exec->cmd);
 	//Controlar el caso donde sea ruta relativa o absoluta que este mal.
-	execve(execve_args[0], execve_args, NULL);
+	execve(execve_args[0], execve_args, exec->main_env);
 	ft_putstr_fd(arguments[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
-	free_cmd(exec.cmd);
-	dict_delete(exec.env);
+	free_cmd(exec->cmd);
+	dict_delete(exec->env);
 	ft_free_array(arguments);
 	exit(127);
 }
@@ -71,7 +71,7 @@ int	run_builtin(t_exec *exec)
 	return (0);
 }
 
-int	execute_child(t_exec exec_vars)
+int	execute_child(t_exec *exec_vars)
 {
 	int	ret;
 	int	status;
@@ -82,24 +82,24 @@ int	execute_child(t_exec exec_vars)
 	// 	//Pirarte
 	if (ret == 0)
 	{
+		status = execute_io_redir(exec_vars); // Basicamente, intercambian un fd por otro.
 		if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) == -1)
 			write(1, "Siiiiiiiiiiiii\n", 12); // Liberar lo anterior y pirarte.
-		if (exec_vars.cmd->fds[1] != 1 && dup2(exec_vars.cmd->fds[1], 1) == -1)
+		if (exec_vars->cmd->fds[1] != 1 && dup2(exec_vars->cmd->fds[1], 1) == -1)
 			write(1, "Siiiiiiiiiiiii\n", 12); // Liberar lo anterior y pirarte.
-		status = execute_io_redir(exec_vars); // Basicamente, intercambian un fd por otro.
 		if (status != 0)
 		{
 			// ft_printf("PERO TE PIRAS O NO TE PIRAS JODER: %d\n", status);
-			close_cmd_fds(exec_vars.cmd);
+			close_cmd_fds(exec_vars->cmd);
 			exit(status);
 		}
 		if (!status && is_builtin(exec_vars->cmd->cmd->darray))
-			exit(run_builtin(&exec_vars));
+			exit(run_builtin(exec_vars));
 		else if (!status && !is_builtin(exec_vars->cmd->cmd->darray))
-			status = call_execve(&exec_vars); // funcion para determinar si se ejecuta con execve o es un built-in.
+			status = call_execve(exec_vars); // funcion para determinar si se ejecuta con execve o es un built-in.
 		close_cmd_fds(exec_vars->cmd);
 	}
 	else
-		close_cmd_fds(exec_vars.cmd);
+		close_cmd_fds(exec_vars->cmd);
 	return (status);
 }

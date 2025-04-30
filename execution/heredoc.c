@@ -23,6 +23,9 @@ int	here_doc(char *delimiter, t_exec *exec)
 		write(hdfd, expanded_line, ft_strlen(expanded_line));
 		free(expanded_line);
 	}
-	exec->cmd->fds[0] = hdfd;
+	// exec->cmd->fds[0] = hdfd;
+	close(hdfd);
+	// close(exec->cmd->fds[0]);
+	exec->cmd->fds[0] = open(".heredoc", O_RDONLY);
 	return (0);
 }
