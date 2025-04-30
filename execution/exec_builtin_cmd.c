@@ -82,11 +82,11 @@ int	execute_child(t_exec exec_vars)
 	// 	//Pirarte
 	if (ret == 0)
 	{
-		status = execute_io_redir(exec_vars); // Basicamente, intercambian un fd por otro.
 		if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) == -1)
 			write(1, "Siiiiiiiiiiiii\n", 12); // Liberar lo anterior y pirarte.
 		if (exec_vars.cmd->fds[1] != 1 && dup2(exec_vars.cmd->fds[1], 1) == -1)
 			write(1, "Siiiiiiiiiiiii\n", 12); // Liberar lo anterior y pirarte.
+		status = execute_io_redir(exec_vars); // Basicamente, intercambian un fd por otro.
 		if (status != 0)
 		{
 			// ft_printf("PERO TE PIRAS O NO TE PIRAS JODER: %d\n", status);
@@ -94,28 +94,12 @@ int	execute_child(t_exec exec_vars)
 			exit(status);
 		}
 		if (!status && is_builtin(exec_vars->cmd->cmd->darray))
-			exit(run_builtin(exec_vars));
+			exit(run_builtin(&exec_vars));
 		else if (!status && !is_builtin(exec_vars->cmd->cmd->darray))
-			status = call_execve(exec_vars); // funcion para determinar si se ejecuta con execve o es un built-in.
+			status = call_execve(&exec_vars); // funcion para determinar si se ejecuta con execve o es un built-in.
 		close_cmd_fds(exec_vars->cmd);
 	}
 	else
 		close_cmd_fds(exec_vars.cmd);
 	return (status);
 }
-
-// bool handle_redirection(t_exec exec_vars)
-// {
-//     if (exec_vars.cmd->fds[1] > 1) {  // Redirección de salida
-//         if (access(exec_vars.cmd->, F_OK) == -1) {
-//             // Si el archivo no existe, verificar permisos del directorio
-//             char *dir = dirname(exec_vars.cmd->outfile);
-//             if (access(dir, W_OK) != 0) {
-//                 return false;
-//             }
-//         } else if (access(exec_vars.cmd->outfile, W_OK) != 0) {
-//             return false;  // No hay permisos de escritura
-//         }
-//     }
-//     return true;
-// }
