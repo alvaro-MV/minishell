@@ -78,7 +78,7 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 	if (n_cmd == 1 && is_builtin(sequence->cmd->cmd->darray))
 	{
 		exec_vars = (t_exec) {sequence->cmd, env,main_env, dup(STDIN_FILENO)};
-		status = execute_io_redir(exec_vars); // Basicamente, intercambian un fd por otro.
+		status = execute_io_redir(&exec_vars); // Basicamente, intercambian un fd por otro.
 		if (status != 0)
 			return (status);
 		status = run_builtin(&exec_vars);
@@ -88,8 +88,8 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 	{
 		while (sequence)
 		{
-			exec_vars = (t_exec) {sequence->cmd, env, main_env,  dup(STDIN_FILENO)};
-			status = execute_child(exec_vars);
+			exec_vars = (t_exec) {sequence->cmd, env, main_env, dup(STDIN_FILENO)};
+			status = execute_child(&exec_vars);
 			sequence = sequence->next;
 		}
 		while (n_cmd--)
