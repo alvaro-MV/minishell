@@ -26,8 +26,15 @@ int change_to_oldpwd(t_exec *exec, char *oldpwd, char *print_wd)
     t_dic_entry *pwd_entry;
     t_dic_entry *oldpwd_entry;
 
+    // if (getcwd(print_wd, 1024) == NULL)
+    // {
+    //     perror("Error: cannot retrieve current directory");
+    //     return (1);
+    // }
     memcpy(print_wd, dict_get(exec->env, "OLDPWD"), 1024);
     oldpwd = ft_strdup(dict_get(exec->env, "PWD"));
+    ft_printf("que es print_wd: %s\n", print_wd);
+    ft_printf("que es oldpwd: %s\n", oldpwd);
     if (chdir(print_wd) != 0)
     {
         perror("Error: cannot change to old directory");
@@ -37,6 +44,7 @@ int change_to_oldpwd(t_exec *exec, char *oldpwd, char *print_wd)
     oldpwd_entry = dict_create_entry(ft_strdup("OLDPWD"), ft_strdup(oldpwd));
     dict_insert(&exec->env, pwd_entry);
     dict_insert(&exec->env, oldpwd_entry);
+    ft_printf("Es aqui donde no saca nadaaa %s\n", oldpwd);
     free(oldpwd);
     return (0);
 }
@@ -48,7 +56,13 @@ int change_directory(t_exec *exec, char *path)
 
     char old_cwd[1024];
 
+    // if (getcwd(old_cwd, sizeof(old_cwd)) == NULL)
+    // {
+    //     perror("Error: cannot retrieve current directory");
+    //     return (1);
+    // }
     memcpy(old_cwd, dict_get(exec->env, "PWD"), 1024);
+    ft_printf("old_cwd en change_directory: %s\n", old_cwd);
     if (chdir(path) != 0)
     {
         perror("Error: path does not exist or cannot be accessed");
