@@ -7,8 +7,8 @@ int	here_doc(char *delimiter, t_exec *exec)
 	int		hdfd;
 
 	hdfd = open(".heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
-	dup2(exec->saved_stdin, STDIN_FILENO);
-	close(exec->saved_stdin);
+	// dup1(exec->saved_stdin, STDIN_FILENO);
+	// close(exec->saved_stdin);
 	while (1)
 	{
 		ft_printf("herdoc> ");
