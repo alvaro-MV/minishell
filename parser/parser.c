@@ -17,30 +17,8 @@ t_token	*parse_word(t_token **token_stream)
 
 int	add_command(command **cmd, char *element, t_dictionary *env)
 {
-	char	*expanded_el;
-	char	**splitted_el;
-	int 	i;
-
-	i = -1;
-	if (!element)
-	{
-		if (!append_darray(cmd, &element))
-			return (0);
-		return (1);
-	}
-	expanded_el = expand_str(element, env);
-	ft_printf("expanded_el: %s\n", expanded_el);
-	splitted_el = ft_split(expanded_el, ' ');
-	if (!splitted_el)
+	if (!append_darray(cmd, &element))
 		return (0);
-	while (splitted_el[++i])
-	{
-		if (!append_darray(cmd, &splitted_el[i]))
-			return (ft_free_array(splitted_el), 0);
-	}
-	if (!append_darray(cmd, &splitted_el[i]))
-		return (ft_free_array(splitted_el), 0);
-	ft_free_array(splitted_el);
 	return (1);
 }
 
