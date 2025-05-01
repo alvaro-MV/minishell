@@ -52,6 +52,11 @@ int	main(int argc, char **argv, char **env)
 		close(saved_stdin);
 		free(line);
 		free_AST(sequence);
+			// while (*tokens_strings)
+			// {
+			// 	free(*tokens_strings);
+			// 	tokens_strings++;
+			// }
 		free_darray(tokens_array);
 		free(tokens_for_free);
 	}

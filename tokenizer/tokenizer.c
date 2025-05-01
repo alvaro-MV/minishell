@@ -149,6 +149,11 @@ t_token	*tester_token(char *line)
 	tokens_array = tokenizer_str(line);
 	tokens_strings = (char **) tokens_array->darray;
 	token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
+
+	// Liberar cada string individualmente
+	for (int j = 0; j < tokens_array->full_idx; j++)
+		free(tokens_strings[j]);
+
 	free(tokens_array);
 	
 	i = 0;
