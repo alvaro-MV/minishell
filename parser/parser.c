@@ -15,10 +15,32 @@ t_token	*parse_word(t_token **token_stream)
 	return (ret_token);
 }
 
-int	add_command(command **cmd, char *element)
+int	add_command(command **cmd, char *element, t_dictionary *env)
 {
-	if (!append_darray(cmd, &element))
+	char	*expanded_el;
+	char	**splitted_el;
+	int 	i;
+
+	i = -1;
+	if (!element)
+	{
+		if (!append_darray(cmd, &element))
+			return (0);
+		return (1);
+	}
+	expanded_el = expand_str(element, env);
+	ft_printf("expanded_el: %s\n", expanded_el);
+	splitted_el = ft_split(expanded_el, ' ');
+	if (!splitted_el)
 		return (0);
+	while (splitted_el[++i])
+	{
+		if (!append_darray(cmd, &splitted_el[i]))
+			return (ft_free_array(splitted_el), 0);
+	}
+	if (!append_darray(cmd, &splitted_el[i]))
+		return (ft_free_array(splitted_el), 0);
+	ft_free_array(splitted_el);
 	return (1);
 }
 
@@ -33,49 +55,49 @@ void	print_from_diff(char *AST, char *expected)
 	ft_printf("e: %s\n", &expected[i]);
 }
 
-void tester_parser(char *line, char *expected, int n)
-{
-	t_darray	*tokens_array;
-	char		**tokens_strings;
-	t_token		*token_stream;
-	char		*AST = ft_strdup("");
+// void tester_parser(char *line, char *expected, int n)
+// {
+// 	t_darray	*tokens_array;
+// 	char		**tokens_strings;
+// 	t_token		*token_stream;
+// 	char		*AST = ft_strdup("");
 
-	ft_printf("[%d]: ", n);
-	tokens_array = tokenizer_str(line);
-	tokens_strings = (char **) tokens_array->darray;
-	token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
+// 	ft_printf("[%d]: ", n);
+// 	tokens_array = tokenizer_str(line);
+// 	tokens_strings = (char **) tokens_array->darray;
+// 	token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
 
-	//i = 0;
-	//while (token_stream[i].type != END)
-	//{
-		//printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
-		//i++;
-	//}
+// 	//i = 0;
+// 	//while (token_stream[i].type != END)
+// 	//{
+// 		//printf("token: %s -|- type: %d\n", token_stream[i].text, token_stream[i].type);
+// 		//i++;
+// 	//}
 
-	t_token	*tokens_for_free = token_stream;
-	t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream);
-	if (sequence)
-	{
-		print_AST(sequence);
-		buffer_AST(sequence, &AST);
+// 	t_token	*tokens_for_free = token_stream;
+// 	t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream);
+// 	if (sequence)
+// 	{
+// 		print_AST(sequence);
+// 		buffer_AST(sequence, &AST);
 
-		if (!ft_strcmp(AST, expected))
- 			ft_printf("\033[32m%l[OK]\n\033[0m");
-		else
-		{
- 			ft_printf("\033[31m%l[KO]\n\033[0m");
-			ft_printf("----------------------------\n");
-			print_from_diff(AST, expected);
-			ft_printf("----------------------------\n");
-		}
-	}
+// 		if (!ft_strcmp(AST, expected))
+//  			ft_printf("\033[32m%l[OK]\n\033[0m");
+// 		else
+// 		{
+//  			ft_printf("\033[31m%l[KO]\n\033[0m");
+// 			ft_printf("----------------------------\n");
+// 			print_from_diff(AST, expected);
+// 			ft_printf("----------------------------\n");
+// 		}
+// 	}
 
-	free(AST);
-	free_AST(sequence);
-	free(tokens_array);
-	free(tokens_for_free);
-	ft_free_array(tokens_strings);
-}
+// 	free(AST);
+// 	free_AST(sequence);
+// 	free(tokens_array);
+// 	free(tokens_for_free);
+// 	ft_free_array(tokens_strings);
+// }
 
 // int	main(void)
 // {

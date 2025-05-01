@@ -41,7 +41,7 @@ int	main(int argc, char **argv, char **env)
 		tokens_strings = (char **) tokens_array->darray;
 		token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
 		t_token	*tokens_for_free = token_stream;
-		t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream);
+		t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream, hash_env);
 
 		if (sequence)
 		{

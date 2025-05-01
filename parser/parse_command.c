@@ -19,20 +19,20 @@ int	parse_ix(t_io_redir **ptr_io_redir, t_token **token_stream)
 	return (1);
 }
 
-int	fill_cmd(t_token **token_stream, command **ptr_cmd)
+int	fill_cmd(t_token **token_stream, command **ptr_cmd, t_dictionary *env)
 {
 	while ((*token_stream)->type == COMMAND)
 	{
-		if (!add_command(ptr_cmd, (*token_stream)->text))
+		if (!add_command(ptr_cmd, (*token_stream)->text, env))
 			return (0);
 		(*token_stream)++;
 	}
-	if (!add_command(ptr_cmd, NULL)) //NULL para el terminación y el último para el execve
+	if (!add_command(ptr_cmd, NULL, env)) //NULL para el terminación y el último para el execve
 		return (0);
 	return (1);
 }
 
-t_cmd	*parse_cmd(t_token **token_stream)
+t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 {
 	t_cmd	*ret_cmd;
 	t_cmd	*tmp_cmd;
@@ -53,7 +53,7 @@ t_cmd	*parse_cmd(t_token **token_stream)
 
 		// Meter tokens en el campo cmd hasta que el siguiente token != COMMAND
 
-		if (!fill_cmd(token_stream, &current_cmd->cmd))
+		if (!fill_cmd(token_stream, &current_cmd->cmd, env))
 			return(free_cmd(ret_cmd), NULL);
 
 		// Parseo de redirecciones.

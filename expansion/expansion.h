@@ -1,7 +1,9 @@
 #ifndef EXPANSION_H
 # define EXPANSION_H
 
-# include "../minishell.h"
+# include "../data_structs/dictionary.h"
+# include "../libft/include/libft.h"
+
 
 typedef enum expand_states
 {

@@ -21,7 +21,7 @@ int	alloc_pipe_cmd(t_cmd_pipe **ptr_cmd_pipe)
 	return (1);
 }
 
-t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream)
+t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream, t_dictionary *env)
 {
 	t_cmd_pipe	*ret_cmd_pipe;
 	t_cmd_pipe	*current_cmd_pipe;
@@ -31,7 +31,7 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream)
 		return (NULL);
 	if (!alloc_pipe_cmd(&ret_cmd_pipe))
 		return (NULL);
-	ret_cmd_pipe->cmd = parse_cmd(token_stream);
+	ret_cmd_pipe->cmd = parse_cmd(token_stream, env);
 	if  (!ret_cmd_pipe->cmd)
 		return (free_AST(ret_cmd_pipe), NULL); //Fallo de sintaxis. Pirarse y liberar todo
 	// else if (is_empty_cmd(ret_cmd_pipe->cmd))
@@ -47,7 +47,7 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream)
 		//Mismo parseo para el próximo comando.
 		if (!alloc_pipe_cmd(&tmp_cmd_pipe))
 			return (free_AST(ret_cmd_pipe), NULL); //Fallo de sintaxis. Pirarse y liberar todo
-		tmp_cmd_pipe->cmd = parse_cmd(token_stream);
+		tmp_cmd_pipe->cmd = parse_cmd(token_stream, env);
 
 		//Avanzas en la lista.
 
