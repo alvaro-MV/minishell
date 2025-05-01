@@ -17,8 +17,36 @@ t_token	*parse_word(t_token **token_stream)
 
 int	add_command(command **cmd, char *element, t_dictionary *env)
 {
-	if (!append_darray(cmd, &element))
-		return (0);
+	char	**split;
+	int		i;
+	char	*expanded_cmd;
+	char	*append_arg;
+
+	i = 0;
+	if (!element ||(element && element[0] != '$'))
+	{
+		if (!append_darray(cmd, &element))
+			return (0);
+		return (1);
+	}
+	else
+	{
+		expanded_cmd = expand_str(element, env);
+		if (!expanded_cmd)
+			return (0);
+		split = ft_split(expanded_cmd, ' ');
+		free(expanded_cmd);
+		if (!split)
+			return (0);
+		while (split[i])
+		{
+			append_arg = ft_strdup(split[i]);
+			if (!append_darray(cmd, &append_arg))
+				return (ft_free_array(split), 0);
+			i++;
+		}
+		ft_free_array(split);
+	}
 	return (1);
 }
 
