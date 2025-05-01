@@ -26,6 +26,7 @@ void	get_env(t_dictionary **hash_env, char **env)
 {
 	t_dic_entry		*env_var;
 	char			**env_var_array;
+	char			*shlvl;
 
 	*hash_env = dict_init(230);
 	while (*env)
@@ -38,6 +39,9 @@ void	get_env(t_dictionary **hash_env, char **env)
 		env++;
 	}
 	insert_special_params(hash_env);
+	shlvl = dict_get(*hash_env, "SHLVL");
+	env_var = dict_create_entry(ft_strdup("SHLVL"), ft_itoa(ft_atoi(shlvl) + 1));
+	dict_insert(hash_env, env_var);
 }
 
 // int main(int argc, char **argv, char **env)

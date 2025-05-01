@@ -52,7 +52,7 @@ int	main(int argc, char **argv, char **env)
 		close(saved_stdin);
 		free(line);
 		free_AST(sequence);
-		free(tokens_array);
+		free_darray(tokens_array);
 		free(tokens_for_free);
 	}
 	close(saved_stdin);

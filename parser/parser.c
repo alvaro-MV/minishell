@@ -22,7 +22,7 @@ int	add_command(command **cmd, char *element, t_dictionary *env)
 	char	*expanded_cmd;
 	char	*append_arg;
 
-	i = 0;
+	i = -1;
 	if (!element ||(element && element[0] != '$'))
 	{
 		if (!append_darray(cmd, &element))
@@ -35,17 +35,15 @@ int	add_command(command **cmd, char *element, t_dictionary *env)
 		if (!expanded_cmd)
 			return (0);
 		split = ft_split(expanded_cmd, ' ');
-		free(expanded_cmd);
 		if (!split)
-			return (0);
-		while (split[i])
+			return (free(expanded_cmd), 0);
+		while (split[++i])
 		{
 			append_arg = ft_strdup(split[i]);
 			if (!append_darray(cmd, &append_arg))
-				return (ft_free_array(split), 0);
-			i++;
+				return (free(expanded_cmd), ft_free_array(split), 0);
 		}
-		ft_free_array(split);
+		(free(expanded_cmd), ft_free_array(split));
 	}
 	return (1);
 }

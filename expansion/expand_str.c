@@ -40,6 +40,7 @@ char	*expand_str(char *str, t_dictionary *env)
 	char	*env_var_name;
 	char	*env_var_value;
 
+	char	*trimmed_var = NULL;
 	i = 0;
 	// if (!is_for_expand_str(str))
 	// 	return (str);
@@ -108,12 +109,14 @@ char	*expand_str(char *str, t_dictionary *env)
 				env_var_name = ft_substr(str, i, len_env_var - i);
 				if (!env_var_name)
 					return (free(tmp_str), free(expanded_str), NULL);
-				if (ft_strncmp(ft_strtrim(env_var_name, " \t\r"), " ", 2))
+				trimmed_var = ft_strtrim(env_var_name, " \t\r");
+				if (ft_strncmp(trimmed_var, " ", 2))
 				{
 					env_var_value = dict_get(env, env_var_name);
 					if (!env_var_value)
 						env_var_value = "";
 				}
+				free(trimmed_var);
 				expanded_str = ft_strjoin(expanded_str, env_var_value);
 				free(tmp_str);
 				free(env_var_name);
