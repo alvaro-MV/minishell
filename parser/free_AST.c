@@ -19,8 +19,10 @@ void	free_cmd(t_cmd *cmd)
 
 	while (cmd)
 	{
-		free_io_redir(cmd->cmd_prefix);
-		free_io_redir(cmd->cmd_suffix);
+		//free_io_redir(cmd->cmd_prefix);
+		//free_io_redir(cmd->cmd_suffix);
+		write(1, "PARA LIBERAR COMANDO\n", 22);
+		ft_printf("cmd->darray: %p\n", cmd->cmd);
 		cmds_for_free = (char **) cmd->cmd->darray;
 		while (*cmds_for_free)
 		{

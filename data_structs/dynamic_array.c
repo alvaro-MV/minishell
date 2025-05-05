@@ -47,6 +47,7 @@ int	resize_darray(t_darray **darray)
 void	free_darray(t_darray *darray)
 {
 	free(darray->darray);
+	write(1, "Entraaaa 3 veces\n", 18);
 	free(darray);
 }
 
