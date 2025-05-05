@@ -41,7 +41,13 @@ int	call_execve(t_exec *exec)
 	execve_args = create_args(exec->cmd);
 	//Controlar el caso donde sea ruta relativa o absoluta que este mal.
 	execve(execve_args[0], execve_args, dict_envp(exec->env, 0, 0));
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd_name, 2);
+	if (access(execve_args[0], F_OK) == 0)
+	{
+		ft_putstr_fd(": Permission denied\n", 2);
+		exit(126);
+	}
 	ft_putstr_fd(": command not found\n", 2);
 	free_cmd(exec->cmd);
 	dict_delete(exec->env);
