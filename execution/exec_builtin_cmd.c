@@ -58,12 +58,14 @@ int	call_execve(t_exec *exec)
 int	run_builtin(t_exec *exec)
 {
 	char	**arguments;
+	int		status;
 
+	status = 0;
 	arguments = create_args(exec->cmd);
 	if (!ft_strcmp(arguments[0], "echo"))
 		echo(arguments);
 	else if (!ft_strcmp(arguments[0], "export"))
-		export(exec, arguments);
+		status = export(exec, arguments);
 	else if (!ft_strcmp(arguments[0], "pwd"))
 		pwd2();
 	else if (!ft_strcmp(arguments[0], "env"))
@@ -77,7 +79,7 @@ int	run_builtin(t_exec *exec)
 	else
 		ft_printf("minishell: command not found\n");
 	free(arguments);
-	return (0);
+	return (status);
 }
 
 int	execute_child(t_exec *exec_vars)

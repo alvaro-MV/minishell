@@ -2,4 +2,6 @@
 out*
 a.out
 minishell_tester
+*tester*
 */*.o
+minishell
