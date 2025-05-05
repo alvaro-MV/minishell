@@ -58,6 +58,7 @@ char	*expand_str(char *str, t_dictionary *env)
 				state = SINGLE_QUOTE;
 			else if ((str[i] == '$' && ft_isalnum(str[i + 1]))
 					|| (str[i] == '$' && str[i + 1] == '\'')
+					|| (str[i] == '$' && str[i + 1] == '"')
 					|| (str[i] == '$' && is_special_var(&str[i + 1])))
 				state = ENV_VAR;
 			else
@@ -219,7 +220,7 @@ void	expand_tester(t_dictionary *env)
 	make_test("\"$disp\"'x'", env, "x");
 	ft_printf("\n----------------------\n");
 
-	make_test("$\"disp\"'x'", env, "$dispx");
+	make_test("$\"disp\"'x'", env, "dispx");
 	ft_printf("\n----------------------\n");
 
 	make_test("cat -e", env, "cat -e");
@@ -253,5 +254,8 @@ void	expand_tester(t_dictionary *env)
 	ft_printf("\n----------------------\n");
 
 	make_test("\"bonjour 42\"", env, "bonjour 42");
+	ft_printf("\n----------------------\n");
+
+	make_test("$\"  $USER a\"", env, "  alvaro a");
 	ft_printf("\n----------------------\n");
 }

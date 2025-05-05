@@ -13,6 +13,7 @@ typedef enum expand_states
 	ENV_VAR
 }	expand_states;
 
+void	insert_special_params(t_dictionary **env);
 char	*expand_str(char *str, t_dictionary *env);
 
 #endif

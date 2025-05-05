@@ -45,7 +45,6 @@ int	main(int argc, char **argv, char **env)
 		free_darray(tokens_array);
 		t_token	*tokens_for_free = token_stream;
 		t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream, hash_env);
-
 		if (sequence)
 			insert_status(executor(sequence, hash_env, env), &hash_env);
 		else

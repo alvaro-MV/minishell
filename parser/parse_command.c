@@ -19,15 +19,19 @@ int	parse_ix(t_io_redir **ptr_io_redir, t_token **token_stream)
 	return (1);
 }
 
-int	fill_cmd(t_token **token_stream, command **ptr_cmd, t_dictionary *env)
+int	fill_cmd(t_token **stream, command **ptr_cmd, t_dictionary *env)
 {
-	while ((*token_stream)->type == COMMAND)
+	int		n_cmd;
+
+	n_cmd = 0;
+	while ((*stream)->type == COMMAND)
 	{
-		if (!add_command(ptr_cmd, (*token_stream)->text, env))
+		if (!add_command(ptr_cmd, (*stream)->text, env, n_cmd))
 			return (0);
-		(*token_stream)++;
+		(*stream)++;
+		n_cmd++;
 	}
-	if (!add_command(ptr_cmd, NULL, env)) //NULL para el terminación y el último para el execve
+	if (!add_command(ptr_cmd, NULL, env, n_cmd)) //NULL para el terminación y el último para el execve
 		return (0);
 	return (1);
 }
@@ -37,7 +41,7 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 	t_cmd	*ret_cmd;
 	t_cmd	*tmp_cmd;
 	t_cmd	*current_cmd;
-
+	
 	if ((*token_stream)->type == PIPE_OPERATOR) // Para el caso | |
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
@@ -55,7 +59,6 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 
 		if (!fill_cmd(token_stream, &current_cmd->cmd, env))
 			return(free_cmd(ret_cmd), NULL);
-
 		// Parseo de redirecciones.
 		if (!parse_ix(&current_cmd->cmd_suffix, token_stream))
 			return(free_cmd(ret_cmd), NULL);

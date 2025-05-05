@@ -15,15 +15,17 @@ t_token	*parse_word(t_token **token_stream)
 	return (ret_token);
 }
 
-int	add_command(command **cmd, char *element, t_dictionary *env)
+int	add_command(command **cmd, char *element, t_dictionary *env, int exp)
 {
 	char	**split;
 	int		i;
 	char	*expanded_cmd;
 	char	*append_arg;
 
+	(void) exp;
 	i = -1;
-	if (!element ||(element && element[0] != '$'))
+	if (!element || (element && element[0] != '$')
+		|| (element && element[0] == '$' && exp))
 	{
 		if (!append_darray(cmd, &element))
 			return (0);

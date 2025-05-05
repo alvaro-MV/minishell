@@ -32,14 +32,16 @@ char	*find_exec_in_path(char **path, char *exec)
 int	call_execve(t_exec *exec)
 {
 	char	**arguments;
+	char	cmd_name[1024];
 	char	**execve_args;
 
 	arguments = (char **)exec->cmd->cmd->darray;
+	ft_memcpy(cmd_name, arguments[0], ft_strlen(arguments[0]));
 	arguments[0] = find_exec_in_path(ft_split(dict_get(exec->env, "PATH"), ':'), arguments[0]);
 	execve_args = create_args(exec->cmd);
 	//Controlar el caso donde sea ruta relativa o absoluta que este mal.
 	execve(execve_args[0], execve_args, exec->main_env);
-	ft_putstr_fd(arguments[0], 2);
+	ft_putstr_fd(cmd_name, 2);
 	ft_putstr_fd(": command not found\n", 2);
 	free_cmd(exec->cmd);
 	dict_delete(exec->env);
@@ -90,7 +92,6 @@ int	execute_child(t_exec *exec_vars)
 			write(1, "Siiiiiiiiiiiii\n", 12); // Liberar lo anterior y pirarte.
 		if (status != 0)
 		{
-			// ft_printf("PERO TE PIRAS O NO TE PIRAS JODER: %d\n", status);
 			close_cmd_fds(exec_vars->cmd);
 			exit(status);
 		}
