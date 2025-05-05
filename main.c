@@ -44,9 +44,9 @@ int	main(int argc, char **argv, char **env)
 		t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream, hash_env);
 
 		if (sequence)
-		{
 			insert_status(executor(sequence, hash_env, env), &hash_env);
-		}
+		else
+			insert_status(2, &hash_env);
 
     	dup2(saved_stdin, STDIN_FILENO);
 		close(saved_stdin);

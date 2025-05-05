@@ -1,4 +1,5 @@
 */*.out
+out*
 a.out
 minishell_tester
 */*.o

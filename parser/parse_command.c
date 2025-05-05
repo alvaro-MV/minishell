@@ -40,7 +40,7 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 
 	if ((*token_stream)->type == PIPE_OPERATOR) // Para el caso | |
 	{
-		ft_printf("minishell: syntax error near unexpected token |\n");
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 		return (NULL);
 	}
 	if (!alloc_cmd(&ret_cmd))

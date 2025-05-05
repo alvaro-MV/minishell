@@ -25,9 +25,9 @@ t_io_redir	*parse_io_redir(t_token **token_stream)
 		if (current_io_redir->filename == NULL
 			|| current_io_redir->filename->type != FILENAME)
 		{
-			ft_printf("minishell: syntax error near unexpected token ");
+			ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
 			if ((*token_stream)->type == END)
-				ft_printf("`newline'\n");
+				ft_putstr_fd("`newline'\n", 2);
 			else
 				ft_printf("%s\n", (*token_stream)->text);
 			return (free_io_redir(ret_io_redir), NULL);
