@@ -85,10 +85,12 @@ t_darray	*tokenizer_str(char *line)
 	start = 0;
 	tmp_line = line;
 	line = ft_strtrim(line, " ");
+	if (!line)
+		return (NULL);
 	free(tmp_line);
 	tokens = alloc_darray(count_n_tokens(line) + 1, sizeof(char *));
 	if (!tokens)
-		return (NULL);
+		return (free(line), NULL);
 	while (tokens->full_idx < count_n_tokens(line))
 	{
 		while (still_in_quote(line[i], '\''))
@@ -98,17 +100,18 @@ t_darray	*tokenizer_str(char *line)
 		if (is_simple_operator(line[i]))
 		{
 			if (!tokenize_operator(line, &i, &start, &tokens))
-				return (NULL);
+				return (free(line), NULL);
 			continue ;
 		}
 		else if (isspace(line[i]) || !line[i])
 		{
 			if (!tokenize_literal(line, &i, &start, &tokens))
-				return (NULL);
+				return (free(line), NULL);
 		}
 		i++;
 	}
 	add_token(&tokens, NULL);
+	free(line);
 	return (tokens);
 }
 

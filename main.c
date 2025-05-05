@@ -40,6 +40,8 @@ int	main(int argc, char **argv, char **env)
 		tokens_array = tokenizer_str(line);
 		tokens_strings = (char **) tokens_array->darray;
 		token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
+		ft_free_array(tokens_array->darray);
+		tokens_array->darray = NULL;
 		free_darray(tokens_array);
 		t_token	*tokens_for_free = token_stream;
 		t_cmd_pipe	*sequence = parse_cmd_pipe(&token_stream, hash_env);
@@ -51,7 +53,6 @@ int	main(int argc, char **argv, char **env)
 
     	dup2(saved_stdin, STDIN_FILENO);
 		close(saved_stdin);
-		free(line);
 		free_AST(sequence);
 		free(tokens_for_free);
 	}
