@@ -40,7 +40,7 @@ int	call_execve(t_exec *exec)
 	arguments[0] = find_exec_in_path(ft_split(dict_get(exec->env, "PATH"), ':'), arguments[0]);
 	execve_args = create_args(exec->cmd);
 	//Controlar el caso donde sea ruta relativa o absoluta que este mal.
-	execve(execve_args[0], execve_args, exec->main_env);
+	execve(execve_args[0], execve_args, dict_envp(exec->env, 0, 0));
 	ft_putstr_fd(cmd_name, 2);
 	ft_putstr_fd(": command not found\n", 2);
 	free_cmd(exec->cmd);

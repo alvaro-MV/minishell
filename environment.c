@@ -1,5 +1,30 @@
 #include "minishell.h"
 
+char	**dict_envp(t_dictionary *env, unsigned int index, int j)
+{
+	char		**envp;
+	t_dic_entry *entry;
+	char		*tmp;
+
+	index = 0;
+	j = 0;
+	envp = ft_calloc(env->n_elements + 1, sizeof(char *));
+	while (index < env->capacity)
+	{
+		if (env->entries[index])
+		{
+			entry = env->entries[index];
+			tmp = ft_strjoin(entry->key, "=");
+			envp[j] =  ft_strjoin(tmp, entry->value);
+			free(tmp);
+			j++;
+		}
+		index++;
+	}
+	envp[j] = NULL;
+	return (envp);
+}
+
 void	insert_special_params(t_dictionary **env)
 {
 	t_dic_entry		*env_var;
