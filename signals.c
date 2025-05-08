@@ -32,11 +32,17 @@
 // // FUNCION handle_sigquit:
 // //     NO HACER NADA (ignorar SIGQUIT)
 
+#include <signal.h>
+
+volatile sig_atomic_t g_in_heredoc = 0; 
 
 // // Manejador para SIGINT (Ctrl+C)
 void handle_sigint(int sig)
 {
     (void)sig; // Ignorar la variable 'sig'
+    if (g_in_heredoc)          /* dentro de heredoc, lo ignoramos */
+        return;
+    
     write(1, "\n", 1); // Imprimir una nueva línea
     rl_on_new_line(); // Preparar readline para mostrar el prompt en una nueva línea
     rl_replace_line("", 0); // Limpiar la línea actual
@@ -59,7 +65,8 @@ void signals(char **input, int *exit)
     signal(SIGQUIT, handle_sigquit); 
 
     // Bucle principal para el shell interactivo
-    // while (1)
+    if (1)
+    {
         *input = readline("minishell> "); // Mostrar prompt y leer entrada
 
         // Manejar Ctrl+D (EOF)
@@ -80,6 +87,9 @@ void signals(char **input, int *exit)
 
         // Liberar la memoria de readline
         // free(input);
+    }
+    // else
+    //     signals_here
 }
 
 

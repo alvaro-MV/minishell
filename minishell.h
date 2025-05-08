@@ -18,6 +18,7 @@
 #include "builtins/builtins.h"
 #include <signal.h>
 
+
 //    Get environment
 void	get_env(t_dictionary **hash_env, char **env);
 int     executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env);

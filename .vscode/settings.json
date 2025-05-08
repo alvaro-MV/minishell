@@ -8,6 +8,7 @@
 		"get_next_line.h": "c",
 		"minishell.h": "c",
 		"expansion.h": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"execution.h": "c"
 	}
 }
