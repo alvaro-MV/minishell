@@ -8,7 +8,7 @@ int	alloc_io_redir(t_io_redir **ptr__io_redir)
 	return (1);
 }
 
-t_io_redir	*parse_io_redir(t_token **token_stream)
+t_io_redir	*parse_io_redir(t_token **token_stream, t_dictionary *env)
 {
 	t_io_redir	*ret_io_redir;
 	t_io_redir	*current_io_redir;
@@ -22,6 +22,8 @@ t_io_redir	*parse_io_redir(t_token **token_stream)
 		current_io_redir->op = (*token_stream);
 		(*token_stream)++;
 		current_io_redir->filename = parse_word(token_stream);
+		if (!ft_strcmp(current_io_redir->op->text, "<<"))
+			here_doc(current_io_redir->filename->text, current_io_redir, env);
 		if (current_io_redir->filename == NULL
 			|| current_io_redir->filename->type != FILENAME)
 		{

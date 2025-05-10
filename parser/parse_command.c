@@ -11,9 +11,9 @@ static int	alloc_cmd(t_cmd **ptr_cmd)
 	return (1);
 }
 
-int	parse_ix(t_io_redir **ptr_io_redir, t_token **token_stream)
+int	parse_ix(t_io_redir **ptr_io_redir, t_token **token_stream, t_dictionary *env)
 {
-	*ptr_io_redir = parse_io_redir(token_stream);
+	*ptr_io_redir = parse_io_redir(token_stream, env);
 	if (!*ptr_io_redir)
 		return (0);
 	return (1);
@@ -52,7 +52,7 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 	current_cmd = ret_cmd;	
 	while ((*token_stream)->type != END && (*token_stream)->type != PIPE_OPERATOR)
 	{
-		if (!parse_ix(&current_cmd->cmd_prefix, token_stream))
+		if (!parse_ix(&current_cmd->cmd_prefix, token_stream, env))
 			return(free_cmd(ret_cmd), NULL);
 
 		// Meter tokens en el campo cmd hasta que el siguiente token != COMMAND
@@ -60,7 +60,7 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 		if (!fill_cmd(token_stream, &current_cmd->cmd, env))
 			return(free_cmd(ret_cmd), NULL);
 		// Parseo de redirecciones.
-		if (!parse_ix(&current_cmd->cmd_suffix, token_stream))
+		if (!parse_ix(&current_cmd->cmd_suffix, token_stream, env))
 			return(free_cmd(ret_cmd), NULL);
 		// Se reserva el siguiente comando.
 		if (!alloc_cmd(&tmp_cmd))
