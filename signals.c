@@ -34,14 +34,11 @@
 
 #include <signal.h>
 
-volatile sig_atomic_t g_in_heredoc = 0; 
-
 // // Manejador para SIGINT (Ctrl+C)
 void handle_sigint(int sig)
 {
     (void)sig; // Ignorar la variable 'sig'
-    if (g_in_heredoc)          /* dentro de heredoc, lo ignoramos */
-        return;
+
     
     write(1, "\n", 1); // Imprimir una nueva línea
     rl_on_new_line(); // Preparar readline para mostrar el prompt en una nueva línea

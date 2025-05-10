@@ -13,10 +13,11 @@
 #include "data_structs/dictionary.h"
 #include "libft/include/libft.h"
 #include "parser/parser.h"
-#include "expansion/expansion.h"
-#include "execution/execution.h"
-#include "builtins/builtins.h"
-#include <signal.h>
+# include "expansion/expansion.h"
+# include "execution/execution.h"
+# include "builtins/builtins.h"
+# include <signal.h>
+
 
 
 //    Get environment
@@ -28,5 +29,7 @@ void    handle_sigquit(int sig);
 void	insert_special_params(t_dictionary **env);
 void 	signals(char **input, int *exit);
 char	**dict_envp(t_dictionary *env, unsigned int index, int j);
+
+void 	handle_sigint(int sig);
 
 #endif

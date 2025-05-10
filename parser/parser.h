@@ -6,6 +6,10 @@
 # include "../data_structs/dictionary.h"
 # include "../expansion/expansion.h"
 # include "../libft/include/libft.h"
+# include <signal.h>
+# include <wait.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 typedef struct	s_io_redir
 {
