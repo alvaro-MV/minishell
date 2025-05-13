@@ -95,6 +95,8 @@ int	execute_child(t_exec *exec_vars)
 	if (ret == 0)
 	{
 		status = execute_io_redir(exec_vars); // Basicamente, intercambian un fd por otro.
+		if (status)
+			exit(1);
 		if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) == -1)
 			write(1, "Siiiiiiiiiiiii\n", 12); // Liberar lo anterior y pirarte.
 		if (exec_vars->cmd->fds[1] != 1 && dup2(exec_vars->cmd->fds[1], 1) == -1)

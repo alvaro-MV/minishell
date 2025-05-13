@@ -54,19 +54,34 @@ void	get_env(t_dictionary **hash_env, char **env)
 	char			*shlvl;
 
 	*hash_env = dict_init(230);
-	while (*env)
+	if (!*env)
 	{
-		env_var_array = ft_split(*env, '=');
-		env_var = dict_create_entry(ft_strdup(env_var_array[0]), ft_strdup(env_var_array[1])); //funcion para crear una entrada que se le comparte al dic_insert
+		env_var = dict_create_entry(ft_strdup("PWD"), ft_strdup("/home/alvaro/C42/minishell"));
 		env_var->export = 1;
-		ft_free_array(env_var_array);
-		dict_insert(hash_env, env_var); // funcion para meter una variable o modificarla si ya existe 
-		env++;
+		dict_insert(hash_env, env_var);
+		env_var = dict_create_entry(ft_strdup("OLDPWD"), ft_strdup(""));
+		env_var->export = 1;
+		dict_insert(hash_env, env_var);
+	}
+	else
+	{
+		while (*env)
+		{
+			env_var_array = ft_split(*env, '=');
+			env_var = dict_create_entry(ft_strdup(env_var_array[0]), ft_strdup(env_var_array[1])); //funcion para crear una entrada que se le comparte al dic_insert
+			env_var->export = 1;
+			ft_free_array(env_var_array);
+			dict_insert(hash_env, env_var); // funcion para meter una variable o modificarla si ya existe 
+			env++;
+		}
 	}
 	insert_special_params(hash_env);
 	shlvl = dict_get(*hash_env, "SHLVL");
-	env_var = dict_create_entry(ft_strdup("SHLVL"), ft_itoa(ft_atoi(shlvl) + 1));
-	dict_insert(hash_env, env_var);
+	if (shlvl)
+	{
+		env_var = dict_create_entry(ft_strdup("SHLVL"), ft_itoa(ft_atoi(shlvl) + 1));
+		dict_insert(hash_env, env_var);
+	}
 }
 
 // int main(int argc, char **argv, char **env)

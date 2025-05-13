@@ -10,32 +10,22 @@ int	override_fd(t_exec *exec, t_io_redir *redir, int flags, int idx)
 	fd = open(redir->filename->text, flags, 0644);
 	if (fd == -1)
 	{
+		perror(redir->filename->text);
 		if (access(redir->filename->text, F_OK))
-		{
-			perror(redir->filename->text);
 			return (1);
-		}
 		if (stat(redir->filename->text, &file_stat) == -1)
-		{
-			perror(redir->filename->text);
 			return (1); // Devolver código de error si stat falla
-		}
 		if (!(file_stat.st_mode & S_IWUSR) || !(file_stat.st_mode & S_IRUSR))
 		{
-			perror(redir->filename->text);
 			free_cmd(exec->cmd);
 			dict_delete(exec->env);
-			exit (1);
+			return (1);
 		}
+		else
+			return (1);
 	}
 	else
-	{
-		// close(exec->cmd->fds[idx]);
-		// if (dup2(fd, idx) == -1)
-		// 	return (1); // Me joden
 		exec->cmd->fds[idx] = fd;
-		// close(fd);
-	}
 	return (0);
 }
 
