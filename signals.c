@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "signals.h"
 
 
 
@@ -32,14 +32,13 @@
 // // FUNCION handle_sigquit:
 // //     NO HACER NADA (ignorar SIGQUIT)
 
-#include <signal.h>
 
 // // Manejador para SIGINT (Ctrl+C)
 void handle_sigint(int sig)
 {
     (void)sig; // Ignorar la variable 'sig'
 
-    
+    g_sigint_received = 1;
     write(1, "\n", 1); // Imprimir una nueva línea
     rl_on_new_line(); // Preparar readline para mostrar el prompt en una nueva línea
     rl_replace_line("", 0); // Limpiar la línea actual

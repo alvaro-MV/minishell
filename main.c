@@ -30,9 +30,10 @@ int	main(int argc, char **argv, char **env)
 			close(saved_stdin);
 			exit(0);
 		}
-		if (*line == '\0')
+		if (g_sigint_received == 1)
 		{
-			free(line);
+			// free(line);
+			g_sigint_received = 0;
 			dict_set_env_var(&hash_env, "?", "130", 0);
 			continue ;
 		}

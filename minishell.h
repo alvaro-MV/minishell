@@ -16,9 +16,7 @@
 # include "expansion/expansion.h"
 # include "execution/execution.h"
 # include "builtins/builtins.h"
-# include <signal.h>
-
-
+# include "signals.h"
 
 //    Get environment
 void	get_env(t_dictionary **hash_env, char **env);
@@ -30,7 +28,5 @@ void	insert_special_params(t_dictionary **env);
 void 	signals(char **input, int *exit);
 char	**dict_envp(t_dictionary *env, unsigned int index, int j);
 void	dict_set_env_var(t_dictionary **env, char *k, char *v, int export);
-
-void 	handle_sigint(int sig);
 
 #endif

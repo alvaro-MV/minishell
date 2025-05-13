@@ -9,6 +9,7 @@
 		"minishell.h": "c",
 		"expansion.h": "c",
 		"libft.h": "c",
-		"execution.h": "c"
+		"execution.h": "c",
+		"signals.h": "c"
 	}
 }
