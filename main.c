@@ -33,6 +33,7 @@ int	main(int argc, char **argv, char **env)
 		if (*line == '\0')
 		{
 			free(line);
+			dict_set_env_var(&hash_env, "?", "130", 0);
 			continue ;
 		}
 

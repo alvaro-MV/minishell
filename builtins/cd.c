@@ -92,7 +92,7 @@ int cd(t_exec *exec, char **arg)
         }
         return(change_to_oldpwd(exec, oldpwd, current_wd));
     }
-    if (arg[1])
+    if (arg[1] && arg[1][0] != '~')
     {
 		path = ft_strjoin(dict_get(exec->env, "PWD"), "/");
         tmp_path = path;

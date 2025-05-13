@@ -29,6 +29,7 @@ void    handle_sigquit(int sig);
 void	insert_special_params(t_dictionary **env);
 void 	signals(char **input, int *exit);
 char	**dict_envp(t_dictionary *env, unsigned int index, int j);
+void	dict_set_env_var(t_dictionary **env, char *k, char *v, int export);
 
 void 	handle_sigint(int sig);
 

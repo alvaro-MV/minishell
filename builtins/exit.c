@@ -34,7 +34,7 @@ int ft_exit(char **args)
     if (!is_numeric(args[1]))
     {
         ft_printf("exit: %s: numeric argument required\n", args[1]);
-        exit(255);
+        return (255);
     }
     if (args[2])
     {
