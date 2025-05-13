@@ -34,24 +34,25 @@ int	call_execve(t_exec *exec)
 	char	**arguments;
 	char	cmd_name[1024];
 	char	**execve_args;
+	char	**envp;
+	char	**path;
 
 	arguments = (char **)exec->cmd->cmd->darray;
+	ft_bzero(cmd_name, 1024);
 	ft_memcpy(cmd_name, arguments[0], ft_strlen(arguments[0]));
-	arguments[0] = find_exec_in_path(ft_split(dict_get(exec->env, "PATH"), ':'), arguments[0]);
+	path = ft_split(dict_get(exec->env, "PATH"), ':');
+	arguments[0] = find_exec_in_path(path, arguments[0]);
+	ft_free_array(path);
 	execve_args = create_args(exec->cmd);
+	envp = dict_envp(exec->env, 0, 0);
 	//Controlar el caso donde sea ruta relativa o absoluta que este mal.
-	execve(execve_args[0], execve_args, dict_envp(exec->env, 0, 0));
+	execve(execve_args[0], execve_args, envp);
+	ft_free_array(envp);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd_name, 2);
 	if (access(execve_args[0], F_OK) == 0)
-	{
-		ft_putstr_fd(": Permission denied\n", 2);
-		exit(126);
-	}
+		(ft_putstr_fd(": Permission denied\n", 2), exit(126));
 	ft_putstr_fd(": command not found\n", 2);
-	free_cmd(exec->cmd);
-	dict_delete(exec->env);
-	ft_free_array(arguments);
 	exit(127);
 }
 
