@@ -16,6 +16,7 @@ void	handle_sigquit2(int sig)
 void	handle_sigint_heredoc(int sig)
 {
 	(void)sig;
+	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();// Preparar readline para mostrar el prompt en una nueva línea
 	rl_replace_line("", 0); // Limpiar la línea actual
 	close(0);

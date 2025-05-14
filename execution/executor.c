@@ -1,5 +1,14 @@
 #include "execution.h"
 
+void	handler_signint_child(int sig)
+{
+	(void) sig;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();// Preparar readline para mostrar el prompt en una nueva línea
+	rl_replace_line("", 0); // Limpiar la línea actual
+	close(0);
+}
+
 int	create_pipe_and_fds(t_cmd_pipe *sequence)
 {
 	int	pipe_fd[2];
@@ -85,6 +94,7 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 	}
 	else
 	{
+		signal(SIGINT, handler_signint_child);
 		while (sequence)
 		{
 			exec_vars = (t_exec){sequence->cmd, env, main_env,

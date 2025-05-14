@@ -92,6 +92,7 @@ int	execute_child(t_exec *exec_vars)
 	ret = fork();
 	if (ret == 0)
 	{
+		ret = fork();
 		status = execute_io_redir(exec_vars); // Basicamente,intercambian un fd por otro.
 		if (status)
 			exit(1);
