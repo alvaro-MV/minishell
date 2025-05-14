@@ -6,10 +6,9 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/14 17:58:17 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:52:11 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "builtins.h"
 
@@ -49,16 +48,3 @@ int	ft_exit(char **args)
 	exit(status);
 	return (0);
 }
-
-/*          - obtener el comando ingresado por el usuario
-			- si existe el comando despues del exit
-				- si no hay sale por 0
-			- si existe argumento despues del exit
-				- comprueba si es numero
-				- si no imprime error y salida por 255
-			- si existe el argumento
-				- pero hay mas argumentos imprime error y sale por la 1
-				- si hay mas de un argumento
-					- imprime error y sale por 1
-			- convierte el argumento a numero y sale con ese estado
-*/

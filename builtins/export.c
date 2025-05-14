@@ -6,10 +6,9 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:23 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/14 17:58:24 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:35:53 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../minishell.h"
 #include "builtins.h"

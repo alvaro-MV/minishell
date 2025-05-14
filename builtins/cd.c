@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:57:28 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/14 18:24:50 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:39:14 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 int	change_to_oldpwd(t_exec *exec, char *oldpwd, char *print_wd)
 {
-    t_dic_entry *pwd_entry;
-    t_dic_entry *oldpwd_entry;
-	
+	t_dic_entry	*pwd_entry;
+	t_dic_entry	*oldpwd_entry;
+
 	ft_memcpy(print_wd, dict_get(exec->env, "OLDPWD"), 1024);
 	oldpwd = ft_strdup(dict_get(exec->env, "PWD"));
-	ft_printf("que es print_wd: %s\n", print_wd);
-	ft_printf("que es oldpwd: %s\n", oldpwd);
 	if (chdir(print_wd) != 0)
 	{
 		perror("Error: cannot change to old directory");
@@ -30,7 +28,6 @@ int	change_to_oldpwd(t_exec *exec, char *oldpwd, char *print_wd)
 	oldpwd_entry = dict_create_entry(ft_strdup("OLDPWD"), ft_strdup(oldpwd));
 	dict_insert(&exec->env, pwd_entry);
 	dict_insert(&exec->env, oldpwd_entry);
-	ft_printf("Es aqui donde no saca nadaaa %s\n", oldpwd);
 	free(oldpwd);
 	return (0);
 }
@@ -55,12 +52,28 @@ int	change_directory(t_exec *exec, char *path)
 	return (0);
 }
 
+char	*cd_continue(t_exec *exec, char **arg)
+{
+	char	*path;
+	char	*tmp_path;
+
+	if (arg[1] && arg[1][0] != '~')
+	{
+		path = ft_strjoin(dict_get(exec->env, "PWD"), "/");
+		tmp_path = path;
+		path = ft_strjoin(path, arg[1]);
+		free(tmp_path);
+	}
+	else
+		path = dict_get(exec->env, "HOME");
+	return (path);
+}
+
 int	cd(t_exec *exec, char **arg)
 {
 	char	current_wd[1024];
 	char	*oldpwd;
 	char	*path;
-	char	*tmp_path;
 
 	if (arg[1] && arg[1][0] == '-' && arg[1][1] == '\0')
 	{
@@ -72,15 +85,7 @@ int	cd(t_exec *exec, char **arg)
 		}
 		return (change_to_oldpwd(exec, oldpwd, current_wd));
 	}
-	if (arg[1] && arg[1][0] != '~')
-	{
-		path = ft_strjoin(dict_get(exec->env, "PWD"), "/");
-		tmp_path = path;
-		path = ft_strjoin(path, arg[1]);
-		free(tmp_path);
-	}
-	else
-		path = dict_get(exec->env, "HOME");
+	path = cd_continue(exec, arg);
 	if (!path)
 	{
 		ft_printf("cd: HOME not set\n");

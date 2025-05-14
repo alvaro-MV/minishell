@@ -6,10 +6,9 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:52 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/14 17:58:53 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:27:08 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
@@ -18,7 +17,7 @@
 # include <stddef.h>
 # include <unistd.h>
 
-struct	s_exec;
+struct					s_exec;
 typedef struct s_exec	t_exec;
 
 typedef enum echo_states
@@ -36,7 +35,9 @@ void					export_error(char *name);
 int						export(t_exec *exec, char **arguments);
 int						is_numeric(const char *str);
 int						ft_exit(char **args);
+void					remove_env_var(t_exec *exec, char *var_name);
 int						unset(t_exec *exec, char **arg);
+char					*cd_continue(t_exec *exec, char **arg);
 int						cd(t_exec *exec, char **arg);
 
 #endif
