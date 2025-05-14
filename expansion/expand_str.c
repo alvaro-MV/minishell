@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_str.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/14 18:13:52 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/14 18:18:44 by lvez-dia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "expansion.h"
 
 int	is_for_expand_str(char *str)
@@ -32,18 +44,14 @@ char	*expand_str(char *str, t_dictionary *env)
 	int				i;
 	char			*expanded_str;
 	char			*tmp_str;
-	expand_states	state;
-	expand_states	old_state;
-
-	// Para la expansión de Variable
+	t_expand_states	state;
+	t_expand_states	old_state;
 	int		len_env_var;
 	char	*env_var_name;
 	char	*env_var_value;
 
 	char	*trimmed_var = NULL;
 	i = 0;
-	// if (!is_for_expand_str(str))
-	// 	return (str);
 	expanded_str = ft_strdup("");
 	state = WORD;
 	old_state = WORD;
@@ -127,135 +135,4 @@ char	*expand_str(char *str, t_dictionary *env)
 		i++;
 	}
 	return (expanded_str);
-}
-
-void	expand_tester(t_dictionary *env);
-
-// int	main(int argc, char **argv, char **env)
-// {
-// 	t_dictionary	*hash_env;
-// 	t_dic_entry		*env_var;
-// 	char			**env_var_array;
-
-// 	hash_env = dict_init(16); //El número de variables que hay en la gramática de shell
-// 	while (*env)
-// 	{
-// 		env_var_array = ft_split(*env, '=');
-// 		env_var = dict_create_entry(env_var_array[0], env_var_array[1]);
-// 		dict_insert(&hash_env, env_var);
-// 		env++;
-// 	}
-// 	insert_special_params(&hash_env);
-// 	expand_tester(hash_env);
-// 	dict_delete(hash_env);
-// 	return (0);
-// }
-//cc expansion/*.c  parser/*.c tokenizer/*.c data_structs/*.c environment.c libft/*.c
-
-
-void	print_result(int condition)
-{
-	if (!condition)
-		ft_printf("\033[31m[KO]\033[0m");
-	else
-		ft_printf("\033[32m[OK]\033[0m");
-}
-
-void	make_test(char *str, t_dictionary *env, char *expected)
-{
-	char	*expanded_str;
-
-	ft_printf("%s: \n", str);
-	expanded_str = expand_str(str, env);
-	ft_printf("\tm: %s\n\te: %s\n", expanded_str, expected);
-	print_result(!ft_strncmp(expanded_str, expected, ft_strlen(expected)));
-	free(expanded_str);
-}
-
-void	expand_tester(t_dictionary *env)
-{
-	char	*str;
-	
-	str = "$bar\"ooo\"";
-	make_test(str, env, "ooo");
-	ft_printf("\n----------------------\n");
-
-	str = "\"hola\"a";
-	make_test(str, env, "holaa");
-	ft_printf("\n----------------------\n");
-
-	str = "\"$display\"ooo\"i\"";
-	make_test(str, env, "oooi");
-	ft_printf("\n----------------------\n");
-
-	str = "\"$displa\"yooo\"i\"";
-	make_test(str, env, "yoooi");
-	ft_printf("\n----------------------\n");
-
-	str = "\"$HOME\"/home/usuario";
-	make_test(str, env, "/home/alvaro/home/usuario");
-	ft_printf("\n----------------------\n");
-
-	str = "'cualquier mierda'";
-	make_test(str, env, "cualquier mierda");
-	ft_printf("\n----------------------\n");
-
-	str = "$DISPLAY'ooo\"i\"'";
-	make_test(str, env, ":0ooo\"i\"");
-	ft_printf("\n----------------------\n");
-
-	str = "\"path\"oo$'DISPLAY'";
-	make_test(str, env, "pathooDISPLAY");
-	ft_printf("\n----------------------\n");
-	
-	make_test("\"$?\"", env, "0");
-	ft_printf("\n----------------------\n");
-
-	make_test("\"$SHELL$\"", env, "/usr/bin/zsh$");
-	ft_printf("\n----------------------\n");
-
-	make_test("$SHELL$", env, "/usr/bin/zsh$");
-	ft_printf("\n----------------------\n");
-
-	make_test("\"$disp\"'x'", env, "x");
-	ft_printf("\n----------------------\n");
-
-	make_test("$\"disp\"'x'", env, "dispx");
-	ft_printf("\n----------------------\n");
-
-	make_test("cat -e", env, "cat -e");
-	ft_printf("\n----------------------\n");
-
-	make_test("$=penelope'9'", env, "$=penelope9");
-	ft_printf("\n----------------------\n");
-
-	make_test("\"'$USER'\"", env, "'alvaro'");
-	ft_printf("\n----------------------\n");
-	
-	make_test("'\"$USER\"'", env, "\"$USER\"");
-	ft_printf("\n----------------------\n");
-
-	make_test("$SHELL$DISPLAY", env, "/usr/bin/zsh:0");
-	ft_printf("\n----------------------\n");
-
-	make_test("$1234$", env, "234$");
-	ft_printf("\n----------------------\n");
-
-	make_test("$a1234$", env, "$");
-	ft_printf("\n----------------------\n");
-
-	make_test("$023$", env, "minishell23$");
-	ft_printf("\n----------------------\n");
-	
-	make_test("APA$=jesulin", env, "APA$=jesulin");
-	ft_printf("\n----------------------\n");
-
-	make_test("$?HELLO", env, "0HELLO");
-	ft_printf("\n----------------------\n");
-
-	make_test("\"bonjour 42\"", env, "bonjour 42");
-	ft_printf("\n----------------------\n");
-
-	make_test("$\"  $USER a\"", env, "  alvaro a");
-	ft_printf("\n----------------------\n");
 }

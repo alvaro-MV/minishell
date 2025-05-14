@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/14 18:16:06 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/14 18:18:28 by lvez-dia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXPANSION_H
 # define EXPANSION_H
 
@@ -11,7 +23,7 @@ typedef enum expand_states
 	DOUBLE_QUOTE,
 	SINGLE_QUOTE,
 	ENV_VAR
-}	expand_states;
+}	t_expand_states;
 
 void	insert_special_params(t_dictionary **env);
 char	*expand_str(char *str, t_dictionary *env);

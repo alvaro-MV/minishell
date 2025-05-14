@@ -13,7 +13,7 @@ char	**create_args(t_cmd *cmd)
 	while (cmd)
 	{
 		i = 0;
-		command_list = (char **) cmd->cmd->darray;
+		command_list = (char **)cmd->cmd->darray;
 		while (command_list && command_list[i])
 		{
 			if (!append_darray(&ret_array, &command_list[i]))
@@ -22,7 +22,7 @@ char	**create_args(t_cmd *cmd)
 		}
 		cmd = cmd->next;
 	}
-	tmp_array = (char **) ret_array->darray;
+	tmp_array = (char **)ret_array->darray;
 	free(ret_array);
 	return (tmp_array);
 }
@@ -48,7 +48,6 @@ int	is_builtin(char **cmd_args)
 		return (1);
 	else if (!ft_strcmp(cmd_name, "cd"))
 		return (1);
-	//Meter el resto
 	return (0);
 }
 

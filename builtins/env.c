@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/14 17:58:02 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/14 17:58:03 by lvez-dia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 #include "builtins.h"
 
-static int is_exportable_var(t_dictionary *dic, char *key)
+static int	is_exportable_var(t_dictionary *dic, char *key)
 {
 	unsigned int	index;
 	unsigned int	counter;
@@ -23,7 +36,7 @@ static int is_exportable_var(t_dictionary *dic, char *key)
 
 int	ft_env(char **args, t_exec *exec)
 {
-	char **env_keys;
+	char	**env_keys;
 
 	env_keys = dict_get_keys(exec->env);
 	if (args[0] && args[1] == NULL)

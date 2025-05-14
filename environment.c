@@ -3,7 +3,7 @@
 char	**dict_envp(t_dictionary *env, unsigned int index, int j)
 {
 	char		**envp;
-	t_dic_entry *entry;
+	t_dic_entry	*entry;
 	char		*tmp;
 
 	index = 0;
@@ -15,7 +15,7 @@ char	**dict_envp(t_dictionary *env, unsigned int index, int j)
 		{
 			entry = env->entries[index];
 			tmp = ft_strjoin(entry->key, "=");
-			envp[j] =  ft_strjoin(tmp, entry->value);
+			envp[j] = ft_strjoin(tmp, entry->value);
 			free(tmp);
 			j++;
 		}
@@ -27,7 +27,7 @@ char	**dict_envp(t_dictionary *env, unsigned int index, int j)
 
 void	dict_set_env_var(t_dictionary **env, char *k, char *v, int export)
 {
-	t_dic_entry		*env_var;
+	t_dic_entry	*env_var;
 
 	env_var = dict_create_entry(ft_strdup(k), ft_strdup(v));
 	env_var->export = export;
@@ -36,7 +36,7 @@ void	dict_set_env_var(t_dictionary **env, char *k, char *v, int export)
 
 void	insert_special_params(t_dictionary **env)
 {
-	t_dic_entry		*env_var;
+	t_dic_entry	*env_var;
 
 	env_var = dict_create_entry(ft_strdup("@"), ft_strdup(""));
 	dict_insert(env, env_var);
@@ -58,8 +58,8 @@ void	insert_special_params(t_dictionary **env)
 
 void	get_env(t_dictionary **hash_env, char **env)
 {
-	char			**env_var_array;
-	char			*shlvl;
+	char	**env_var_array;
+	char	*shlvl;
 
 	*hash_env = dict_init(230);
 	if (!*env)
@@ -72,9 +72,12 @@ void	get_env(t_dictionary **hash_env, char **env)
 		while (*env)
 		{
 			env_var_array = ft_split(*env, '=');
-			// env_var = dict_create_entry(ft_strdup(env_var_array[0]), ft_strdup(env_var_array[1])); //funcion para crear una entrada que se le comparte al dic_insert
+			// env_var = dict_create_entry(ft_strdup(env_var_array[0]),
+					ft_strdup(env_var_array[1]);
+			//funcion para crear una entrada que se le comparte al dic_insert
 			// env_var->export = 1;
-			// dict_insert(hash_env, env_var); // funcion para meter una variable o modificarla si ya existe 
+			// dict_insert(hash_env, env_var);
+				// funcion para meter una variable o modificarla si ya existe
 			dict_set_env_var(hash_env, env_var_array[0], env_var_array[1], 1);
 			ft_free_array(env_var_array);
 			env++;
@@ -91,10 +94,3 @@ void	get_env(t_dictionary **hash_env, char **env)
 		free(shlvl);
 	}
 }
-
-// int main(int argc, char **argv, char **env)
-// {
-// 	t_dictionary	*hash_env = get_env(env);
-// 	printf("user: %s\n", dict_get(hash_env, "USER"));
-// }
-

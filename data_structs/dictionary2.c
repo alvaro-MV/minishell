@@ -77,23 +77,15 @@ void	dict_delete_key(t_dictionary *dict, char *key)
 	while (counter < dict->capacity - 1)
 	{
 		if (dict->entries[index] && !strcmp(dict->entries[index]->key, key))
-        {
-            if (dict->entries[index]->key)
-                free(dict->entries[index]->key);
-            if (dict->entries[index]->value)
-                free(dict->entries[index]->value);
-            free(dict->entries[index]);
-            dict->entries[index] = NULL;
-            return;
-        }
-		// if (dict->entries[index] && !strcmp(dict->entries[index]->key, key))
-		// {
-		// 	free(dict->entries[index]->key);
-		// 	free(dict->entries[index]->value);
-        //     free(dict->entries[index]);
-		// 	dict->entries[index] = NULL;
-		// 	return ;
-		// }
+		{
+			if (dict->entries[index]->key)
+				free(dict->entries[index]->key);
+			if (dict->entries[index]->value)
+				free(dict->entries[index]->value);
+			free(dict->entries[index]);
+			dict->entries[index] = NULL;
+			return ;
+		}
 		index++;
 		if (index == dict->capacity - 1)
 			index = 0;
@@ -106,7 +98,7 @@ char	**dict_get_keys(t_dictionary *dict)
 	unsigned int	counter;
 	char			**ret;
 	char			**tmp;
-	
+
 	ret = malloc((dict->capacity + 1) * sizeof(char *));
 	if (!ret)
 		return (NULL);
@@ -124,24 +116,3 @@ char	**dict_get_keys(t_dictionary *dict)
 	*tmp = NULL;
 	return (ret);
 }
-
-// int	main(int argc, char **argv, char **env)
-// {
-
-// 	t_dictionary *dict = dict_init(5);
-// 	char *path = ft_strdup("PATH");
-// 	char *path_value = ft_strdup("bin:/usr/bin");
-// 	t_dic_entry *entry = dict_create_entry(path, path_value);
-// 	if (!entry)
-// 		return (dict_delete(dict), 1);
-// 	dict_insert(&dict, entry);
-// 	printf("PATH=%s\n", dict_get(dict, "PATH"));
-	
-	
-// 	entry = dict_create_entry(ft_strdup("PATH"), ft_strdup("home/wachowsky:perico"));
-	
-// 	dict_insert(&dict, entry);
-// 	printf("PATH=%s\n", dict_get(dict, "PATH"));
-
-// 	dict_delete(dict);
-// }

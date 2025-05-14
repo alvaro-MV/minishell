@@ -21,7 +21,7 @@ void	free_cmd(t_cmd *cmd)
 	{
 		free_io_redir(cmd->cmd_prefix);
 		free_io_redir(cmd->cmd_suffix);
-		cmds_for_free = (char **) cmd->cmd->darray;
+		cmds_for_free = (char **)cmd->cmd->darray;
 		while (*cmds_for_free)
 		{
 			free(*cmds_for_free);
@@ -34,12 +34,12 @@ void	free_cmd(t_cmd *cmd)
 	}
 }
 
-void	free_AST(t_cmd_pipe *sequence)
+void	free_ast(t_cmd_pipe *sequence)
 {
 	if (!sequence)
 		return ;
 	free_cmd(sequence->cmd);
 	if (sequence->next)
-		free_AST(sequence->next);
+		free_ast(sequence->next);
 	free(sequence);
 }

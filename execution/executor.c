@@ -2,13 +2,12 @@
 
 int	create_pipe_and_fds(t_cmd_pipe *sequence)
 {
-	int			pipe_fd[2];
-	int			old_fd[2];
-	int			n_cmd;
+	int	pipe_fd[2];
+	int	old_fd[2];
+	int	n_cmd;
 
 	old_fd[0] = 0;
 	old_fd[1] = 1;
-	
 	n_cmd = 1;
 	while (sequence->next)
 	{
@@ -27,7 +26,7 @@ int	create_pipe_and_fds(t_cmd_pipe *sequence)
 
 void	expand_ix(t_io_redir *ix, t_dictionary *env)
 {
-	char		*tmp;
+	char	*tmp;
 
 	while (ix && ix->next)
 	{
@@ -40,10 +39,10 @@ void	expand_ix(t_io_redir *ix, t_dictionary *env)
 
 void	expand_pipe_seq(t_cmd_pipe *sequence, t_dictionary *env)
 {
-	char		*tmp;
-	t_cmd		*cmd;
-	char		**cmd_array;
-	int			i;
+	char	*tmp;
+	t_cmd	*cmd;
+	char	**cmd_array;
+	int		i;
 
 	while (sequence)
 	{
@@ -51,7 +50,7 @@ void	expand_pipe_seq(t_cmd_pipe *sequence, t_dictionary *env)
 		while (cmd)
 		{
 			i = -1;
-			cmd_array = (char **) cmd->cmd->darray;
+			cmd_array = (char **)cmd->cmd->darray;
 			while (cmd_array[++i])
 			{
 				tmp = cmd_array[i];
@@ -68,17 +67,17 @@ void	expand_pipe_seq(t_cmd_pipe *sequence, t_dictionary *env)
 
 int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 {
-	t_exec		exec_vars;
-	int			status;
-	int			n_cmd;
+	t_exec	exec_vars;
+	int		status;
+	int		n_cmd;
 
-	(void) main_env;
+	(void)main_env;
 	n_cmd = create_pipe_and_fds(sequence);
 	expand_pipe_seq(sequence, env);
 	if (n_cmd == 1 && is_builtin(sequence->cmd->cmd->darray))
 	{
-		exec_vars = (t_exec) {sequence->cmd, env, main_env, dup(STDIN_FILENO)};
-		status = execute_io_redir(&exec_vars); // Basicamente, intercambian un fd por otro.
+		exec_vars = (t_exec){sequence->cmd, env, main_env, dup(STDIN_FILENO)};
+		status = execute_io_redir(&exec_vars); // Basicamente,intercambian un fd por otro.
 		if (status != 0)
 			return (status);
 		status = run_builtin(&exec_vars);
@@ -88,7 +87,8 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 	{
 		while (sequence)
 		{
-			exec_vars = (t_exec) {sequence->cmd, env, main_env, dup(STDIN_FILENO)};
+			exec_vars = (t_exec){sequence->cmd, env, main_env,
+				dup(STDIN_FILENO)};
 			status = execute_child(&exec_vars);
 			sequence = sequence->next;
 		}

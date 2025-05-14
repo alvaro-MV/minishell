@@ -24,7 +24,7 @@ int	is_double_operator(char argv_char)
 
 int	still_in_quote(char c, char quote)
 {
-	static int inside_quote = 0;
+	static int	inside_quote = 0;
 
 	if (c == quote)
 	{
@@ -55,10 +55,8 @@ void	free_tokens(t_token *tokens)
 		return ;
 	while (tokens[i].type != END)
 	{
-		// ft_printf("token: %s\n", tokens[i].text);
 		free(tokens[i].text);
 		i++;
 	}
 	free(tokens);
 }
-

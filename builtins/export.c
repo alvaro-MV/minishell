@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/14 17:58:23 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/14 17:58:24 by lvez-dia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 #include "../minishell.h"
 #include "builtins.h"
 
 #define legal_variable_starter(c) (ISALPHA(c) || (c == '_'))
-#define legal_variable_char(c)	(ISALNUM(c) || c == '_')
+#define legal_variable_char(c) (ISALNUM(c) || c == '_')
 
 int	is_valid_name(char *name)
 {
@@ -27,12 +40,12 @@ void	export_error(char *name)
 int	export(t_exec *exec, char **arguments)
 {
 	t_dic_entry	*entry;
-	char	**var;
-	char 	*value;
-	char	**env_keys;
-	char	*value_for_printing;
-	int		status;
-	int		i;
+	char		**var;
+	char		*value;
+	char		**env_keys;
+	char		*value_for_printing;
+	int			status;
+	int			i;
 
 	i = -1;
 	status = 0;
@@ -69,7 +82,7 @@ int	export(t_exec *exec, char **arguments)
 				entry->export = 1;
 			dict_insert(&exec->env, entry);
 		}
-		else 
+		else
 		{
 			export_error(arguments[i]);
 			status = 1;

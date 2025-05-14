@@ -1,11 +1,11 @@
 #include "execution.h"
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 int	override_fd(t_exec *exec, t_io_redir *redir, int flags, int idx)
 {
-	int	fd;
-	struct stat file_stat;
+	int			fd;
+	struct stat	file_stat;
 
 	fd = open(redir->filename->text, flags, 0644);
 	if (fd == -1)
@@ -31,24 +31,26 @@ int	override_fd(t_exec *exec, t_io_redir *redir, int flags, int idx)
 
 int	traverse_io_redir(t_io_redir *ix, t_exec *exec)
 {
-	int status;
+	int	status;
 
 	status = 0;
 	if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, "<", 2))
 		status = override_fd(exec, ix, O_RDONLY, 0);
-	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, "<<", 2))
+	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, "<<",
+			2))
 	{
 		exec->cmd->fds[0] = ix->fd;
 		status = 0;
 	}
 	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, ">", 2))
 		status = override_fd(exec, ix, O_RDWR | O_CREAT | O_TRUNC, 1);
-	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, ">>", 2))
+	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, ">>",
+			2))
 		status = override_fd(exec, ix, O_RDWR | O_APPEND | O_CREAT, 1);
 	return (status);
 }
 
-int		execute_io_redir(t_exec *exec)
+int	execute_io_redir(t_exec *exec)
 {
 	t_io_redir	*prefix;
 	t_io_redir	*suffix;

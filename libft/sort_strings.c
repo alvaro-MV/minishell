@@ -1,10 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort_strings.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/14 17:59:36 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/14 17:59:37 by lvez-dia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 #include "include/libft.h"
 
 void	sort_strings(char **strings, int n)
 {
 	char	*temp;
-	int 	i;
-	int 	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	while (i < n - 1)
@@ -23,4 +36,3 @@ void	sort_strings(char **strings, int n)
 		i++;
 	}
 }
-

@@ -11,7 +11,8 @@ static int	alloc_cmd(t_cmd **ptr_cmd)
 	return (1);
 }
 
-int	parse_ix(t_io_redir **ptr_io_redir, t_token **token_stream, t_dictionary *env)
+int	parse_ix(t_io_redir **ptr_io_redir, t_token **token_stream,
+		t_dictionary *env)
 {
 	*ptr_io_redir = parse_io_redir(token_stream, env);
 	if (!*ptr_io_redir)
@@ -21,7 +22,7 @@ int	parse_ix(t_io_redir **ptr_io_redir, t_token **token_stream, t_dictionary *en
 
 int	fill_cmd(t_token **stream, command **ptr_cmd, t_dictionary *env)
 {
-	int		n_cmd;
+	int	n_cmd;
 
 	n_cmd = 0;
 	while ((*stream)->type == COMMAND)
@@ -31,7 +32,8 @@ int	fill_cmd(t_token **stream, command **ptr_cmd, t_dictionary *env)
 		(*stream)++;
 		n_cmd++;
 	}
-	if (!add_command(ptr_cmd, NULL, env, n_cmd)) //NULL para el terminación y el último para el execve
+	if (!add_command(ptr_cmd, NULL, env, n_cmd))
+		// NULL para el terminación y el último para el execve
 		return (0);
 	return (1);
 }
@@ -41,7 +43,7 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 	t_cmd	*ret_cmd;
 	t_cmd	*tmp_cmd;
 	t_cmd	*current_cmd;
-	
+
 	if ((*token_stream)->type == PIPE_OPERATOR) // Para el caso | |
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
@@ -49,22 +51,21 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 	}
 	if (!alloc_cmd(&ret_cmd))
 		return (NULL);
-	current_cmd = ret_cmd;	
-	while ((*token_stream)->type != END && (*token_stream)->type != PIPE_OPERATOR)
+	current_cmd = ret_cmd;
+	while ((*token_stream)->type != END
+		&& (*token_stream)->type != PIPE_OPERATOR)
 	{
 		if (!parse_ix(&current_cmd->cmd_prefix, token_stream, env))
-			return(free_cmd(ret_cmd), NULL);
-
+			return (free_cmd(ret_cmd), NULL);
 		// Meter tokens en el campo cmd hasta que el siguiente token != COMMAND
-
 		if (!fill_cmd(token_stream, &current_cmd->cmd, env))
-			return(free_cmd(ret_cmd), NULL);
+			return (free_cmd(ret_cmd), NULL);
 		// Parseo de redirecciones.
 		if (!parse_ix(&current_cmd->cmd_suffix, token_stream, env))
-			return(free_cmd(ret_cmd), NULL);
+			return (free_cmd(ret_cmd), NULL);
 		// Se reserva el siguiente comando.
 		if (!alloc_cmd(&tmp_cmd))
-			return(free_cmd(ret_cmd), NULL);
+			return (free_cmd(ret_cmd), NULL);
 		current_cmd->next = tmp_cmd;
 		current_cmd = tmp_cmd;
 	}
