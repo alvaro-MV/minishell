@@ -1,138 +1,122 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_str.c                                       :+:      :+:    :+:   */
+/*   copia_expander.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/14 18:13:52 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/14 18:18:44 by lvez-dia         ###   ########.fr       */
+/*   Created: 2025/05/14 20:04:37 by alvmoral          #+#    #+#             */
+/*   Updated: 2025/05/14 20:13:56 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
-int	is_for_expand_str(char *str)
-{
-	if (!ft_strchr(str, '"') && !ft_strchr(str, '\'') && !ft_strchr(str, '$'))
-		return (0);
-	return (1);
-}
-
-void	join_char(char **expanded_str, char *str)
+void	no_se_pon_nombre_2(char *str, t_utils *utils, t_dictionary *env)
 {
 	char	*tmp_str;
-	char 	c[2];
+	char	*env_var_name;
+	char	*env_var_value;
+	char	*trimmed_var;
 
-	tmp_str = *expanded_str;
-	c[0] = *str;
-	c[1] = '\0';
-	*expanded_str = ft_strjoin(*expanded_str, c);
-	free(tmp_str);
+	trimmed_var = NULL;
+	env_var_value = NULL;
+	tmp_str = utils->expanded_str;
+	env_var_name = ft_substr(str, utils->i, utils->len_env_var - utils->i);
+	if (!env_var_name)
+		return (free(tmp_str), free(utils->expanded_str));
+	trimmed_var = ft_strtrim(env_var_name, " \t\r");
+	if (ft_strncmp(trimmed_var, " ", 2))
+	{
+		env_var_value = dict_get(env, env_var_name);
+		if (!env_var_value)
+			env_var_value = "";
+	}
+	free(trimmed_var);
+	utils->expanded_str = ft_strjoin(utils->expanded_str, env_var_value);
+	utils->i = (free(tmp_str), free(env_var_name), utils->len_env_var - 1);
 }
 
-static int is_special_var(char *var)
+int	nose_pon_nombre(t_dictionary *env, char *str, t_utils *utils)
 {
-	if (!ft_strncmp(var, "?", 1)
-		|| !ft_strncmp(var, "0", 1))
+	if (utils->state == ENV_VAR)
+	{
+		utils->state = utils->old_state;
+		utils->old_state = ENV_VAR;
+		utils->len_env_var = utils->i;
+		if (utils->state != DOUBLE_QUOTE && str[utils->i] == '\'')
+			utils->state = SINGLE_QUOTE;
+		else
+		{
+			if (is_special_var(&str[utils->len_env_var]))
+				utils->len_env_var++;
+			else if (!is_special_var(&str[utils->len_env_var]))
+			{
+				while (ft_isalnum(str[utils->len_env_var]))
+				{
+					utils->len_env_var++;
+					if (!ft_isalpha(str[utils->i]))
+						break ;
+				}
+			}
+			no_se_pon_nombre_2(str, utils, env);
+		}
 		return (1);
+	}
+	return (0);
+}
+
+int	expand_quotes(char *str, t_utils *utils)
+{
+	if (utils->state == DOUBLE_QUOTE)
+	{
+		utils->old_state = utils->state;
+		if (str[utils->i] == '"')
+			utils->state = WORD;
+		else if ((str[utils->i] == '$' && ft_isalpha(str[utils->i + 1]))
+			|| (str[utils->i] == '$' && is_special_var(&str[utils->i + 1])))
+			utils->state = ENV_VAR;
+		else
+			join_char(&utils->expanded_str, &str[utils->i]);
+		return (1);
+	}
+	else if (utils->state == SINGLE_QUOTE)
+	{
+		utils->old_state = utils->state;
+		if (str[utils->i] == '\'')
+			utils->state = WORD;
+		else
+			join_char(&utils->expanded_str, &str[utils->i]);
+		return (1);
+	}
 	return (0);
 }
 
 char	*expand_str(char *str, t_dictionary *env)
 {
-	int				i;
-	char			*expanded_str;
-	char			*tmp_str;
-	t_expand_states	state;
-	t_expand_states	old_state;
-	int		len_env_var;
-	char	*env_var_name;
-	char	*env_var_value;
+	t_utils	utils;
 
-	char	*trimmed_var = NULL;
-	i = 0;
-	expanded_str = ft_strdup("");
-	state = WORD;
-	old_state = WORD;
-	while (str[i])
+	utils.expanded_str = ft_strdup("");
+	utils = ((void)env, (t_utils){0});
+	utils.state = WORD;
+	utils.old_state = WORD;
+	while (str[utils.i])
 	{
-		if (state == WORD)
+		if (utils.state == WORD)
 		{
-			old_state = state;
-			if (str[i] == '"')
-				state = DOUBLE_QUOTE;
-			else if (str[i] == '\'')
-				state = SINGLE_QUOTE;
-			else if ((str[i] == '$' && ft_isalnum(str[i + 1]))
-					|| (str[i] == '$' && str[i + 1] == '\'')
-					|| (str[i] == '$' && str[i + 1] == '"')
-					|| (str[i] == '$' && is_special_var(&str[i + 1])))
-				state = ENV_VAR;
+			utils.old_state = utils.state;
+			if (str[utils.i] == '"')
+				utils.state = DOUBLE_QUOTE;
+			else if (str[utils.i] == '\'')
+				utils.state = SINGLE_QUOTE;
+			else if (is_env_var(str, utils))
+				utils.state = ENV_VAR;
 			else
-				join_char(&expanded_str, &str[i]);
+				join_char(&utils.expanded_str, &str[utils.i]);
 		}
-		else if (state == DOUBLE_QUOTE)
-		{
-			old_state = state;
-			if (str[i] == '"')
-				state = WORD;
-			else if ((str[i] == '$' && ft_isalpha(str[i + 1]))
-					|| (str[i] == '$' && is_special_var(&str[i + 1])))
-				state = ENV_VAR;
-			else
-				join_char(&expanded_str, &str[i]);
-		}
-		else if (state == SINGLE_QUOTE)
-		{
-			old_state = state;
-			if (str[i] == '\'')
-				state = WORD;
-			else
-				join_char(&expanded_str, &str[i]);
-		}
-		else if (state == ENV_VAR)
-		{
-			state = old_state;
-			old_state = ENV_VAR;
-			len_env_var = i;
-			if (state != DOUBLE_QUOTE && str[i] == '\'')
-			{
-				// i--;
-				state = SINGLE_QUOTE;
-			}
-			else
-			{
-				if (is_special_var(&str[len_env_var]))
-					len_env_var++;
-				else
-				{
-					while (ft_isalnum(str[len_env_var]))
-					{
-						len_env_var++;
-						if (!ft_isalpha(str[i]))
-							break ;
-					}
-				}
-				tmp_str = expanded_str;
-				env_var_name = ft_substr(str, i, len_env_var - i);
-				if (!env_var_name)
-					return (free(tmp_str), free(expanded_str), NULL);
-				trimmed_var = ft_strtrim(env_var_name, " \t\r");
-				if (ft_strncmp(trimmed_var, " ", 2))
-				{
-					env_var_value = dict_get(env, env_var_name);
-					if (!env_var_value)
-						env_var_value = "";
-				}
-				free(trimmed_var);
-				expanded_str = ft_strjoin(expanded_str, env_var_value);
-				free(tmp_str);
-				free(env_var_name);
-				i = len_env_var - 1;
-			}
-		}
-		i++;
+		else if (!expand_quotes(str, &utils))
+			nose_pon_nombre(env, str, &utils);
+		utils.i++;
 	}
-	return (expanded_str);
+	return (utils.expanded_str);
 }

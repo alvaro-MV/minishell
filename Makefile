@@ -9,11 +9,12 @@ RM = rm -f
 SRC =  	data_structs/dictionary.c \
 		data_structs/dictionary2.c \
 		data_structs/dynamic_array.c \
+		expansion/expand_str.c \
+		expansion/expand_utils.c \
 		execution/exec_builtin_cmd.c \
 		execution/exec_io_redir.c \
 		execution/exec_utils.c \
 		execution/executor.c \
-		expansion/expand_str.c \
 		parser/buffer_AST.c \
 		parser/free_AST.c \
 		parser/parse_command.c \
