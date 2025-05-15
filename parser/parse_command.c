@@ -12,7 +12,7 @@ static int	alloc_cmd(t_cmd **ptr_cmd)
 }
 
 int	parse_ix(t_io_redir **ptr_io_redir, t_token **token_stream,
-		t_dictionary **env)
+		t_dictionary *env)
 {
 	*ptr_io_redir = parse_io_redir(token_stream, env);
 	if (!*ptr_io_redir)
@@ -20,24 +20,25 @@ int	parse_ix(t_io_redir **ptr_io_redir, t_token **token_stream,
 	return (1);
 }
 
-int	fill_cmd(t_token **stream, command **ptr_cmd, t_dictionary **env)
+int	fill_cmd(t_token **stream, command **ptr_cmd, t_dictionary *env)
 {
 	int	n_cmd;
 
 	n_cmd = 0;
 	while ((*stream)->type == COMMAND)
 	{
-		if (!add_command(ptr_cmd, (*stream)->text, *env, n_cmd))
+		if (!add_command(ptr_cmd, (*stream)->text, env, n_cmd))
 			return (0);
 		(*stream)++;
 		n_cmd++;
 	}
-	if (!add_command(ptr_cmd, NULL, *env, n_cmd))
+	if (!add_command(ptr_cmd, NULL, env, n_cmd))
+		// NULL para el terminación y el último para el execve
 		return (0);
 	return (1);
 }
 
-t_cmd	*parse_cmd(t_token **token_stream, t_dictionary **env)
+t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 {
 	t_cmd	*ret_cmd;
 	t_cmd	*tmp_cmd;

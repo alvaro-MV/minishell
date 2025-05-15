@@ -25,7 +25,7 @@ void	handle_sigint_heredoc(int sig)
 	sig_int_hd = 1;
 }
 
-void	child_heredoc(char *delimiter, t_dictionary *env)
+void	child_heredoc(char *delimiter, void *env)
 {
 	char	*next_line;
 	char	*expanded_line;
@@ -58,7 +58,7 @@ void	child_heredoc(char *delimiter, t_dictionary *env)
 	exit(0);
 }
 
-int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary **env)
+void	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
 {
 	pid_t	pid;
 	int		status;
@@ -72,11 +72,10 @@ int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary **env)
 	signal(SIGQUIT, SIG_IGN);
 	if (WIFSIGNALED(status) || WEXITSTATUS(status) != 0)
 	{
-		dict_insert(env, dict_create_entry(ft_strdup("?"),
-				ft_itoa(WEXITSTATUS(status))));
-		redir->fd = open(".heredoc", O_RDONLY | O_TRUNC);
-		return (0);
+		write(1, "Holaaaa\n", 9);
+		unlink(".heredoc");
+		return ;
 	}
+	ft_printf("status: %d\n", status);
 	redir->fd = open(".heredoc", O_RDONLY);
-	return (1);
 }

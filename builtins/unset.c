@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:43 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 13:44:02 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:37:19 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ void	remove_env_var(t_exec *exec, char *var_name)
 int	unset(t_exec *exec, char **arg)
 {
 	int	i;
+	int	j;
 
 	i = 1;
+	j = 0;
 	if (!arg[1])
 		return (0);
 	if (!exec->main_env || exec->main_env[0] == NULL)
