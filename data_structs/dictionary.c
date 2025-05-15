@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dictionary.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:09:15 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/01/21 22:29:07 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/15 17:51:57 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,42 +35,6 @@ t_dictionary	*dict_init(int capacity)
 	while (dic_capacity--)
 		dic->entries[dic_capacity] = NULL;
 	return (dic);
-}
-
-void	dict_insert(t_dictionary **dic_p, t_dic_entry *entry)
-{
-	unsigned int	hash_entry;
-	unsigned int	index;
-	t_dictionary	*dic;
-
-	if (entry->key == NULL)
-		return ;
-	dic = *dic_p;
-	if (dic->n_elements > (dic->capacity / 2))
-	{
-		if (!dict_expand(dic_p))
-			return (dict_delete(dic));
-		dic = *dic_p;
-	}
-	hash_entry = dict_hash(entry->key);
-	index = hash_entry % dic->capacity;
-	while (dic->entries[index] != NULL)
-	{
-		if (!ft_strcmp(dic->entries[index]->key, entry->key))
-		{
-			free(dic->entries[index]->value);
-			dic->entries[index]->value = entry->value;
-			free(entry->key);
-			free(entry);
-			return ;
-		}
-		index++;
-		if (index == dic->capacity - 1)
-			index = 0;
-	}
-	dic->entries[index] = entry;
-	dic->n_elements++;
-	*dic_p = dic;
 }
 
 unsigned int	dict_hash(char *key)

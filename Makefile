@@ -7,6 +7,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 
 SRC =  	data_structs/dictionary.c \
+		data_structs/dictionary_utils.c \
 		data_structs/dictionary2.c \
 		data_structs/dynamic_array.c \
 		expansion/expand_str.c \

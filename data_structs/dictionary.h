@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dictionary.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:08:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/04/22 10:50:47 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/15 17:51:00 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef struct dict
 }					t_dictionary;
 
 t_dictionary		*dict_init(int capacity);
+void				insert_or_update_entry(t_dictionary *dic,
+						t_dic_entry *entry, unsigned int index);
 void				dict_insert(t_dictionary **dic_p, t_dic_entry *entry);
 unsigned int		dict_hash(char *key);
 char				*dict_get(t_dictionary *dic, char *key);

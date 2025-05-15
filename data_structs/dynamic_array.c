@@ -1,8 +1,22 @@
-#include "../tokenizer/tokenizer.h" //testeo
-#include "dynamic_array.h"
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dynamic_array.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/15 18:06:42 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/15 18:07:43 by lvez-dia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void			free_darray(t_darray *darray);
+#include "dynamic_array.h"
+
+void	free_darray(t_darray *darray)
+{
+	free(darray->darray);
+	free(darray);
+}
 
 t_darray	*alloc_darray(size_t len, size_t size)
 {
@@ -42,12 +56,6 @@ int	resize_darray(t_darray **darray)
 	free((*darray)->darray);
 	(*darray)->darray = resz_darray;
 	return (1);
-}
-
-void	free_darray(t_darray *darray)
-{
-	free(darray->darray);
-	free(darray);
 }
 
 unsigned char	*r_darray(t_darray *darray, int idx)
