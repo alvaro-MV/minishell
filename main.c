@@ -40,11 +40,14 @@ int	main(int argc, char **argv, char **env)
 		tokens_array->darray = NULL;
 		free_darray(tokens_array);
 		tokens_for_free = token_stream;
-		sequence = parse_cmd_pipe(&token_stream, hash_env);
+		sequence = parse_cmd_pipe(&token_stream, &hash_env);
 		if (sequence)
 			insert_status(executor(sequence, hash_env, env), &hash_env);
 		else
-			insert_status(2, &hash_env);
+		{
+			if (!ft_strcmp(dict_get(hash_env, "?"), "0"))
+				insert_status(2, &hash_env);
+		}
 		dup2(saved_stdin, STDIN_FILENO);
 		close(saved_stdin);
 		free_ast(sequence);

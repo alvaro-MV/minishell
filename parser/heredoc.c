@@ -1,5 +1,7 @@
 #include "parser.h"
 
+volatile sig_atomic_t sig_int_hd = 0;
+
 void	handle_sigint2(int sig)
 {
 	(void)sig; // Ignorar la variable 'sig'
@@ -20,10 +22,10 @@ void	handle_sigint_heredoc(int sig)
 	rl_on_new_line();// Preparar readline para mostrar el prompt en una nueva línea
 	rl_replace_line("", 0); // Limpiar la línea actual
 	close(0);
-	// exit(1); // El hijo sale con error al pulsar Ctrl+C
+	sig_int_hd = 1;
 }
 
-void	child_heredoc(char *delimiter, void *env)
+void	child_heredoc(char *delimiter, t_dictionary *env)
 {
 	char	*next_line;
 	char	*expanded_line;
@@ -37,6 +39,8 @@ void	child_heredoc(char *delimiter, void *env)
 	while (1)
 	{
 		next_line = readline("herdoc> ");
+		if (sig_int_hd == 1)
+			exit(130);
 		if (!next_line)
 			exit(0); // EOF o stdin cerrado
 		if (strcmp(next_line, delimiter) == 0)
@@ -54,25 +58,24 @@ void	child_heredoc(char *delimiter, void *env)
 	exit(0);
 }
 
-void	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
+int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary **env)
 {
 	pid_t	pid;
 	int		status;
 
 	pid = fork();
 	if (pid == 0)
-		child_heredoc(delimiter, env);
+		child_heredoc(delimiter, *env);
 	signal(SIGINT, SIG_IGN); // Ignorar Ctrl+C en el padre mientras espera
-	// waitpid(pid, &status, 0);
 	wait(&status);
 	signal(SIGINT, handle_sigint2); // Restaurar señales
 	signal(SIGQUIT, SIG_IGN);
 	if (WIFSIGNALED(status) || WEXITSTATUS(status) != 0)
 	{
-		write(1, "Holaaaa\n", 9);
-		unlink(".heredoc");
-		return ;
+		dict_insert(env, dict_create_entry(ft_strdup("?"), ft_itoa(WEXITSTATUS(status))));
+		redir->fd = open(".heredoc", O_RDONLY | O_TRUNC);
+		return (0);
 	}
-	ft_printf("status: %d\n", status);
 	redir->fd = open(".heredoc", O_RDONLY);
+	return (1);
 }
