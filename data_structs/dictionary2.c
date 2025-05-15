@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dictionary2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:09:28 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/04/23 13:42:43 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/15 16:17:50 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*dict_get(t_dictionary *dic, char *key)
 	counter = 0;
 	while (counter < dic->capacity - 1)
 	{
-		if (dic->entries[index] && !strcmp(dic->entries[index]->key, key))
+		if (dic->entries[index] && !ft_strcmp(dic->entries[index]->key, key))
 			return (dic->entries[index]->value);
 		index++;
 		if (index == dic->capacity - 1)
@@ -76,7 +76,7 @@ void	dict_delete_key(t_dictionary *dict, char *key)
 	counter = 0;
 	while (counter < dict->capacity - 1)
 	{
-		if (dict->entries[index] && !strcmp(dict->entries[index]->key, key))
+		if (dict->entries[index] && !ft_strcmp(dict->entries[index]->key, key))
 		{
 			if (dict->entries[index]->key)
 				free(dict->entries[index]->key);

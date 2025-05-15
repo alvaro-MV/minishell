@@ -4,8 +4,8 @@ void	handler_signint_child(int sig)
 {
 	(void) sig;
 	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();// Preparar readline para mostrar el prompt en una nueva línea
-	rl_replace_line("", 0); // Limpiar la línea actual
+	rl_on_new_line();
+	rl_replace_line("", 0);
 	close(0);
 }
 
@@ -21,7 +21,7 @@ int	create_pipe_and_fds(t_cmd_pipe *sequence)
 	while (sequence->next)
 	{
 		if (pipe(pipe_fd) == -1)
-			write(1, "Nooooooooo\n", 12); // Liberar lo anterior y pirarte.
+			write(1, "Nooooooooo\n", 12);
 		sequence->cmd->fds[0] = old_fd[0];
 		sequence->cmd->fds[1] = pipe_fd[1];
 		old_fd[0] = pipe_fd[0];
@@ -86,7 +86,7 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 	if (n_cmd == 1 && is_builtin(sequence->cmd->cmd->darray))
 	{
 		exec_vars = (t_exec){sequence->cmd, env, main_env, dup(STDIN_FILENO)};
-		status = execute_io_redir(&exec_vars); // Basicamente,intercambian un fd por otro.
+		status = execute_io_redir(&exec_vars);
 		if (status != 0)
 			return (status);
 		status = run_builtin(&exec_vars);

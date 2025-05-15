@@ -33,7 +33,6 @@ int	fill_cmd(t_token **stream, command **ptr_cmd, t_dictionary **env)
 		n_cmd++;
 	}
 	if (!add_command(ptr_cmd, NULL, *env, n_cmd))
-		// NULL para el terminación y el último para el execve
 		return (0);
 	return (1);
 }
@@ -44,7 +43,7 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary **env)
 	t_cmd	*tmp_cmd;
 	t_cmd	*current_cmd;
 
-	if ((*token_stream)->type == PIPE_OPERATOR) // Para el caso | |
+	if ((*token_stream)->type == PIPE_OPERATOR)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 		return (NULL);
@@ -57,13 +56,10 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary **env)
 	{
 		if (!parse_ix(&current_cmd->cmd_prefix, token_stream, env))
 			return (free_cmd(ret_cmd), NULL);
-		// Meter tokens en el campo cmd hasta que el siguiente token != COMMAND
 		if (!fill_cmd(token_stream, &current_cmd->cmd, env))
 			return (free_cmd(ret_cmd), NULL);
-		// Parseo de redirecciones.
 		if (!parse_ix(&current_cmd->cmd_suffix, token_stream, env))
 			return (free_cmd(ret_cmd), NULL);
-		// Se reserva el siguiente comando.
 		if (!alloc_cmd(&tmp_cmd))
 			return (free_cmd(ret_cmd), NULL);
 		current_cmd->next = tmp_cmd;

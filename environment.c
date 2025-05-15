@@ -72,12 +72,7 @@ void	get_env(t_dictionary **hash_env, char **env)
 		while (*env)
 		{
 			env_var_array = ft_split(*env, '=');
-			// env_var = dict_create_entry(ft_strdup(env_var_array[0]),
-					ft_strdup(env_var_array[1]);
-			//funcion para crear una entrada que se le comparte al dic_insert
-			// env_var->export = 1;
-			// dict_insert(hash_env, env_var);
-				// funcion para meter una variable o modificarla si ya existe
+			ft_strdup(env_var_array[1]);
 			dict_set_env_var(hash_env, env_var_array[0], env_var_array[1], 1);
 			ft_free_array(env_var_array);
 			env++;
@@ -88,8 +83,6 @@ void	get_env(t_dictionary **hash_env, char **env)
 	if (shlvl)
 	{
 		shlvl = ft_itoa(ft_atoi(shlvl) + 1);
-		// env_var = dict_create_entry(ft_strdup("SHLVL"), );
-		// dict_insert(hash_env, env_var);
 		dict_set_env_var(hash_env, "SHLVL", shlvl, 1);
 		free(shlvl);
 	}

@@ -45,7 +45,6 @@ int	call_execve(t_exec *exec)
 	ft_free_array(path);
 	execve_args = create_args(exec->cmd);
 	envp = dict_envp(exec->env, 0, 0);
-	// Controlar el caso donde sea ruta relativa o absoluta que este mal.
 	execve(execve_args[0], execve_args, envp);
 	ft_free_array(envp);
 	ft_putstr_fd("minishell: ", 2);
@@ -93,15 +92,15 @@ int	execute_child(t_exec *exec_vars)
 	if (ret == 0)
 	{
 		ret = fork();
-		status = execute_io_redir(exec_vars); // Basicamente,intercambian un fd por otro.
+		status = execute_io_redir(exec_vars);
 		if (status)
 			exit(1);
-		if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) ==
-			-1)
-			write(1, "Siiiiiiiiiiiii\n", 12); // Liberar lo anterior y pirarte.
-		if (exec_vars->cmd->fds[1] != 1 && dup2(exec_vars->cmd->fds[1], 1) ==
-			-1)
-			write(1, "Siiiiiiiiiiiii\n", 12); // Liberar lo anterior y pirarte.
+		if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0)
+			== -1)
+			write(1, "Siiiiiiiiiiiii\n", 12);
+		if (exec_vars->cmd->fds[1] != 1 && dup2(exec_vars->cmd->fds[1], 1)
+			== -1)
+			write(1, "Siiiiiiiiiiiii\n", 12);
 		if (status != 0)
 		{
 			close_cmd_fds(exec_vars->cmd);
@@ -111,7 +110,6 @@ int	execute_child(t_exec *exec_vars)
 			exit(run_builtin(exec_vars));
 		else if (!status && !is_builtin(exec_vars->cmd->cmd->darray))
 			status = call_execve(exec_vars);
-				// funcion para determinar si se ejecuta con execve o es un built-in.
 		close_cmd_fds(exec_vars->cmd);
 	}
 	else

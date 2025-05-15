@@ -34,8 +34,8 @@ t_io_redir	*parse_io_redir(t_token **token_stream, t_dictionary **env)
 		}
 		if (!ft_strcmp(current_io_redir->op->text, "<<"))
 		{
-			if (!here_doc(current_io_redir->filename->text,
-				current_io_redir, env))
+			if (!here_doc(current_io_redir->filename->text, current_io_redir,
+					env))
 				return (free_io_redir(ret_io_redir), NULL);
 		}
 		if (!alloc_io_redir(&tmp_io_redir))

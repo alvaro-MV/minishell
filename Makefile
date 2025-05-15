@@ -29,13 +29,13 @@ SRC =  	data_structs/dictionary.c \
 		main.c \
 		builtins/echo.c \
 		builtins/export.c \
+		builtins/export_utils.c \
 		builtins/env.c \
 		builtins/cd.c \
 		builtins/exit.c \
 		builtins/pwd.c \
 		builtins/unset.c \
 		signals.c \
-		# builtins/export.c \
 
 		
 

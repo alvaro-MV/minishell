@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/14 18:58:25 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:17:30 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	is_exportable_var(t_dictionary *dic, char *key)
 	counter = 0;
 	while (counter < dic->capacity - 1)
 	{
-		if (dic->entries[index] && !strcmp(dic->entries[index]->key, key))
+		if (dic->entries[index] && !ft_strcmp(dic->entries[index]->key, key))
 			return (dic->entries[index]->export);
 		index++;
 		if (index == dic->capacity - 1)

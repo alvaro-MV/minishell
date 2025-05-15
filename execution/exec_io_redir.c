@@ -14,7 +14,7 @@ int	override_fd(t_exec *exec, t_io_redir *redir, int flags, int idx)
 		if (access(redir->filename->text, F_OK))
 			return (1);
 		if (stat(redir->filename->text, &file_stat) == -1)
-			return (1); // Devolver código de error si stat falla
+			return (1);
 		if (!(file_stat.st_mode & S_IWUSR) || !(file_stat.st_mode & S_IRUSR))
 		{
 			free_cmd(exec->cmd);

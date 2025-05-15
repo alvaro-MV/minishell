@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:52 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/14 19:27:08 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:40:03 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,16 @@ typedef enum echo_states
 	FLAG
 }						t_echo_states;
 
+int						process_flags(char **arguments, int *i);
 void					echo(char **arguments);
 int						pwd2(void);
 int						ft_env(char **args, t_exec *exec);
 int						is_valid_name(char *name);
+int						legal_variable_starter(int c);
+int						legal_variable_char(int c);
 void					export_error(char *name);
+int						print_exported_vars(t_exec *exec);
+int						process_argument(char *argument, t_exec *exec);
 int						export(t_exec *exec, char **arguments);
 int						is_numeric(const char *str);
 int						ft_exit(char **args);

@@ -1,13 +1,13 @@
 #include "parser.h"
 
-volatile sig_atomic_t sig_int_hd = 0;
+volatile sig_atomic_t	sig_int_hd = 0;
 
 void	handle_sigint2(int sig)
 {
-	(void)sig; // Ignorar la variable 'sig'
-	write(1, "\n", 1);// Imprimir una nueva línea
-	rl_on_new_line();// Preparar readline para mostrar el prompt en una nueva línea
-	rl_replace_line("", 0); // Limpiar la línea actual
+	(void)sig;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
 }
 
 void	handle_sigquit2(int sig)
@@ -19,8 +19,8 @@ void	handle_sigint_heredoc(int sig)
 {
 	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();// Preparar readline para mostrar el prompt en una nueva línea
-	rl_replace_line("", 0); // Limpiar la línea actual
+	rl_on_new_line();
+	rl_replace_line("", 0);
 	close(0);
 	sig_int_hd = 1;
 }
@@ -42,14 +42,14 @@ void	child_heredoc(char *delimiter, t_dictionary *env)
 		if (sig_int_hd == 1)
 			exit(130);
 		if (!next_line)
-			exit(0); // EOF o stdin cerrado
-		if (strcmp(next_line, delimiter) == 0)
+			exit(0);
+		if (ft_strcmp(next_line, delimiter) == 0)
 		{
 			free(next_line);
 			break ;
 		}
 		expanded_line = expand_str(next_line, env);
-		write(hdfd, expanded_line, strlen(expanded_line));
+		write(hdfd, expanded_line, ft_strlen(expanded_line));
 		write(hdfd, "\n", 1);
 		free(next_line);
 		free(expanded_line);
@@ -66,13 +66,14 @@ int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary **env)
 	pid = fork();
 	if (pid == 0)
 		child_heredoc(delimiter, *env);
-	signal(SIGINT, SIG_IGN); // Ignorar Ctrl+C en el padre mientras espera
+	signal(SIGINT, SIG_IGN);
 	wait(&status);
-	signal(SIGINT, handle_sigint2); // Restaurar señales
+	signal(SIGINT, handle_sigint2);
 	signal(SIGQUIT, SIG_IGN);
 	if (WIFSIGNALED(status) || WEXITSTATUS(status) != 0)
 	{
-		dict_insert(env, dict_create_entry(ft_strdup("?"), ft_itoa(WEXITSTATUS(status))));
+		dict_insert(env, dict_create_entry(ft_strdup("?"),
+				ft_itoa(WEXITSTATUS(status))));
 		redir->fd = open(".heredoc", O_RDONLY | O_TRUNC);
 		return (0);
 	}

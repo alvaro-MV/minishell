@@ -6,10 +6,9 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:01:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/14 18:01:24 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:53:46 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
