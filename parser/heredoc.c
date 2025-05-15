@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/15 17:47:46 by alvmoral          #+#    #+#             */
+/*   Updated: 2025/05/15 17:48:08 by alvmoral         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parser.h"
 
 volatile sig_atomic_t	sig_int_hd = 0;
@@ -58,7 +70,7 @@ void	child_heredoc(char *delimiter, void *env)
 	exit(0);
 }
 
-void	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
+void	here_doc(char *delimiter, t_io_redir *redir, t_dictionary **env)
 {
 	pid_t	pid;
 	int		status;
