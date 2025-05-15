@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 17:48:08 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:42:38 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,14 @@ void	child_heredoc(char *delimiter, void *env)
 	exit(0);
 }
 
-void	here_doc(char *delimiter, t_io_redir *redir, t_dictionary **env)
+void	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
 {
 	pid_t	pid;
 	int		status;
 
 	pid = fork();
 	if (pid == 0)
-		child_heredoc(delimiter, *env);
+		child_heredoc(delimiter, env);
 	signal(SIGINT, SIG_IGN);
 	wait(&status);
 	signal(SIGINT, handle_sigint2);

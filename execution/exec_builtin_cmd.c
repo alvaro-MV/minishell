@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:50:31 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 17:50:32 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:05:45 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	call_execve(t_exec *exec)
 	ft_free_array(path);
 	execve_args = create_args(exec->cmd);
 	envp = dict_envp(exec->env, 0, 0);
+	
 	execve(execve_args[0], execve_args, envp);
 	ft_free_array(envp);
 	ft_putstr_fd("minishell: ", 2);
@@ -74,6 +75,7 @@ int	run_builtin(t_exec *exec)
 
 	status = 0;
 	arguments = create_args(exec->cmd);
+	printf("HOLAAA\n");
 	if (!ft_strcmp(arguments[0], "echo"))
 		echo(arguments);
 	else if (!ft_strcmp(arguments[0], "export"))
@@ -103,16 +105,15 @@ int	execute_child(t_exec *exec_vars)
 	ret = fork();
 	if (ret == 0)
 	{
-		ret = fork();
 		status = execute_io_redir(exec_vars);
 		if (status)
 			exit(1);
 		if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0)
 			== -1)
-			write(1, "Siiiiiiiiiiiii\n", 12);
+			;
 		if (exec_vars->cmd->fds[1] != 1 && dup2(exec_vars->cmd->fds[1], 1)
 			== -1)
-			write(1, "Siiiiiiiiiiiii\n", 12);
+			;
 		if (status != 0)
 		{
 			close_cmd_fds(exec_vars->cmd);

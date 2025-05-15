@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 15:55:39 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/15 20:36:45 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "signals.h"
+#include "minishell.h"
+
+int storage_signal(int status, int flag) {
+	static int  signal = 0;
+	
+	if (flag)
+		signal = status;
+	return signal;
+}
 
 void	handle_sigint(int sig)
 {
@@ -19,6 +28,7 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	storage_signal(130, 1);
 }
 
 void	handle_sigquit(int sig)
@@ -38,7 +48,10 @@ void	signals(char **input, int *exit)
 			ft_printf("exit\n");
 			*exit = 1;
 		}
-		if (*input && **input)
+		else if (**input == '\0'){
+			*input = NULL;
+		}
+		else if (*input && **input)
 			add_history(*input);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 16:26:13 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/15 20:43:46 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	insert_status(int status, t_dictionary **dict)
 {
-	dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
+	if (storage_signal(0,0) != 130) {
+		dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
+	}
 }
 
 int	main(int argc, char **argv, char **env)
@@ -38,12 +40,20 @@ int	main(int argc, char **argv, char **env)
 	{
 		saved_stdin = dup(STDIN_FILENO);
 		signals(&line, &finish);
-		if (finish)
+		dict_insert(&hash_env, dict_create_entry(ft_strdup("?"), ft_itoa(storage_signal(0,0))));
+		if (finish == 2)
 		{
+			finish = 0;
+			continue ;
+		}
+		else if (finish == 1)
+		{
+			finish = 0;
 			close(saved_stdin);
 			exit(0);
 		}
-		add_history(line);
+		if (line == NULL)
+			continue;
 		tokens_array = tokenizer_str(line);
 		tokens_strings = (char **)tokens_array->darray;
 		token_stream = tokenizer_t_tokens(tokens_strings,

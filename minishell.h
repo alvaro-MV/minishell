@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:01:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 15:53:46 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/15 20:31:29 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ char	*expand_str(char *str, t_dictionary *env);
 void	handle_sigint(int sig);
 void	handle_sigquit(int sig);
 void	insert_special_params(t_dictionary **env);
-void	signals(char **input, int *exit);
 char	**dict_envp(t_dictionary *env, unsigned int index, int j);
 void	dict_set_env_var(t_dictionary **env, char *k, char *v, int export);
 

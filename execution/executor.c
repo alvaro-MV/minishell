@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:50:39 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 17:50:40 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:04:36 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,11 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 	t_exec	exec_vars;
 	int		status;
 	int		n_cmd;
+	int		save_std[2];
 
+	save_std[0] = dup(STDIN_FILENO);
+	save_std[1] = dup(STDOUT_FILENO);
+	
 	(void)main_env;
 	n_cmd = create_pipe_and_fds(sequence);
 	expand_pipe_seq(sequence, env);
@@ -101,12 +105,21 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 		status = execute_io_redir(&exec_vars);
 		if (status != 0)
 			return (status);
+		if (exec_vars.cmd->fds[0] != 0 && dup2(exec_vars.cmd->fds[0], 0)
+			== -1)
+			;
+		if (exec_vars.cmd->fds[1] != 1 && dup2(exec_vars.cmd->fds[1], 1)
+			== -1)
+			;
 		status = run_builtin(&exec_vars);
 		close_cmd_fds(sequence->cmd);
+		dup2(save_std[0], STDIN_FILENO);
+		dup2(save_std[1], STDOUT_FILENO);
 	}
 	else
 	{
 		signal(SIGINT, handler_signint_child);
+		
 		while (sequence)
 		{
 			exec_vars = (t_exec){sequence->cmd, env, main_env,
