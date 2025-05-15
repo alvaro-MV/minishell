@@ -87,3 +87,5 @@ void	get_env(t_dictionary **hash_env, char **env)
 		free(shlvl);
 	}
 }
+
+hola
