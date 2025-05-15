@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 20:43:46 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:34:30 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ void	insert_status(int status, t_dictionary **dict)
 {
 	if (storage_signal(0,0) != 130) {
 		dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
-	}
+		storage_signal(status, 1);
+	} else
+		storage_signal(0,1);
 }
 
 int	main(int argc, char **argv, char **env)

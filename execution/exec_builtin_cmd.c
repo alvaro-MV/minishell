@@ -6,11 +6,12 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:50:31 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 21:05:45 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:38:46 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+#include <errno.h>
 
 char	*find_exec_in_path(char **path, char *exec)
 {
@@ -62,8 +63,8 @@ int	call_execve(t_exec *exec)
 	ft_free_array(envp);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd_name, 2);
-	if (access(execve_args[0], F_OK) == 0)
-		(ft_putstr_fd(": Permission denied\n", 2), exit(126));
+	// if (access(execve_args[0], F_OK) == 0)
+	// 	(ft_putstr_fd(": Permission denied\n", 2), exit(errno));
 	ft_putstr_fd(": command not found\n", 2);
 	exit(127);
 }
@@ -75,7 +76,6 @@ int	run_builtin(t_exec *exec)
 
 	status = 0;
 	arguments = create_args(exec->cmd);
-	printf("HOLAAA\n");
 	if (!ft_strcmp(arguments[0], "echo"))
 		echo(arguments);
 	else if (!ft_strcmp(arguments[0], "export"))
@@ -127,5 +127,5 @@ int	execute_child(t_exec *exec_vars)
 	}
 	else
 		close_cmd_fds(exec_vars->cmd);
-	return (status);
+	return (ret);
 }

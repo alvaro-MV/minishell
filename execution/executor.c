@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:50:39 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 21:04:36 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:34:08 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 {
 	t_exec	exec_vars;
 	int		status;
+	int*	pids;
 	int		n_cmd;
 	int		save_std[2];
 
@@ -98,6 +99,7 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 	
 	(void)main_env;
 	n_cmd = create_pipe_and_fds(sequence);
+	pids = ft_calloc(n_cmd, sizeof(pid_t));
 	expand_pipe_seq(sequence, env);
 	if (n_cmd == 1 && is_builtin(sequence->cmd->cmd->darray))
 	{
@@ -119,20 +121,17 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 	else
 	{
 		signal(SIGINT, handler_signint_child);
-		
+		int i = -1;
 		while (sequence)
 		{
 			exec_vars = (t_exec){sequence->cmd, env, main_env,
 				dup(STDIN_FILENO)};
-			status = execute_child(&exec_vars);
+			pids[++i] = execute_child(&exec_vars);
 			sequence = sequence->next;
 		}
-		while (n_cmd--)
-			wait(&status);
-		if (WIFSIGNALED(status))
-			return (127);
-		else
-			return (WEXITSTATUS(status));
+		while (pids[i--])
+			waitpid(pids[i], &status, 0);
+		return (WEXITSTATUS(status));
 	}
 	return (status);
 }
