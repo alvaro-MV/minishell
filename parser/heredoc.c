@@ -65,7 +65,7 @@ void	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
 
 	pid = fork();
 	if (pid == 0)
-		child_heredoc(delimiter, *env);
+		child_heredoc(delimiter, &env);
 	signal(SIGINT, SIG_IGN);
 	wait(&status);
 	signal(SIGINT, handle_sigint2);

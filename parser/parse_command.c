@@ -20,7 +20,7 @@ int	parse_ix(t_io_redir **ptr_io_redir, t_token **token_stream,
 	return (1);
 }
 
-int	fill_cmd(t_token **stream, command **ptr_cmd, t_dictionary *env)
+int	fill_cmd(t_token **stream, t_command **ptr_cmd, t_dictionary *env)
 {
 	int	n_cmd;
 
@@ -33,7 +33,6 @@ int	fill_cmd(t_token **stream, command **ptr_cmd, t_dictionary *env)
 		n_cmd++;
 	}
 	if (!add_command(ptr_cmd, NULL, env, n_cmd))
-		// NULL para el terminación y el último para el execve
 		return (0);
 	return (1);
 }

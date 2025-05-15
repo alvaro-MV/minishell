@@ -15,6 +15,7 @@ SRC =  	data_structs/dictionary.c \
 		execution/exec_builtin_cmd.c \
 		execution/exec_io_redir.c \
 		execution/exec_utils.c \
+		execution/executor_utils.c \
 		execution/executor.c \
 		parser/buffer_AST.c \
 		parser/free_AST.c \

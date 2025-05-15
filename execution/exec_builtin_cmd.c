@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_builtin_cmd.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/15 18:19:07 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/15 18:31:13 by lvez-dia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
 char	*find_exec_in_path(char **path, char *exec)
@@ -82,6 +94,30 @@ int	run_builtin(t_exec *exec)
 	return (status);
 }
 
+int	handle_child_process(t_exec *exec_vars)
+{
+	int	status;
+
+	status = execute_io_redir(exec_vars);
+	if (status)
+		exit(1);
+	if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) == -1)
+		write(1, "Failed to redirect stdin.\n", 26);
+	if (exec_vars->cmd->fds[1] != 1 && dup2(exec_vars->cmd->fds[1], 1) == -1)
+		write(1, "Failed to redirect stdout.\n", 27);
+	if (status != 0)
+	{
+		close_cmd_fds(exec_vars->cmd);
+		exit(status);
+	}
+	if (!status && is_builtin(exec_vars->cmd->cmd->darray))
+		exit(run_builtin(exec_vars));
+	else if (!status && !is_builtin(exec_vars->cmd->cmd->darray))
+		status = call_execve(exec_vars);
+	close_cmd_fds(exec_vars->cmd);
+	return (status);
+}
+
 int	execute_child(t_exec *exec_vars)
 {
 	int	ret;
@@ -92,25 +128,7 @@ int	execute_child(t_exec *exec_vars)
 	if (ret == 0)
 	{
 		ret = fork();
-		status = execute_io_redir(exec_vars);
-		if (status)
-			exit(1);
-		if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0)
-			== -1)
-			write(1, "Siiiiiiiiiiiii\n", 12);
-		if (exec_vars->cmd->fds[1] != 1 && dup2(exec_vars->cmd->fds[1], 1)
-			== -1)
-			write(1, "Siiiiiiiiiiiii\n", 12);
-		if (status != 0)
-		{
-			close_cmd_fds(exec_vars->cmd);
-			exit(status);
-		}
-		if (!status && is_builtin(exec_vars->cmd->cmd->darray))
-			exit(run_builtin(exec_vars));
-		else if (!status && !is_builtin(exec_vars->cmd->cmd->darray))
-			status = call_execve(exec_vars);
-		close_cmd_fds(exec_vars->cmd);
+		status = handle_child_process(exec_vars);
 	}
 	else
 		close_cmd_fds(exec_vars->cmd);

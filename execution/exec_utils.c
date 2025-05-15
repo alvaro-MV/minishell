@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/15 18:20:14 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/15 19:09:17 by lvez-dia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
 char	**create_args(t_cmd *cmd)
 {
 	char	**command_list;
-	command	*ret_array;
+	t_command	*ret_array;
 	char	**tmp_array;
 	size_t	i;
 

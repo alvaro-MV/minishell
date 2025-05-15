@@ -43,7 +43,6 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream, t_dictionary *env)
 		if (!alloc_pipe_cmd(&tmp_cmd_pipe))
 			return (free_ast(ret_cmd_pipe), NULL);
 		tmp_cmd_pipe->cmd = parse_cmd(token_stream, env);
-		// Avanzas en la lista.
 		current_cmd_pipe->next = tmp_cmd_pipe;
 		current_cmd_pipe = tmp_cmd_pipe;
 		if (!tmp_cmd_pipe->cmd)

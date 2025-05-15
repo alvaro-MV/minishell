@@ -36,7 +36,7 @@ char	*buffer_cmd(t_cmd *cmd)
 	char	*buff_cmd;
 	char	*buff_tmp_cmd;
 	char	**command_list;
-	command	*cmd_array;
+	t_command	*cmd_array;
 	t_cmd	*tmp_cmd;
 	size_t	i;
 

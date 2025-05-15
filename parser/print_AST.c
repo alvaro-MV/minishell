@@ -15,7 +15,7 @@ void	print_io_redir(t_io_redir *io_redir)
 void	print_cmd(t_cmd *cmd)
 {
 	char	**command_list;
-	command	*cmd_array;
+	t_command	*cmd_array;
 	t_cmd	*tmp_cmd;
 	size_t	i;
 

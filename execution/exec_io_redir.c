@@ -1,6 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_io_redir.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/15 18:19:21 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/15 18:20:06 by lvez-dia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
-#include <sys/stat.h>
-#include <sys/types.h>
 
 int	override_fd(t_exec *exec, t_io_redir *redir, int flags, int idx)
 {

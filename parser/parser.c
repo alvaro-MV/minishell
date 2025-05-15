@@ -12,7 +12,7 @@ t_token	*parse_word(t_token **token_stream)
 	return (ret_token);
 }
 
-int	add_command(command **cmd, char *element, t_dictionary *env, int exp)
+int	add_command(t_command **cmd, char *element, t_dictionary *env, int exp)
 {
 	char	**split;
 	int		i;
