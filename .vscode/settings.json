@@ -1,15 +1,5 @@
 {
 	"files.associations": {
-		"stdlib.h": "c",
-		"stdio.h": "c",
-		"parser.h": "c",
-		"tokenizer.h": "c",
-		"*.tcc": "c",
-		"get_next_line.h": "c",
-		"minishell.h": "c",
-		"expansion.h": "c",
-		"libft.h": "c",
-		"execution.h": "c",
-		"signals.h": "c"
+		"tokenizer.h": "c"
 	}
 }

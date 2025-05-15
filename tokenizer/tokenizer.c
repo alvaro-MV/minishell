@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/15 17:50:25 by alvmoral          #+#    #+#             */
+/*   Updated: 2025/05/15 18:11:34 by alvmoral         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tokenizer.h"
 
 size_t	count_n_tokens(char *argv)
@@ -125,7 +137,8 @@ t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
 	i = 0;
 	while (tokens_strings[i])
 	{
-		token_stream[i].text = ft_strdup(tokens_strings[i]);
+		token_stream[i].text = handle_fin_quotes(tokens_strings[i], 
+								unclosed_quote_char(tokens_strings[i]));
 		if (tokens_strings[i][0] == '|')
 			token_stream[i].type = PIPE_OPERATOR;
 		else if (is_double_operator(tokens_strings[i][0]))

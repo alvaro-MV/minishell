@@ -50,6 +50,6 @@ void					free_io_redir(t_io_redir *io_redir);
 int						add_command(command **cmd, char *el, t_dictionary *env,
 							int exp);
 void					here_doc(char *delimiter, t_io_redir *redir,
-							t_dictionary *env);
+							t_dictionary **env);
 
 #endif
