@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:57:28 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 22:21:18 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:33:33 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	change_to_oldpwd(t_exec *exec)
 		return (perror("cd"), 1);
 	if (!getcwd(current_wd, PATH_MAX))
 		return (perror("cd: getcwd"), 1);
-
+	
 	dict_insert(&exec->env,
 		dict_create_entry(ft_strdup("OLDPWD"),
 			ft_strdup(dict_get(exec->env, "PWD"))));
@@ -70,6 +70,9 @@ int	cd(t_exec *exec, char **arg)
 	int		ret;
 	char	*path;
 
+	if (arg[1] && arg[2])
+		return (ft_putendl_fd("cd: too many arguments", 2), 1);
+		
 	if (arg[1] && arg[1][0] == '-' && arg[1][1] == '\0')
 		return (change_to_oldpwd(exec));
 

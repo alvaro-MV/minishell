@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:50:31 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 21:38:46 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:47:44 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int	call_execve(t_exec *exec)
 	ft_free_array(envp);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd_name, 2);
-	// if (access(execve_args[0], F_OK) == 0)
-	// 	(ft_putstr_fd(": Permission denied\n", 2), exit(errno));
+	if (access(execve_args[0], F_OK) == 0)
+		(ft_putstr_fd(": Permission denied\n", 2), exit(126));
 	ft_putstr_fd(": command not found\n", 2);
 	exit(127);
 }
@@ -85,11 +85,11 @@ int	run_builtin(t_exec *exec)
 	else if (!ft_strcmp(arguments[0], "env"))
 		ft_env(arguments, exec);
 	else if (!ft_strcmp(arguments[0], "exit"))
-		ft_exit(arguments);
+		status = ft_exit(arguments);
 	else if (!ft_strcmp(arguments[0], "unset"))
 		unset(exec, arguments);
 	else if (!ft_strcmp(arguments[0], "cd"))
-		cd(exec, arguments);
+		status = cd(exec, arguments);
 	else
 		ft_printf("minishell: command not found\n");
 	free(arguments);
