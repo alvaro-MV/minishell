@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:16:06 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/14 20:40:19 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:20:39 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,16 @@ typedef struct utils
 	char			*expanded_str;
 }					t_utils;
 
-void				insert_special_params(t_dictionary **env);
+void				no_se_pon_nombre_2(char *str, t_utils *utils,
+						t_dictionary *env);
+int					nose_pon_nombre(t_dictionary *env, char *str,
+						t_utils *utils);
+int					expand_quotes(char *str, t_utils *utils);
 char				*expand_str(char *str, t_dictionary *env);
 int					is_env_var(char *str, t_utils utils);
 int					is_for_expand_str(char *str);
 void				join_char(char **expanded_str, char *str);
 int					is_special_var(char *var);
+void				insert_special_params(t_dictionary **env);
 
 #endif

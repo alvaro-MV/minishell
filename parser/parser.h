@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 18:05:09 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:27:23 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include "../data_structs/dynamic_array.h"
 # include "../expansion/expansion.h"
 # include "../libft/include/libft.h"
-# include "../tokenizer/tokenizer.h"
 # include "../signals.h"
+# include "../tokenizer/tokenizer.h"
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -50,22 +50,45 @@ typedef struct s_cmd_pipe
 	struct s_cmd_pipe	*next;
 }						t_cmd_pipe;
 
-t_cmd_pipe				*parse_cmd_pipe(t_token **token_stream,
-							t_dictionary *env);
-t_cmd					*parse_cmd(t_token **token_stream, t_dictionary *env);
-t_io_redir				*parse_io_redir(t_token **token_stream,
-							t_dictionary *env);
-t_token					*parse_word(t_token **token_stream);
-
-void					free_ast(t_cmd_pipe *sequence);
-void					free_cmd(t_cmd *cmd);
+void					process_io_op(t_io_redir *io_redir, char **buff_io);
+void					process_io_filename(t_io_redir *io_redir,
+							char **buff_io);
+void					buffer_io_redir(t_io_redir *io_redir, char **buff_io);
+char					*build_command(t_cmd *cmd, char *buff_cmd);
+char					*buffer_cmd(t_cmd *cmd);
+void					buffer_ast(t_cmd_pipe *sequence, char **AST);
 void					free_io_redir(t_io_redir *io_redir);
-int						add_command(t_command **cmd, char *el,
-							t_dictionary *env, int exp);
+void					free_cmd(t_cmd *cmd);
+void					free_ast(t_cmd_pipe *sequence);
 void					handle_sigint2(int sig);
 void					handle_sigquit2(int sig);
 void					handle_sigint_heredoc(int sig);
+void					process_heredoc_loop(int hdfd, char *delimiter,
+							void *env);
+void					child_heredoc(char *delimiter, void *env);
 int						here_doc(char *delimiter, t_io_redir *redir,
 							t_dictionary *env);
+int						parse_ix(t_io_redir **ptr_io_redir,
+							t_token **token_stream, t_dictionary *env);
+int						fill_cmd(t_token **stream, t_command **ptr_cmd,
+							t_dictionary *env);
+t_cmd					*parse_cmd(t_token **token_stream, t_dictionary *env);
+int						alloc_io_redir(t_io_redir **ptr__io_redir);
+t_io_redir				*parse_io_redir(t_token **token_stream,
+							t_dictionary *env);
+int						is_empty_cmd(t_cmd *cmd);
+int						alloc_pipe_cmd(t_cmd_pipe **ptr_cmd_pipe);
+t_cmd_pipe				*parse_cmd_pipe(t_token **token_stream,
+							t_dictionary *env);
+t_token					*parse_word(t_token **token_stream);
+int						handle_expansion(t_command **cmd, char *element,
+							t_dictionary *env);
+int						add_command(t_command **cmd, char *element,
+							t_dictionary *env, int exp);
+void					print_from_diff(char *AST, char *expected);
+void					print_io_redir(t_io_redir *io_redir);
+void					print_io_redirections(t_cmd *cmd);
+void					print_cmd(t_cmd *cmd);
+void					print_ast(t_cmd_pipe *sequence);
 
 #endif

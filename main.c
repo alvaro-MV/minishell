@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 18:06:00 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:10:33 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	insert_status(int status, t_dictionary **dict)
 {
-	ft_printf("status: %d   stored: %d\n",  status, storage_signal(0, 0));
-	if (status || storage_signal(0,0) != 0)
+	ft_printf("status: %d   stored: %d\n", status, storage_signal(0, 0));
+	if (status || storage_signal(0, 0) != 0)
 	{
 		dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
 		storage_signal(status, 1);
 	}
 	else
-		storage_signal(0,1);
+		storage_signal(0, 1);
 }
 
 void	init_environment(t_dictionary **hash_env, char **env, char **line,

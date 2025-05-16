@@ -6,12 +6,11 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/16 18:04:53 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:10:42 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
 
 void	process_heredoc_loop(int hdfd, char *delimiter, void *env)
 {
