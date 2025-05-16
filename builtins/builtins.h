@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:52 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 16:40:03 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:25:06 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define BUILTINS_H
 
 # include "../minishell.h"
+#include <limits.h> 
 # include <stddef.h>
 # include <unistd.h>
 

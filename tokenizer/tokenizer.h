@@ -5,6 +5,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <stdbool.h>
 //# include <editline/readline.h>
 # include "../data_structs/dynamic_array.h"
 # include "../libft/include/libft.h"
@@ -32,5 +33,7 @@ int				still_in_quote(char c, char quote);
 t_darray		*tokenizer_str(char *argv);
 t_token			*tokenizer_t_tokens(char **tokens_strings, size_t len);
 void			free_tokens(t_token *tokens);
+char 			unclosed_quote_char(const char *str);
+char    		*handle_fin_quotes(char *line, char quote);
 
 #endif

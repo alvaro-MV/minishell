@@ -3,93 +3,84 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:57:28 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/14 19:39:14 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:33:33 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	change_to_oldpwd(t_exec *exec, char *oldpwd, char *print_wd)
+static char	*cd_build_path(t_exec *exec, char **arg)
 {
-	t_dic_entry	*pwd_entry;
-	t_dic_entry	*oldpwd_entry;
+	if (!arg[1] || arg[1][0] == '~')
+		return (ft_strdup(dict_get(exec->env, "HOME")));
 
-	ft_memcpy(print_wd, dict_get(exec->env, "OLDPWD"), 1024);
-	oldpwd = ft_strdup(dict_get(exec->env, "PWD"));
-	if (chdir(print_wd) != 0)
-	{
-		perror("Error: cannot change to old directory");
-		return (1);
-	}
-	pwd_entry = dict_create_entry(ft_strdup("PWD"), ft_strdup(print_wd));
-	oldpwd_entry = dict_create_entry(ft_strdup("OLDPWD"), ft_strdup(oldpwd));
-	dict_insert(&exec->env, pwd_entry);
-	dict_insert(&exec->env, oldpwd_entry);
-	free(oldpwd);
-	return (0);
-}
+	if (arg[1][0] == '/')
+		return (ft_strdup(arg[1]));
 
-int	change_directory(t_exec *exec, char *path)
-{
-	t_dic_entry	*pwd_entry;
-	t_dic_entry	*oldpwd_entry;
-	char		old_cwd[1024];
-
-	ft_memcpy(old_cwd, dict_get(exec->env, "PWD"), 1024);
-	ft_printf("old_cwd en change_directory: %s\n", old_cwd);
-	if (chdir(path) != 0)
-	{
-		perror("Error: path does not exist or cannot be accessed");
-		return (1);
-	}
-	pwd_entry = dict_create_entry(ft_strdup("PWD"), ft_strdup(path));
-	oldpwd_entry = dict_create_entry(ft_strdup("OLDPWD"), ft_strdup(old_cwd));
-	dict_insert(&exec->env, pwd_entry);
-	dict_insert(&exec->env, oldpwd_entry);
-	return (0);
-}
-
-char	*cd_continue(t_exec *exec, char **arg)
-{
-	char	*path;
-	char	*tmp_path;
-
-	if (arg[1] && arg[1][0] != '~')
-	{
-		path = ft_strjoin(dict_get(exec->env, "PWD"), "/");
-		tmp_path = path;
-		path = ft_strjoin(path, arg[1]);
-		free(tmp_path);
-	}
-	else
-		path = dict_get(exec->env, "HOME");
+	char	*cwd = dict_get(exec->env, "PWD");
+	char	*tmp = ft_strjoin(cwd, "/");
+	char	*path = ft_strjoin(tmp, arg[1]);
+	free(tmp);
 	return (path);
+}
+
+static int	change_to_oldpwd(t_exec *exec)
+{
+	const char	*old_dir = dict_get(exec->env, "OLDPWD");
+	char		current_wd[PATH_MAX];
+
+	if (!old_dir)
+		return (perror("cd: OLDPWD not set"), 1);
+	if (chdir(old_dir) != 0)
+		return (perror("cd"), 1);
+	if (!getcwd(current_wd, PATH_MAX))
+		return (perror("cd: getcwd"), 1);
+	
+	dict_insert(&exec->env,
+		dict_create_entry(ft_strdup("OLDPWD"),
+			ft_strdup(dict_get(exec->env, "PWD"))));
+	dict_insert(&exec->env,
+		dict_create_entry(ft_strdup("PWD"), ft_strdup(current_wd)));
+	return (0);
+}
+
+static int	change_directory(t_exec *exec, const char *path)
+{
+	char	old_cwd[PATH_MAX];
+	char	new_cwd[PATH_MAX];
+
+	ft_strlcpy(old_cwd, dict_get(exec->env, "PWD"), PATH_MAX);
+	if (chdir(path) != 0)
+		return (perror("cd"), 1);
+	if (!getcwd(new_cwd, PATH_MAX))
+		return (perror("cd: getcwd"), 1);
+
+	dict_insert(&exec->env,
+		dict_create_entry(ft_strdup("OLDPWD"), ft_strdup(old_cwd)));
+	dict_insert(&exec->env,
+		dict_create_entry(ft_strdup("PWD"), ft_strdup(new_cwd)));
+	return (0);
 }
 
 int	cd(t_exec *exec, char **arg)
 {
-	char	current_wd[1024];
-	char	*oldpwd;
+	int		ret;
 	char	*path;
 
+	if (arg[1] && arg[2])
+		return (ft_putendl_fd("cd: too many arguments", 2), 1);
+		
 	if (arg[1] && arg[1][0] == '-' && arg[1][1] == '\0')
-	{
-		oldpwd = dict_get(exec->env, "OLDPWD");
-		if (!oldpwd)
-		{
-			perror("Error: OLDPWD not set");
-			return (1);
-		}
-		return (change_to_oldpwd(exec, oldpwd, current_wd));
-	}
-	path = cd_continue(exec, arg);
+		return (change_to_oldpwd(exec));
+
+	path = cd_build_path(exec, arg);
 	if (!path)
-	{
-		ft_printf("cd: HOME not set\n");
-		return (1);
-	}
-	return (change_directory(exec, path));
+		return (ft_putendl_fd("cd: HOME not set", 2), 1);
+	ret = change_directory(exec, path);
+	free(path);
+	return (ret);
 }
+

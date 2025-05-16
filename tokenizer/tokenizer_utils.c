@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/15 17:50:22 by alvmoral          #+#    #+#             */
+/*   Updated: 2025/05/15 18:15:39 by alvmoral         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tokenizer.h"
 
 int	is_simple_operator(char argv_char)
@@ -33,6 +45,8 @@ int	still_in_quote(char c, char quote)
 			return (0);
 		return (1);
 	}
+	if (c == '\0')
+		inside_quote = 0;
 	if (inside_quote == 1)
 		return (1);
 	else

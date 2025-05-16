@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 18:48:41 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 12:59:50 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 void	insert_status(int status, t_dictionary **dict)
 {
-	dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
+	if (storage_signal(0,0) != 130) {
+		dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
+		storage_signal(status, 1);
+	} else
+		storage_signal(0,1);
 }
 
 void	init_environment(t_dictionary **hash_env, char **env, char **line,

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin_cmd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 18:31:13 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:00:41 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+#include <errno.h>
 
 char	*find_exec_in_path(char **path, char *exec)
 {
@@ -57,6 +58,7 @@ int	call_execve(t_exec *exec)
 	ft_free_array(path);
 	execve_args = create_args(exec->cmd);
 	envp = dict_envp(exec->env, 0, 0);
+	
 	execve(execve_args[0], execve_args, envp);
 	ft_free_array(envp);
 	ft_putstr_fd("minishell: ", 2);
@@ -83,11 +85,11 @@ int	run_builtin(t_exec *exec)
 	else if (!ft_strcmp(arguments[0], "env"))
 		ft_env(arguments, exec);
 	else if (!ft_strcmp(arguments[0], "exit"))
-		ft_exit(arguments);
+		status = ft_exit(arguments);
 	else if (!ft_strcmp(arguments[0], "unset"))
 		unset(exec, arguments);
 	else if (!ft_strcmp(arguments[0], "cd"))
-		cd(exec, arguments);
+		status = cd(exec, arguments);
 	else
 		ft_printf("minishell: command not found\n");
 	free(arguments);
@@ -132,5 +134,5 @@ int	execute_child(t_exec *exec_vars)
 	}
 	else
 		close_cmd_fds(exec_vars->cmd);
-	return (status);
+	return (ret);
 }
