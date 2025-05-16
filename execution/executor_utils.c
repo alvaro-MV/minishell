@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:38:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 18:38:30 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:25:40 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	expand_pipe_seq(t_cmd_pipe *sequence, t_dictionary *env)
 	t_cmd	*cmd;
 	char	**cmd_array;
 	int		i;
+	int		j = 0;// CONTADOR TESTEO
 
 	while (sequence)
 	{
@@ -65,6 +66,7 @@ void	expand_pipe_seq(t_cmd_pipe *sequence, t_dictionary *env)
 			cmd_array = (char **)cmd->cmd->darray;
 			while (cmd_array[++i])
 			{
+				ft_printf("j: %d\n", j++);
 				tmp = cmd_array[i];
 				cmd_array[i] = expand_str(tmp, env);
 				free(tmp);

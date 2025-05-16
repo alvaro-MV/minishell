@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:10:42 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 18:05:26 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:22:57 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	process_env_variables(t_dictionary **hash_env, char **env)
 	while (*env)
 	{
 		env_var_array = ft_split(*env, '=');
-		ft_strdup(env_var_array[1]);
 		dict_set_env_var(hash_env, env_var_array[0], env_var_array[1], 1);
 		ft_free_array(env_var_array);
 		env++;
@@ -93,9 +92,6 @@ void	process_env_variables(t_dictionary **hash_env, char **env)
 
 void	get_env(t_dictionary **hash_env, char **env)
 {
-	char	**env_var_array;
-	char	*shlvl;
-
 	*hash_env = dict_init(230);
 	if (!*env)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buffer_AST_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:52:46 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 16:57:21 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:14:57 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	process_io_filename(t_io_redir *io_redir, char **buff_io)
 
 void	buffer_io_redir(t_io_redir *io_redir, char **buff_io)
 {
-	char	*buff_tmp_io;
-
 	if (io_redir)
 	{
 		process_io_op(io_redir, buff_io);

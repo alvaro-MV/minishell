@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:41 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 17:47:42 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:28:23 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	free_cmd(t_cmd *cmd)
 		cmds_for_free = (char **)cmd->cmd->darray;
 		while (*cmds_for_free)
 		{
+			
 			free(*cmds_for_free);
 			cmds_for_free++;
 		}
@@ -53,5 +54,5 @@ void	free_ast(t_cmd_pipe *sequence)
 	free_cmd(sequence->cmd);
 	if (sequence->next)
 		free_ast(sequence->next);
-	free(sequence);
+	free_ast(sequence);
 }

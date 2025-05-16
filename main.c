@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 18:06:00 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:18:10 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	insert_status(int status, t_dictionary **dict)
 {
-	ft_printf("status: %d   stored: %d\n",  status, storage_signal(0, 0));
 	if (status || storage_signal(0,0) != 0)
 	{
 		dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
