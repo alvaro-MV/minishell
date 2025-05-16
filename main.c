@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 12:59:50 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:33:51 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int	handle_signals(char **line, int *finish)
 {
 	int	saved_stdin;
 
+	*finish = 0;
 	saved_stdin = dup(STDIN_FILENO);
 	signals(line, finish);
-	if (finish)
+	if (*finish)
 	{
 		close(saved_stdin);
 		exit(0);
 	}
-	add_history(*line);
 	return (saved_stdin);
 }
 
@@ -77,6 +77,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	finish = 0;
 	init_environment(&hash_env, env, &line, &finish);
 	while (1)
 	{

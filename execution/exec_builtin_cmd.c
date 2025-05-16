@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 13:00:41 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:22:25 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	handle_child_process(t_exec *exec_vars)
 	else if (!status && !is_builtin(exec_vars->cmd->cmd->darray))
 		status = call_execve(exec_vars);
 	close_cmd_fds(exec_vars->cmd);
-	return (status);
+	exit (status);
 }
 
 int	execute_child(t_exec *exec_vars)
@@ -129,7 +129,6 @@ int	execute_child(t_exec *exec_vars)
 	ret = fork();
 	if (ret == 0)
 	{
-		ret = fork();
 		status = handle_child_process(exec_vars);
 	}
 	else
