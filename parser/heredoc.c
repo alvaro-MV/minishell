@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/16 13:56:44 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:32:09 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,11 @@
 
 volatile sig_atomic_t	sig_int_hd = 0;
 
-void	handle_sigint2(int sig)
-{
-	(void)sig;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-}
-
-void	handle_sigquit2(int sig)
-{
-	(void)sig;
-}
-
-void	handle_sigint_heredoc(int sig)
-{
-	(void) sig;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	close(0);
-	sig_int_hd = 1;
-}
-
-void	child_heredoc(char *delimiter, void *env)
+void	process_heredoc_loop(int hdfd, char *delimiter, void *env)
 {
 	char	*next_line;
 	char	*expanded_line;
-	int		hdfd;
 
-	signal(SIGINT, handle_sigint_heredoc);
-	signal(SIGQUIT, SIG_IGN);
-	hdfd = open(".heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (hdfd == -1)
-		exit(1);
 	while (1)
 	{
 		next_line = readline("herdoc> ");
@@ -69,6 +40,18 @@ void	child_heredoc(char *delimiter, void *env)
 		free(next_line);
 		free(expanded_line);
 	}
+}
+
+void	child_heredoc(char *delimiter, void *env)
+{
+	int	hdfd;
+
+	signal(SIGINT, handle_sigint_heredoc);
+	signal(SIGQUIT, SIG_IGN);
+	hdfd = open(".heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (hdfd == -1)
+		exit(1);
+	process_heredoc_loop(hdfd, delimiter, env);
 	close(hdfd);
 	exit(0);
 }
@@ -88,7 +71,8 @@ int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
 	if (WIFSIGNALED(status) || WEXITSTATUS(status) != 0)
 	{
 		sig_int_hd = 0;
-		dict_insert(&env, dict_create_entry(ft_strdup("?"), ft_itoa(WEXITSTATUS(status))));
+		dict_insert(&env, dict_create_entry(ft_strdup("?"),
+				ft_itoa(WEXITSTATUS(status))));
 		redir->fd = open(".heredoc", O_RDONLY | O_TRUNC);
 		return (WEXITSTATUS(status));
 	}

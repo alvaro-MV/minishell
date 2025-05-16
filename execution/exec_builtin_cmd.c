@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin_cmd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 13:22:25 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:16:32 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	call_execve(t_exec *exec)
 	ft_free_array(path);
 	execve_args = create_args(exec->cmd);
 	envp = dict_envp(exec->env, 0, 0);
-	
 	execve(execve_args[0], execve_args, envp);
 	ft_free_array(envp);
 	ft_putstr_fd("minishell: ", 2);

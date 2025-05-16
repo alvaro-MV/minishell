@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 13:33:55 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:10:53 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "signals.h"
 #include "minishell.h"
+#include "signals.h"
 
-int storage_signal(int status, int flag) {
-	static int  signal = 0;
-	
+int	storage_signal(int status, int flag)
+{
+	static int	signal = 0;
+
 	if (flag)
 		signal = status;
-	return signal;
+	return (signal);
 }
 
 void	handle_sigint(int sig)
@@ -48,7 +49,8 @@ void	signals(char **input, int *exit)
 			ft_printf("exit\n");
 			*exit = 1;
 		}
-		else if (**input == '\0'){
+		else if (**input == '\0')
+		{
 			*input = NULL;
 		}
 		else if (*input && **input)

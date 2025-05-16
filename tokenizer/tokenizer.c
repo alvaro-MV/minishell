@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:50:25 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 18:11:34 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:24:56 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,36 @@ int	tokenize_literal(char *line, int *i, int *start, t_darray **tokens)
 	return (1);
 }
 
+int	process_tokenization(char *line, t_darray *tokens)
+{
+	int	i;
+	int	start;
+
+	i = 0;
+	start = 0;
+	while (tokens->full_idx < count_n_tokens(line))
+	{
+		while (still_in_quote(line[i], '\''))
+			i++;
+		while (still_in_quote(line[i], '\"'))
+			i++;
+		if (is_simple_operator(line[i]))
+		{
+			if (!tokenize_operator(line, &i, &start, &tokens))
+				return (free(line), 0);
+			continue ;
+		}
+		else if (isspace(line[i]) || !line[i])
+		{
+			if (!tokenize_literal(line, &i, &start, &tokens))
+				return (free(line), 0);
+		}
+		i++;
+	}
+	add_token(&tokens, NULL);
+	return (1);
+}
+
 t_darray	*tokenizer_str(char *line)
 {
 	int			i;
@@ -103,26 +133,8 @@ t_darray	*tokenizer_str(char *line)
 	tokens = alloc_darray(count_n_tokens(line) + 1, sizeof(char *));
 	if (!tokens)
 		return (free(line), NULL);
-	while (tokens->full_idx < count_n_tokens(line))
-	{
-		while (still_in_quote(line[i], '\''))
-			i++;
-		while (still_in_quote(line[i], '\"'))
-			i++;
-		if (is_simple_operator(line[i]))
-		{
-			if (!tokenize_operator(line, &i, &start, &tokens))
-				return (free(line), NULL);
-			continue ;
-		}
-		else if (isspace(line[i]) || !line[i])
-		{
-			if (!tokenize_literal(line, &i, &start, &tokens))
-				return (free(line), NULL);
-		}
-		i++;
-	}
-	add_token(&tokens, NULL);
+	if (!process_tokenization(line, tokens))
+		return (NULL);
 	free(line);
 	return (tokens);
 }
@@ -137,8 +149,8 @@ t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
 	i = 0;
 	while (tokens_strings[i])
 	{
-		token_stream[i].text = handle_fin_quotes(tokens_strings[i], 
-								unclosed_quote_char(tokens_strings[i]));
+		token_stream[i].text = handle_fin_quotes(tokens_strings[i],
+				unclosed_quote_char(tokens_strings[i]));
 		if (tokens_strings[i][0] == '|')
 			token_stream[i].type = PIPE_OPERATOR;
 		else if (is_double_operator(tokens_strings[i][0]))

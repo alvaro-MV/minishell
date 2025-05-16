@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:37 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 15:51:50 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:35:26 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,40 @@ int	execute_sequence(t_cmd_pipe *sequence, t_dictionary *env, char **main_env,
 {
 	t_exec	exec_vars;
 	int		status;
-	int*	pids;
+	int		*pids;
+	int		i;
 
 	status = 0;
 	pids = ft_calloc(n_cmd, sizeof(pid_t));
 	signal(SIGINT, handler_signint_child);
-	int i = -1;
+	i = -1;
 	while (sequence)
 	{
-		exec_vars = (t_exec){sequence->cmd, env, main_env,
-			dup(STDIN_FILENO)};
+		exec_vars = (t_exec){sequence->cmd, env, main_env, dup(STDIN_FILENO)};
 		pids[++i] = execute_child(&exec_vars);
 		sequence = sequence->next;
 	}
 	while (pids[i--])
 		waitpid(pids[i], &status, 0);
 	return (WEXITSTATUS(status));
+}
+
+int	execute_builtin(t_exec *exec_vars, int *save_std)
+{
+	int	status;
+
+	status = execute_io_redir(exec_vars);
+	if (status != 0)
+		return (status);
+	if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) == -1)
+		;
+	if (exec_vars->cmd->fds[1] != 1 && dup2(exec_vars->cmd->fds[1], 1) == -1)
+		;
+	status = run_builtin(exec_vars);
+	close_cmd_fds(exec_vars->cmd);
+	dup2(save_std[0], STDIN_FILENO);
+	dup2(save_std[1], STDOUT_FILENO);
+	return (status);
 }
 
 int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
@@ -61,19 +79,7 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env)
 	if (n_cmd == 1 && is_builtin(sequence->cmd->cmd->darray))
 	{
 		exec_vars = (t_exec){sequence->cmd, env, main_env, dup(STDIN_FILENO)};
-		status = execute_io_redir(&exec_vars);
-		if (status != 0)
-			return (status);
-		if (exec_vars.cmd->fds[0] != 0 && dup2(exec_vars.cmd->fds[0], 0)
-			== -1)
-			;
-		if (exec_vars.cmd->fds[1] != 1 && dup2(exec_vars.cmd->fds[1], 1)
-			== -1)
-			;
-		status = run_builtin(&exec_vars);
-		close_cmd_fds(sequence->cmd);
-		dup2(save_std[0], STDIN_FILENO);
-		dup2(save_std[1], STDOUT_FILENO);
+		return (execute_builtin(&exec_vars, save_std));
 	}
 	else
 		status = execute_sequence(sequence, env, main_env, n_cmd);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   environment.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/16 16:10:42 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/16 16:26:10 by lvez-dia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	**dict_envp(t_dictionary *env, unsigned int index, int j)
@@ -56,6 +68,29 @@ void	insert_special_params(t_dictionary **env)
 	dict_insert(env, env_var);
 }
 
+void	process_env_variables(t_dictionary **hash_env, char **env)
+{
+	char	**env_var_array;
+	char	*shlvl;
+
+	while (*env)
+	{
+		env_var_array = ft_split(*env, '=');
+		ft_strdup(env_var_array[1]);
+		dict_set_env_var(hash_env, env_var_array[0], env_var_array[1], 1);
+		ft_free_array(env_var_array);
+		env++;
+	}
+	insert_special_params(hash_env);
+	shlvl = dict_get(*hash_env, "SHLVL");
+	if (shlvl)
+	{
+		shlvl = ft_itoa(ft_atoi(shlvl) + 1);
+		dict_set_env_var(hash_env, "SHLVL", shlvl, 1);
+		free(shlvl);
+	}
+}
+
 void	get_env(t_dictionary **hash_env, char **env)
 {
 	char	**env_var_array;
@@ -68,22 +103,5 @@ void	get_env(t_dictionary **hash_env, char **env)
 		dict_set_env_var(hash_env, "OLDPWD", "", 1);
 	}
 	else
-	{
-		while (*env)
-		{
-			env_var_array = ft_split(*env, '=');
-			ft_strdup(env_var_array[1]);
-			dict_set_env_var(hash_env, env_var_array[0], env_var_array[1], 1);
-			ft_free_array(env_var_array);
-			env++;
-		}
-	}
-	insert_special_params(hash_env);
-	shlvl = dict_get(*hash_env, "SHLVL");
-	if (shlvl)
-	{
-		shlvl = ft_itoa(ft_atoi(shlvl) + 1);
-		dict_set_env_var(hash_env, "SHLVL", shlvl, 1);
-		free(shlvl);
-	}
+		process_env_variables(hash_env, env);
 }

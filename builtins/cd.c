@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:57:28 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 22:33:33 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:15:44 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 static char	*cd_build_path(t_exec *exec, char **arg)
 {
+	char	*cwd;
+	char	*tmp;
+	char	*path;
+
 	if (!arg[1] || arg[1][0] == '~')
 		return (ft_strdup(dict_get(exec->env, "HOME")));
-
 	if (arg[1][0] == '/')
 		return (ft_strdup(arg[1]));
-
-	char	*cwd = dict_get(exec->env, "PWD");
-	char	*tmp = ft_strjoin(cwd, "/");
-	char	*path = ft_strjoin(tmp, arg[1]);
+	cwd = dict_get(exec->env, "PWD");
+	tmp = ft_strjoin(cwd, "/");
+	path = ft_strjoin(tmp, arg[1]);
 	free(tmp);
 	return (path);
 }
@@ -38,12 +40,10 @@ static int	change_to_oldpwd(t_exec *exec)
 		return (perror("cd"), 1);
 	if (!getcwd(current_wd, PATH_MAX))
 		return (perror("cd: getcwd"), 1);
-	
-	dict_insert(&exec->env,
-		dict_create_entry(ft_strdup("OLDPWD"),
+	dict_insert(&exec->env, dict_create_entry(ft_strdup("OLDPWD"),
 			ft_strdup(dict_get(exec->env, "PWD"))));
-	dict_insert(&exec->env,
-		dict_create_entry(ft_strdup("PWD"), ft_strdup(current_wd)));
+	dict_insert(&exec->env, dict_create_entry(ft_strdup("PWD"),
+			ft_strdup(current_wd)));
 	return (0);
 }
 
@@ -57,11 +57,10 @@ static int	change_directory(t_exec *exec, const char *path)
 		return (perror("cd"), 1);
 	if (!getcwd(new_cwd, PATH_MAX))
 		return (perror("cd: getcwd"), 1);
-
-	dict_insert(&exec->env,
-		dict_create_entry(ft_strdup("OLDPWD"), ft_strdup(old_cwd)));
-	dict_insert(&exec->env,
-		dict_create_entry(ft_strdup("PWD"), ft_strdup(new_cwd)));
+	dict_insert(&exec->env, dict_create_entry(ft_strdup("OLDPWD"),
+			ft_strdup(old_cwd)));
+	dict_insert(&exec->env, dict_create_entry(ft_strdup("PWD"),
+			ft_strdup(new_cwd)));
 	return (0);
 }
 
@@ -72,10 +71,8 @@ int	cd(t_exec *exec, char **arg)
 
 	if (arg[1] && arg[2])
 		return (ft_putendl_fd("cd: too many arguments", 2), 1);
-		
 	if (arg[1] && arg[1][0] == '-' && arg[1][1] == '\0')
 		return (change_to_oldpwd(exec));
-
 	path = cd_build_path(exec, arg);
 	if (!path)
 		return (ft_putendl_fd("cd: HOME not set", 2), 1);
@@ -83,4 +80,3 @@ int	cd(t_exec *exec, char **arg)
 	free(path);
 	return (ret);
 }
-

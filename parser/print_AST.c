@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_AST.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:31 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 17:48:32 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:04:10 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,26 @@ void	print_io_redir(t_io_redir *io_redir)
 	}
 }
 
-void	print_cmd(t_cmd *cmd)
+void	print_io_redirections(t_cmd *cmd)
 {
-	char	**command_list;
-	t_command	*cmd_array;
-	t_cmd	*tmp_cmd;
-	size_t	i;
-
-	tmp_cmd = cmd;
 	while (cmd)
 	{
 		print_io_redir(cmd->cmd_prefix);
 		print_io_redir(cmd->cmd_suffix);
 		cmd = cmd->next;
 	}
+}
+
+void	print_cmd(t_cmd *cmd)
+{
+	char		**command_list;
+	t_command	*cmd_array;
+	t_cmd		*tmp_cmd;
+	size_t		i;
+
+	print_io_redirections(cmd);
 	ft_printf("{ ");
+	tmp_cmd = cmd;
 	while (tmp_cmd)
 	{
 		i = 0;

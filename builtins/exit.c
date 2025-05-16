@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 22:45:04 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:16:02 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,5 @@ int	ft_exit(char **args)
 		return (1);
 	}
 	status = ft_atoi(args[1]);
-	// exit(status);
 	return (status);
 }

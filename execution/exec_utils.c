@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:14 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 13:00:59 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:27:37 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 char	**create_args(t_cmd *cmd)
 {
-	char	**command_list;
+	char		**command_list;
 	t_command	*ret_array;
-	char	**tmp_array;
-	size_t	i;
+	char		**tmp_array;
+	size_t		i;
 
 	ret_array = alloc_darray(10, sizeof(char *));
 	if (!ret_array)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 15:58:37 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:11:43 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 void	insert_status(int status, t_dictionary **dict)
 {
-	if (storage_signal(0,0) != 130) {
+	if (storage_signal(0, 0) != 130)
+	{
 		dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
 		storage_signal(status, 1);
-	} else
-		storage_signal(0,1);
+	}
+	else
+		storage_signal(0, 1);
 }
 
 void	init_environment(t_dictionary **hash_env, char **env, char **line,
@@ -62,8 +64,6 @@ void	process_commands(t_dictionary *hash_env, char **env, char *line)
 	sequence = parse_cmd_pipe(&token_stream, hash_env);
 	if (sequence)
 		insert_status(executor(sequence, hash_env, env), &hash_env);
-	// else
-	// 	insert_status(2, &hash_env);
 	free_ast(sequence);
 	free(tokens_for_free);
 }
@@ -83,7 +83,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		saved_stdin = handle_signals(&line, &finish);
 		dict_insert(&hash_env, dict_create_entry(ft_strdup("?"),
-					ft_itoa(storage_signal(0,0))));
+				ft_itoa(storage_signal(0, 0))));
 		process_commands(hash_env, env, line);
 		dup2(saved_stdin, STDIN_FILENO);
 		close(saved_stdin);

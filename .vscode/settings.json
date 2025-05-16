@@ -8,6 +8,7 @@
 		"readline.h": "c",
 		"history.h": "c",
 		"dynamic_array.h": "c",
-		"builtins.h": "c"
+		"builtins.h": "c",
+		"buffer_AST_.C": "cpp"
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:27 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 17:48:28 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:01:33 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,33 @@ t_token	*parse_word(t_token **token_stream)
 	return (ret_token);
 }
 
-int	add_command(t_command **cmd, char *element, t_dictionary *env, int exp)
+int	handle_expansion(t_command **cmd, char *element, t_dictionary *env)
 {
 	char	**split;
-	int		i;
 	char	*expanded_cmd;
 	char	*append_arg;
+	int		i;
 
-	(void)exp;
+	expanded_cmd = expand_str(element, env);
+	if (!expanded_cmd)
+		return (0);
+	split = ft_split(expanded_cmd, ' ');
+	if (!split)
+		return (free(expanded_cmd), 0);
 	i = -1;
+	while (split[++i])
+	{
+		append_arg = ft_strdup(split[i]);
+		if (!append_darray(cmd, &append_arg))
+			return (free(expanded_cmd), ft_free_array(split), 0);
+	}
+	(free(expanded_cmd), ft_free_array(split));
+	return (1);
+}
+
+int	add_command(t_command **cmd, char *element, t_dictionary *env, int exp)
+{
+	(void)exp;
 	if (!element || (element && element[0] != '$') || (element
 			&& element[0] == '$' && exp))
 	{
@@ -40,23 +58,7 @@ int	add_command(t_command **cmd, char *element, t_dictionary *env, int exp)
 			return (0);
 		return (1);
 	}
-	else
-	{
-		expanded_cmd = expand_str(element, env);
-		if (!expanded_cmd)
-			return (0);
-		split = ft_split(expanded_cmd, ' ');
-		if (!split)
-			return (free(expanded_cmd), 0);
-		while (split[++i])
-		{
-			append_arg = ft_strdup(split[i]);
-			if (!append_darray(cmd, &append_arg))
-				return (free(expanded_cmd), ft_free_array(split), 0);
-		}
-		(free(expanded_cmd), ft_free_array(split));
-	}
-	return (1);
+	return (handle_expansion(cmd, element, env));
 }
 
 void	print_from_diff(char *AST, char *expected)

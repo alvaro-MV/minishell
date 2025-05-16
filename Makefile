@@ -17,6 +17,7 @@ SRC =  	data_structs/dictionary.c \
 		execution/exec_utils.c \
 		execution/executor_utils.c \
 		execution/executor.c \
+		parser/buffer_AST_utils.c \
 		parser/buffer_AST.c \
 		parser/free_AST.c \
 		parser/parse_command.c \
@@ -24,6 +25,7 @@ SRC =  	data_structs/dictionary.c \
 		parser/parse_pipe.c \
 		parser/parser.c \
 		parser/print_AST.c \
+		parser/handle_sig.c \
 		parser/heredoc.c \
 		tokenizer/tokenizer_utils.c \
 		tokenizer/tokenizer.c \

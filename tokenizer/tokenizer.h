@@ -1,12 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/16 16:22:20 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/16 16:22:21 by lvez-dia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
 
 # include <readline/readline.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <stdbool.h>
-//# include <editline/readline.h>
 # include "../data_structs/dynamic_array.h"
 # include "../libft/include/libft.h"
 # include <readline/history.h>
@@ -18,22 +29,22 @@ typedef enum token_type
 	FILENAME,
 	COMMAND,
 	END
-}				t_token_type;
+}					t_token_type;
 
 typedef struct s_token
 {
 	t_token_type	type;
-	char		*text;
-}				t_token;
+	char			*text;
+}					t_token;
 
-int				add_token(t_darray **tokens, char *element);
-int				is_simple_operator(char argv_char);
-int				is_double_operator(char argv_char);
-int				still_in_quote(char c, char quote);
-t_darray		*tokenizer_str(char *argv);
-t_token			*tokenizer_t_tokens(char **tokens_strings, size_t len);
-void			free_tokens(t_token *tokens);
-char 			unclosed_quote_char(const char *str);
-char    		*handle_fin_quotes(char *line, char quote);
+int					add_token(t_darray **tokens, char *element);
+int					is_simple_operator(char argv_char);
+int					is_double_operator(char argv_char);
+int					still_in_quote(char c, char quote);
+t_darray			*tokenizer_str(char *argv);
+t_token				*tokenizer_t_tokens(char **tokens_strings, size_t len);
+void				free_tokens(t_token *tokens);
+char				unclosed_quote_char(const char *str);
+char				*handle_fin_quotes(char *line, char quote);
 
 #endif
