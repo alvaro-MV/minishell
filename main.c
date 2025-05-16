@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 13:33:51 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:53:03 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	process_commands(t_dictionary *hash_env, char **env, char *line)
 	sequence = parse_cmd_pipe(&token_stream, hash_env);
 	if (sequence)
 		insert_status(executor(sequence, hash_env, env), &hash_env);
-	else
-		insert_status(2, &hash_env);
+	// else
+	// 	insert_status(2, &hash_env);
 	free_ast(sequence);
 	free(tokens_for_free);
 }

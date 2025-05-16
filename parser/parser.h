@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 18:55:03 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:43:08 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void					free_cmd(t_cmd *cmd);
 void					free_io_redir(t_io_redir *io_redir);
 int						add_command(t_command **cmd, char *el,
 							t_dictionary *env, int exp);
-void					here_doc(char *delimiter, t_io_redir *redir,
+int						here_doc(char *delimiter, t_io_redir *redir,
 							t_dictionary *env);
 
 #endif

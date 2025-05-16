@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/16 13:07:29 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:56:44 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	handle_sigquit2(int sig)
 
 void	handle_sigint_heredoc(int sig)
 {
-	(void)sig;
+	(void) sig;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -52,7 +52,10 @@ void	child_heredoc(char *delimiter, void *env)
 	{
 		next_line = readline("herdoc> ");
 		if (sig_int_hd == 1)
+		{
+			sig_int_hd = 0;
 			exit(130);
+		}
 		if (!next_line)
 			exit(0);
 		if (ft_strcmp(next_line, delimiter) == 0)
@@ -70,7 +73,7 @@ void	child_heredoc(char *delimiter, void *env)
 	exit(0);
 }
 
-void	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
+int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
 {
 	pid_t	pid;
 	int		status;
@@ -84,10 +87,11 @@ void	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
 	signal(SIGQUIT, SIG_IGN);
 	if (WIFSIGNALED(status) || WEXITSTATUS(status) != 0)
 	{
-		write(1, "Holaaaa\n", 9);
-		unlink(".heredoc");
-		return ;
+		sig_int_hd = 0;
+		dict_insert(&env, dict_create_entry(ft_strdup("?"), ft_itoa(WEXITSTATUS(status))));
+		redir->fd = open(".heredoc", O_RDONLY | O_TRUNC);
+		return (WEXITSTATUS(status));
 	}
-	ft_printf("status: %d\n", status);
 	redir->fd = open(".heredoc", O_RDONLY);
+	return (0);
 }

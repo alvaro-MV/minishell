@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:22 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 17:48:23 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:45:37 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ t_io_redir	*parse_io_redir(t_token **token_stream, t_dictionary *env)
 			return (free_io_redir(ret_io_redir), NULL);
 		}
 		if (!ft_strcmp(current_io_redir->op->text, "<<"))
-			here_doc(current_io_redir->filename->text, current_io_redir, env);
+		{
+			if (here_doc(current_io_redir->filename->text, current_io_redir, env))
+				return (free_io_redir(ret_io_redir), NULL);
+		}
 		if (!alloc_io_redir(&tmp_io_redir))
 			return (free_io_redir(ret_io_redir), NULL);
 		current_io_redir->next = tmp_io_redir;
