@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 13:53:03 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:58:37 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		saved_stdin = handle_signals(&line, &finish);
+		dict_insert(&hash_env, dict_create_entry(ft_strdup("?"),
+					ft_itoa(storage_signal(0,0))));
 		process_commands(hash_env, env, line);
 		dup2(saved_stdin, STDIN_FILENO);
 		close(saved_stdin);

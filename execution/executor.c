@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:37 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 13:23:12 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:51:50 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	handler_signint_child(int sig)
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
+	storage_signal(sig + 128, 1);
 	close(0);
 }
 
