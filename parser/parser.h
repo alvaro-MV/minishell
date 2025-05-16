@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 13:43:08 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:29:12 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "../expansion/expansion.h"
 # include "../libft/include/libft.h"
 # include "../tokenizer/tokenizer.h"
+# include "../signals.h"
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>

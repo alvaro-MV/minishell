@@ -1,13 +1,6 @@
 {
 	"files.associations": {
-		"tokenizer.h": "c",
-		"unistd.h": "c",
-		"signals.h": "c",
-		"minishell.h": "c",
-		"libft.h": "c",
-		"readline.h": "c",
-		"history.h": "c",
-		"dynamic_array.h": "c",
-		"builtins.h": "c"
+		"parser.h": "c",
+		"libft.h": "c"
 	}
 }

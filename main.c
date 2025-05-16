@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 15:58:37 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:04:56 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 void	insert_status(int status, t_dictionary **dict)
 {
-	if (storage_signal(0,0) != 130) {
+	ft_printf("status: %d   stored: %d\n",  status, storage_signal(0, 0));
+	if (status || storage_signal(0,0) != 0)
+	{
 		dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
 		storage_signal(status, 1);
-	} else
+	}
+	else
 		storage_signal(0,1);
 }
 
@@ -59,11 +62,12 @@ void	process_commands(t_dictionary *hash_env, char **env, char *line)
 	tokens_array->darray = NULL;
 	free_darray(tokens_array);
 	tokens_for_free = token_stream;
+	storage_signal(0, 1);
 	sequence = parse_cmd_pipe(&token_stream, hash_env);
 	if (sequence)
 		insert_status(executor(sequence, hash_env, env), &hash_env);
-	// else
-	// 	insert_status(2, &hash_env);
+	else
+		insert_status(storage_signal(0, 0), &hash_env);
 	free_ast(sequence);
 	free(tokens_for_free);
 }

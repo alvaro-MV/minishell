@@ -6,17 +6,16 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/16 13:56:44 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:51:02 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-volatile sig_atomic_t	sig_int_hd = 0;
 
 void	handle_sigint2(int sig)
 {
-	(void)sig;
+	storage_signal(128 + sig, 1);
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -24,17 +23,16 @@ void	handle_sigint2(int sig)
 
 void	handle_sigquit2(int sig)
 {
-	(void)sig;
+	storage_signal(128 + sig, 1);
 }
 
 void	handle_sigint_heredoc(int sig)
 {
-	(void) sig;
+	storage_signal(128 + sig, 1);
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	close(0);
-	sig_int_hd = 1;
 }
 
 void	child_heredoc(char *delimiter, void *env)
@@ -43,19 +41,15 @@ void	child_heredoc(char *delimiter, void *env)
 	char	*expanded_line;
 	int		hdfd;
 
-	signal(SIGINT, handle_sigint_heredoc);
-	signal(SIGQUIT, SIG_IGN);
+	(signal(SIGINT, handle_sigint_heredoc), signal(SIGQUIT, SIG_IGN));
 	hdfd = open(".heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (hdfd == -1)
 		exit(1);
 	while (1)
 	{
 		next_line = readline("herdoc> ");
-		if (sig_int_hd == 1)
-		{
-			sig_int_hd = 0;
+		if (storage_signal(0, 0))
 			exit(130);
-		}
 		if (!next_line)
 			exit(0);
 		if (ft_strcmp(next_line, delimiter) == 0)
@@ -65,12 +59,9 @@ void	child_heredoc(char *delimiter, void *env)
 		}
 		expanded_line = expand_str(next_line, env);
 		write(hdfd, expanded_line, ft_strlen(expanded_line));
-		write(hdfd, "\n", 1);
-		free(next_line);
-		free(expanded_line);
+		(write(hdfd, "\n", 1), free(next_line), free(expanded_line));
 	}
-	close(hdfd);
-	exit(0);
+	(close(hdfd), exit(0));
 }
 
 int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
@@ -87,8 +78,8 @@ int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
 	signal(SIGQUIT, SIG_IGN);
 	if (WIFSIGNALED(status) || WEXITSTATUS(status) != 0)
 	{
-		sig_int_hd = 0;
-		dict_insert(&env, dict_create_entry(ft_strdup("?"), ft_itoa(WEXITSTATUS(status))));
+		storage_signal(WEXITSTATUS(status), 1);
+		// dict_insert(&env, dict_create_entry(ft_strdup("?"), ft_itoa(WEXITSTATUS(status))));
 		redir->fd = open(".heredoc", O_RDONLY | O_TRUNC);
 		return (WEXITSTATUS(status));
 	}
