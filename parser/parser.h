@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 17:34:24 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:05:09 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "../expansion/expansion.h"
 # include "../libft/include/libft.h"
 # include "../tokenizer/tokenizer.h"
+# include "../signals.h"
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>

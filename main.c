@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 16:11:43 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:06:00 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 void	insert_status(int status, t_dictionary **dict)
 {
-	if (storage_signal(0, 0) != 130)
+	ft_printf("status: %d   stored: %d\n",  status, storage_signal(0, 0));
+	if (status || storage_signal(0,0) != 0)
 	{
 		dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
 		storage_signal(status, 1);
 	}
 	else
-		storage_signal(0, 1);
+		storage_signal(0,1);
 }
 
 void	init_environment(t_dictionary **hash_env, char **env, char **line,
@@ -41,7 +42,7 @@ int	handle_signals(char **line, int *finish)
 	if (*finish)
 	{
 		close(saved_stdin);
-		exit(0);
+		return (-1);
 	}
 	return (saved_stdin);
 }
@@ -61,9 +62,12 @@ void	process_commands(t_dictionary *hash_env, char **env, char *line)
 	tokens_array->darray = NULL;
 	free_darray(tokens_array);
 	tokens_for_free = token_stream;
+	storage_signal(0, 1);
 	sequence = parse_cmd_pipe(&token_stream, hash_env);
 	if (sequence)
 		insert_status(executor(sequence, hash_env, env), &hash_env);
+	else
+		insert_status(storage_signal(0, 0), &hash_env);
 	free_ast(sequence);
 	free(tokens_for_free);
 }
@@ -82,6 +86,8 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		saved_stdin = handle_signals(&line, &finish);
+		if (saved_stdin == -1)
+			return (dict_delete(hash_env), 0);
 		dict_insert(&hash_env, dict_create_entry(ft_strdup("?"),
 				ft_itoa(storage_signal(0, 0))));
 		process_commands(hash_env, env, line);

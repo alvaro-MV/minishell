@@ -6,13 +6,12 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/16 17:32:09 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:04:53 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-volatile sig_atomic_t	sig_int_hd = 0;
 
 void	process_heredoc_loop(int hdfd, char *delimiter, void *env)
 {
@@ -22,11 +21,8 @@ void	process_heredoc_loop(int hdfd, char *delimiter, void *env)
 	while (1)
 	{
 		next_line = readline("herdoc> ");
-		if (sig_int_hd == 1)
-		{
-			sig_int_hd = 0;
+		if (storage_signal(0, 0))
 			exit(130);
-		}
 		if (!next_line)
 			exit(0);
 		if (ft_strcmp(next_line, delimiter) == 0)
@@ -36,9 +32,7 @@ void	process_heredoc_loop(int hdfd, char *delimiter, void *env)
 		}
 		expanded_line = expand_str(next_line, env);
 		write(hdfd, expanded_line, ft_strlen(expanded_line));
-		write(hdfd, "\n", 1);
-		free(next_line);
-		free(expanded_line);
+		(write(hdfd, "\n", 1), free(next_line), free(expanded_line));
 	}
 }
 
@@ -70,9 +64,7 @@ int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
 	signal(SIGQUIT, SIG_IGN);
 	if (WIFSIGNALED(status) || WEXITSTATUS(status) != 0)
 	{
-		sig_int_hd = 0;
-		dict_insert(&env, dict_create_entry(ft_strdup("?"),
-				ft_itoa(WEXITSTATUS(status))));
+		storage_signal(WEXITSTATUS(status), 1);
 		redir->fd = open(".heredoc", O_RDONLY | O_TRUNC);
 		return (WEXITSTATUS(status));
 	}

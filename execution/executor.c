@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:37 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 16:35:26 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:02:20 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ int	execute_sequence(t_cmd_pipe *sequence, t_dictionary *env, char **main_env,
 		pids[++i] = execute_child(&exec_vars);
 		sequence = sequence->next;
 	}
-	while (pids[i--])
+	i = -1;
+	while (++i < n_cmd)
 		waitpid(pids[i], &status, 0);
+	free(pids);
 	return (WEXITSTATUS(status));
 }
 
