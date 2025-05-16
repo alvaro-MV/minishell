@@ -72,8 +72,8 @@ void	get_env(t_dictionary **hash_env, char **env)
 		while (*env)
 		{
 			env_var_array = ft_split(*env, '=');
-			ft_strdup(env_var_array[1]);
-			dict_set_env_var(hash_env, env_var_array[0], env_var_array[1], 1);
+			dict_set_env_var(hash_env, ft_strdup(env_var_array[0]),
+						ft_strdup(env_var_array[1]), 1);
 			ft_free_array(env_var_array);
 			env++;
 		}

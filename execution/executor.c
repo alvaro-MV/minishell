@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:37 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 15:51:50 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:20:02 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	execute_sequence(t_cmd_pipe *sequence, t_dictionary *env, char **main_env,
 {
 	t_exec	exec_vars;
 	int		status;
-	int*	pids;
+	int		*pids;
 
 	status = 0;
 	pids = ft_calloc(n_cmd, sizeof(pid_t));
@@ -40,8 +40,10 @@ int	execute_sequence(t_cmd_pipe *sequence, t_dictionary *env, char **main_env,
 		pids[++i] = execute_child(&exec_vars);
 		sequence = sequence->next;
 	}
-	while (pids[i--])
+	i = -1;
+	while (++i < n_cmd)
 		waitpid(pids[i], &status, 0);
+	free(pids);
 	return (WEXITSTATUS(status));
 }
 

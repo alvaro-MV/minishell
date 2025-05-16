@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 17:04:56 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:31:03 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	handle_signals(char **line, int *finish)
 	if (*finish)
 	{
 		close(saved_stdin);
-		exit(0);
+		return (-1);
 	}
 	return (saved_stdin);
 }
@@ -86,6 +86,8 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		saved_stdin = handle_signals(&line, &finish);
+		if (saved_stdin == -1)
+			return (dict_delete(hash_env), 0);
 		dict_insert(&hash_env, dict_create_entry(ft_strdup("?"),
 					ft_itoa(storage_signal(0,0))));
 		process_commands(hash_env, env, line);
