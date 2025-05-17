@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:50:25 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/17 10:02:57 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 15:06:40 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,16 @@ size_t	count_n_tokens(char *argv)
 	n_op = 0;
 	while (argv[i])
 	{
-		while (still_in_quote(argv[i], '\''))
+		while (argv[i] && still_in_quote(argv[i], '\''))
 			i++;
-		while (still_in_quote(argv[i], '\"'))
+		while (argv[i] && still_in_quote(argv[i], '\"'))
 			i++;
 		if (is_simple_operator(argv[i]))
 			process_operator(argv, &i, &n_op);
 		else if (isspace(argv[i]))
 			process_whitespace(argv, &i, &n_op);
-		i++;
+		if (argv[i])
+			i++;
 	}
 	if (i > 0 && !is_double_operator(argv[i - 1]))
 		++n_op;

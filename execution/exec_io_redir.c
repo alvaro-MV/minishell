@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_io_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:21 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 13:00:51 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:09:30 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ int	override_fd(t_exec *exec, t_io_redir *redir, int flags, int idx)
 			return (1);
 	}
 	else
+	{
+		close(exec->cmd->fds[idx]);
 		exec->cmd->fds[idx] = fd;
+	}
 	return (0);
 }
 

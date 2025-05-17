@@ -51,17 +51,16 @@ all: $(NAME)
 
 $(NAME) : $(OBJS)
 	@echo "${CIAN}Compiling...${NC}"
-	@$(MAKE) -C libft
+	@$(MAKE) -sC libft
 	@$(CC) $(CFLAGS) $(OBJS) $(LIB) -lreadline -o $(NAME)
 	@echo "${LGREEN}Program compiled✅${NC}"
 
 clean :
-	@$(MAKE) clean -C libft
+	@$(MAKE) fclean -sC libft
 	@$(RM) $(OBJS)
 	@echo "${MAGENTA}Objects deleted🧹${NC}"
 
 fclean : clean
-	@$(MAKE) fclean -C libft
 	@$(RM) $(NAME)
 	@echo "${MAGENTA}All clean✨${NC}"
 

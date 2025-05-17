@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 16:16:02 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 15:36:02 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	ft_exit(char **args)
 {
 	int	status;
 
+	rl_clear_history();
 	if (!args[1])
 		exit(0);
 	if (!is_numeric(args[1]))
@@ -46,5 +47,5 @@ int	ft_exit(char **args)
 		return (1);
 	}
 	status = ft_atoi(args[1]);
-	return (status);
+	exit (status % 256);
 }

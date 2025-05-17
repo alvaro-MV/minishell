@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:32 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 18:34:24 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:52:06 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ typedef struct s_exec
 {
 	t_cmd			*cmd;
 	t_dictionary	*env;
-	char			**main_env;
-	int				saved_stdin;
 }					t_exec;
 
 char				*find_exec_in_path(char **path, char *exec);
@@ -43,10 +41,9 @@ void				expand_ix(t_io_redir *ix, t_dictionary *env);
 void				expand_pipe_seq(t_cmd_pipe *sequence, t_dictionary *env);
 void				handler_signint_child(int sig);
 int					execute_sequence(t_cmd_pipe *sequence, t_dictionary *env,
-						char **main_env, int n_cmd);
-int					execute_builtin(t_exec *exec_vars, int *save_std);
-int					executor(t_cmd_pipe *sequence, t_dictionary *env,
-						char **main_env);
-int					execute_child(t_exec *exec_vars);
+						int n_cmd);
+int					execute_builtin(t_exec *exec_vars);
+int					executor(t_cmd_pipe *sequence, t_dictionary *env);
+int					execute_child(t_exec *exec_vars, t_cmd_pipe *seq_start);
 
 #endif

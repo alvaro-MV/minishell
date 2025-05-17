@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:01:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 18:32:49 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 15:46:10 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@
 # include "parser/parser.h"
 # include "signals.h"
 # include "tokenizer/tokenizer.h"
-# include <readline/history.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 
-char	**dict_envp(t_dictionary *env, unsigned int index, int j);
+char	**dict_envp(t_dictionary *env);
 void	dict_set_env_var(t_dictionary **env, char *k, char *v, int export);
 void	insert_special_params(t_dictionary **env);
 void	process_env_variables(t_dictionary **hash_env, char **env);
@@ -37,9 +37,7 @@ void	get_env(t_dictionary **hash_env, char **env);
 void	insert_status(int status, t_dictionary **dict);
 void	init_environment(t_dictionary **hash_env, char **env, char **line,
 			int *finish);
-int		handle_signals(char **line, int *finish);
-void	process_commands(t_dictionary *hash_env, char **env, char *line);
-int		executor(t_cmd_pipe *sequence, t_dictionary *env, char **main_env);
+void	process_commands(t_dictionary *hash_env, char *line);
 char	*expand_str(char *str, t_dictionary *env);
 
 #endif

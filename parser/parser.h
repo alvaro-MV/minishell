@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 09:52:34 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:08:49 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_io_redir
 	t_token				*filename;
 	struct s_io_redir	*next;
 	int					fd;
-
 }						t_io_redir;
 
 typedef t_darray		t_command;

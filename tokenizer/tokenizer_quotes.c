@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:51:57 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/16 16:56:25 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 15:10:45 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@ char	*handle_fin_quotes(char *line, char quote)
 	append_darray(&darr, "\n");
 	while (1)
 	{
-		quote_line = readline("quote> ");
-		i = -1;
-		while (quote_line[++i])
-			append_darray(&darr, &quote_line[i]);
+		while(!quote_line)
+			quote_line = readline("quote> ");
+		i = 0;
+		while (quote_line[i])
+			append_darray(&darr, &quote_line[i++]);
 		append_darray(&darr, "\n");
 		if (ft_strchr(quote_line, quote))
 			break ;
 		free(quote_line);
+		quote_line = NULL;
 	}
-	free(quote_line);
-	tmp = line;
-	tmp = ft_strjoin(tmp, (char *)darr->darray);
-	return (free_darray(darr), tmp);
+	tmp = ft_strjoin(line, (char *)darr->darray);
+	return (free(quote_line), free_darray(darr), tmp);
 }
 
 void	process_quotes(const char *str, bool *in_single_quote,

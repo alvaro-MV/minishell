@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:01:54 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 10:38:44 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 13:19:40 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
 	i = 0;
 	token_stream = malloc((len + 1) * sizeof(t_token));
 	if (!token_stream)
-		return (NULL);
+		return (free(token_stream), NULL);
 	while (tokens_strings[i])
 	{
 		token_stream[i].text = handle_fin_quotes(tokens_strings[i],

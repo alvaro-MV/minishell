@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 11:03:10 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 15:47:04 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,7 @@ void	init_environment(t_dictionary **hash_env, char **env, char **line,
 	*finish = 0;
 }
 
-int	handle_signals(char **line, int *finish)
-{
-	int	saved_stdin;
-
-	saved_stdin = dup(STDIN_FILENO);
-	signals(line, finish);
-	if (*finish)
-	{
-		close(saved_stdin);
-		exit (0);
-	}
-	return (saved_stdin);
-}
-
-void	process_commands(t_dictionary *hash_env, char **env, char *line)
+void	process_commands(t_dictionary *hash_env, char *line)
 {
 	t_darray	*tokens_array;
 	char		**tokens_strings;
@@ -63,11 +49,23 @@ void	process_commands(t_dictionary *hash_env, char **env, char *line)
 	storage_signal(0, 1);
 	sequence = parse_cmd_pipe(&token_stream, hash_env);
 	if (sequence)
-		insert_status(executor(sequence, hash_env, env), &hash_env);
+		insert_status(executor(sequence, hash_env), &hash_env);
 	else
 		insert_status(storage_signal(0, 0), &hash_env);
 	free_ast(sequence);
+	
+	size_t i = 0;
+	while (tokens_for_free[i].type != END)
+	{
+		free(tokens_for_free[i].text);
+		i ++;
+	}
 	free(tokens_for_free);
+
+	tokens_array = NULL;
+	tokens_strings = NULL;
+	tokens_for_free = NULL;
+	sequence = NULL;
 }
 
 int	main(int argc, char **argv, char **env)
@@ -75,7 +73,6 @@ int	main(int argc, char **argv, char **env)
 	t_dictionary	*hash_env;
 	char			*line;
 	int				finish;
-	int				saved_stdin;
 
 	(void)argc;
 	(void)argv;
@@ -83,14 +80,12 @@ int	main(int argc, char **argv, char **env)
 	init_environment(&hash_env, env, &line, &finish);
 	while (1)
 	{
-		saved_stdin = handle_signals(&line, &finish);
-		if (saved_stdin == -1)
+		signals(&line, &finish);
+		if (finish)
 			return (dict_delete(hash_env), 0);
 		dict_insert(&hash_env, dict_create_entry(ft_strdup("?"),
 				ft_itoa(storage_signal(0, 0))));
-		process_commands(hash_env, env, line);
-		dup2(saved_stdin, STDIN_FILENO);
-		close(saved_stdin);
+		process_commands(hash_env, line);
 	}
 	dict_delete(hash_env);
 	return (0);

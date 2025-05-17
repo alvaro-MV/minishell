@@ -6,17 +6,19 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:10:42 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 11:02:48 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:20:29 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**dict_envp(t_dictionary *env, unsigned int index, int j)
+char	**dict_envp(t_dictionary *env)
 {
-	char		**envp;
-	t_dic_entry	*entry;
-	char		*tmp;
+	char			**envp;
+	t_dic_entry		*entry;
+	char			*tmp;
+	unsigned int	index;
+	int				j;
 
 	index = 0;
 	j = 0;

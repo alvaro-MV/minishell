@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 16:16:32 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 15:35:19 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ int	call_execve(t_exec *exec)
 	arguments[0] = find_exec_in_path(path, arguments[0]);
 	ft_free_array(path);
 	execve_args = create_args(exec->cmd);
-	envp = dict_envp(exec->env, 0, 0);
+	envp = dict_envp(exec->env);
 	execve(execve_args[0], execve_args, envp);
 	ft_free_array(envp);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd_name, 2);
-	if (access(execve_args[0], F_OK) == 0)
+	if (access(execve_args[0], F_OK) == 0 && !ft_strncmp(execve_args[0], "./", 2))
 		(ft_putstr_fd(": Permission denied\n", 2), exit(126));
 	ft_putstr_fd(": command not found\n", 2);
 	exit(127);
@@ -101,33 +101,46 @@ int	handle_child_process(t_exec *exec_vars)
 
 	status = execute_io_redir(exec_vars);
 	if (status)
+	{
+		close_cmd_fds(exec_vars->cmd);
 		exit(1);
+	}
 	if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) == -1)
 		write(1, "Failed to redirect stdin.\n", 26);
 	if (exec_vars->cmd->fds[1] != 1 && dup2(exec_vars->cmd->fds[1], 1) == -1)
 		write(1, "Failed to redirect stdout.\n", 27);
+	close_cmd_fds(exec_vars->cmd);
 	if (status != 0)
-	{
-		close_cmd_fds(exec_vars->cmd);
 		exit(status);
-	}
 	if (!status && is_builtin(exec_vars->cmd->cmd->darray))
 		exit(run_builtin(exec_vars));
 	else if (!status && !is_builtin(exec_vars->cmd->cmd->darray))
 		status = call_execve(exec_vars);
-	close_cmd_fds(exec_vars->cmd);
-	exit (status);
+	exit(status);
 }
 
-int	execute_child(t_exec *exec_vars)
+int	execute_child(t_exec *exec_vars, t_cmd_pipe *sequence)
 {
 	int	ret;
 	int	status;
+	t_cmd_pipe *tmp;
 
 	status = 0;
 	ret = fork();
 	if (ret == 0)
 	{
+		rl_clear_history();
+		while (sequence)
+		{
+			tmp = sequence->next;
+			if (sequence->cmd != exec_vars->cmd)
+			{
+				close_cmd_fds(sequence->cmd);
+				free_cmd(sequence->cmd);
+			}
+			free(sequence);
+			sequence = tmp;
+		}
 		status = handle_child_process(exec_vars);
 	}
 	else
