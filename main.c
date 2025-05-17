@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 10:49:21 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 11:03:10 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	handle_signals(char **line, int *finish)
 {
 	int	saved_stdin;
 
-	*finish = 0;
 	saved_stdin = dup(STDIN_FILENO);
 	signals(line, finish);
 	if (*finish)

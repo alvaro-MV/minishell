@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 16:10:53 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/16 20:57:10 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,16 @@ void	signals(char **input, int *exit)
 {
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigquit);
-	if (1)
+	*input = readline("minishell> ");
+	if (!*input)
 	{
-		*input = readline("minishell> ");
-		if (!*input)
-		{
-			ft_printf("exit\n");
-			*exit = 1;
-		}
-		else if (**input == '\0')
-		{
-			*input = NULL;
-		}
-		else if (*input && **input)
-			add_history(*input);
+		ft_printf("exit\n");
+		*exit = 1;
 	}
+	else if (**input == '\0')
+	{
+		*input = NULL;
+	}
+	else if (*input && **input)
+		add_history(*input);
 }
