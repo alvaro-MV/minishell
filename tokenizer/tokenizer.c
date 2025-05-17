@@ -6,11 +6,32 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:50:25 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/16 17:24:56 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 10:02:57 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
+
+void	process_operator(char *argv, int *i, size_t *n_op)
+{
+	if (*i && !isspace(argv[*i - 1]) && !is_simple_operator(argv[*i - 1]))
+		(*n_op)++;
+	if (argv[*i] == argv[*i + 1])
+		(*i)++;
+	(*n_op)++;
+	while (isspace(argv[*i + 1]))
+		(*i)++;
+	(*i)++;
+}
+
+void	process_whitespace(char *argv, int *i, size_t *n_op)
+{
+	while (isspace(argv[*i]))
+		(*i)++;
+	if (argv[*i] != '\0')
+		(*n_op)++;
+	(*i)--;
+}
 
 size_t	count_n_tokens(char *argv)
 {
@@ -26,25 +47,9 @@ size_t	count_n_tokens(char *argv)
 		while (still_in_quote(argv[i], '\"'))
 			i++;
 		if (is_simple_operator(argv[i]))
-		{
-			if (i && !isspace(argv[i - 1]) && !is_simple_operator(argv[i - 1]))
-				n_op++;
-			if (argv[i] == argv[i + 1])
-				i++;
-			n_op++;
-			while (isspace(argv[i + 1]))
-				i++;
-			i++;
-			continue ;
-		}
+			process_operator(argv, &i, &n_op);
 		else if (isspace(argv[i]))
-		{
-			while (isspace(argv[i]))
-				i++;
-			if (argv[i] != '\0')
-				n_op++;
-			i--;
-		}
+			process_whitespace(argv, &i, &n_op);
 		i++;
 	}
 	if (i > 0 && !is_double_operator(argv[i - 1]))
@@ -84,84 +89,4 @@ int	tokenize_literal(char *line, int *i, int *start, t_darray **tokens)
 	*start = *i;
 	*i = *i - 1;
 	return (1);
-}
-
-int	process_tokenization(char *line, t_darray *tokens)
-{
-	int	i;
-	int	start;
-
-	i = 0;
-	start = 0;
-	while (tokens->full_idx < count_n_tokens(line))
-	{
-		while (still_in_quote(line[i], '\''))
-			i++;
-		while (still_in_quote(line[i], '\"'))
-			i++;
-		if (is_simple_operator(line[i]))
-		{
-			if (!tokenize_operator(line, &i, &start, &tokens))
-				return (free(line), 0);
-			continue ;
-		}
-		else if (isspace(line[i]) || !line[i])
-		{
-			if (!tokenize_literal(line, &i, &start, &tokens))
-				return (free(line), 0);
-		}
-		i++;
-	}
-	add_token(&tokens, NULL);
-	return (1);
-}
-
-t_darray	*tokenizer_str(char *line)
-{
-	int			i;
-	int			start;
-	char		*tmp_line;
-	t_darray	*tokens;
-
-	i = 0;
-	start = 0;
-	tmp_line = line;
-	line = ft_strtrim(line, " ");
-	if (!line)
-		return (NULL);
-	free(tmp_line);
-	tokens = alloc_darray(count_n_tokens(line) + 1, sizeof(char *));
-	if (!tokens)
-		return (free(line), NULL);
-	if (!process_tokenization(line, tokens))
-		return (NULL);
-	free(line);
-	return (tokens);
-}
-
-t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
-{
-	int		i;
-	t_token	*token_stream;
-
-	i = 0;
-	token_stream = malloc((len + 1) * sizeof(t_token));
-	i = 0;
-	while (tokens_strings[i])
-	{
-		token_stream[i].text = handle_fin_quotes(tokens_strings[i],
-				unclosed_quote_char(tokens_strings[i]));
-		if (tokens_strings[i][0] == '|')
-			token_stream[i].type = PIPE_OPERATOR;
-		else if (is_double_operator(tokens_strings[i][0]))
-			token_stream[i].type = IO_OPERATOR;
-		else if (i > 0 && token_stream[i - 1].type == IO_OPERATOR)
-			token_stream[i].type = FILENAME;
-		else
-			token_stream[i].type = COMMAND;
-		i++;
-	}
-	token_stream[i].type = END;
-	token_stream[i].text = NULL;
-	return (token_stream);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:17 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/16 16:57:28 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/17 09:51:17 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,9 @@ int	fill_cmd(t_token **stream, t_command **ptr_cmd, t_dictionary *env)
 	return (1);
 }
 
-t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
+t_cmd	*init_cmd_parsing(t_token **token_stream)
 {
 	t_cmd	*ret_cmd;
-	t_cmd	*tmp_cmd;
-	t_cmd	*current_cmd;
 
 	if ((*token_stream)->type == PIPE_OPERATOR)
 	{
@@ -63,6 +61,16 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 	}
 	if (!alloc_cmd(&ret_cmd))
 		return (NULL);
+	return (ret_cmd);
+}
+
+t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
+{
+	t_cmd	*ret_cmd;
+	t_cmd	*tmp_cmd;
+	t_cmd	*current_cmd;
+
+	ret_cmd = init_cmd_parsing(token_stream);
 	current_cmd = ret_cmd;
 	while ((*token_stream)->type != END
 		&& (*token_stream)->type != PIPE_OPERATOR)

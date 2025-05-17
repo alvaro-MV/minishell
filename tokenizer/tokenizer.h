@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:22:20 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 18:29:47 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 10:00:47 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int					is_double_operator(char argv_char);
 int					still_in_quote(char c, char quote);
 int					add_token(t_darray **tokens, char *element);
 void				free_tokens(t_token *tokens);
+void				process_operator(char *argv, int *i, size_t *n_op);
+void				process_whitespace(char *argv, int *i, size_t *n_op);
 size_t				count_n_tokens(char *argv);
 int					tokenize_operator(char *line, int *i, int *start,
 						t_darray **tokens);

@@ -26,6 +26,7 @@ SRC =  	data_structs/dictionary.c \
 		parser/handle_sig.c \
 		parser/heredoc.c \
 		tokenizer/tokenizer_utils.c \
+		tokenizer/tokenizer2.c \
 		tokenizer/tokenizer.c \
 		tokenizer/tokenizer_quotes.c \
 		environment.c \
