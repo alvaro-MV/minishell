@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_io_redir.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:22 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/17 09:54:29 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 22:38:42 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,22 @@ t_io_redir	*parse_io_redir(t_token **token_stream, t_dictionary *env)
 	t_io_redir	*current_io_redir;
 	t_io_redir	*tmp_io_redir;
 
-	if (!alloc_io_redir(&ret_io_redir))
-		return (NULL);
-	current_io_redir = ret_io_redir;
+	current_io_redir = NULL;
+	ret_io_redir = NULL;
 	while ((*token_stream)->type == IO_OPERATOR)
 	{
+		if (!alloc_io_redir(&tmp_io_redir))
+			return (free_io_redir(ret_io_redir, 1), NULL);
+		if (!current_io_redir)
+		{
+			current_io_redir = tmp_io_redir;
+			ret_io_redir = current_io_redir;
+		}
+		else
+		{
+			current_io_redir->next = tmp_io_redir;
+			current_io_redir = tmp_io_redir;
+		}
 		current_io_redir->op = (*token_stream);
 		(*token_stream)++;
 		current_io_redir->filename = parse_word(token_stream);
@@ -43,18 +54,17 @@ t_io_redir	*parse_io_redir(t_token **token_stream, t_dictionary *env)
 			else
 				ft_printf("%s\n", (*token_stream)->text);
 			storage_signal(2, 1);
-			return (free_io_redir(ret_io_redir), NULL);
+			return (free_io_redir(ret_io_redir, 1), NULL);
 		}
 		if (!ft_strcmp(current_io_redir->op->text, "<<"))
 		{
 			if (here_doc(current_io_redir->filename->text, current_io_redir, env))
-				return (free_io_redir(ret_io_redir), NULL);
+				return (free_io_redir(ret_io_redir, 1), NULL);
 		}
-		if (!alloc_io_redir(&tmp_io_redir))
-			return (free_io_redir(ret_io_redir), NULL);
-		current_io_redir->next = tmp_io_redir;
-		current_io_redir = tmp_io_redir;
 	}
-	current_io_redir->next = NULL;
+	if (!ret_io_redir)
+		alloc_io_redir(&ret_io_redir);
+	else
+		alloc_io_redir(&current_io_redir->next);
 	return (ret_io_redir);
 }

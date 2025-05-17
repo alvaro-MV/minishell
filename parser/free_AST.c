@@ -6,35 +6,35 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:41 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/17 20:27:41 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/17 22:37:25 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	free_io_redir(t_io_redir *io_redir)
+void	free_io_redir(t_io_redir *io_redir, int parent)
 {
 	t_io_redir	*tmp_io_redir;
 
 	while (io_redir)
 	{
 		tmp_io_redir = io_redir->next;
-		if (io_redir->hd_name)
+		if (io_redir->hd_name && parent == 1)
 			unlink(io_redir->hd_name);
 		free(io_redir);
 		io_redir = tmp_io_redir;
 	}
 }
 
-void	free_cmd(t_cmd *cmd)
+void	free_cmd(t_cmd *cmd, int parent)
 {
 	t_cmd	*tmp_cmd;
 	char	**cmds_for_free;
 
 	while (cmd)
 	{
-		free_io_redir(cmd->cmd_prefix);
-		free_io_redir(cmd->cmd_suffix);
+		free_io_redir(cmd->cmd_prefix, parent);
+		free_io_redir(cmd->cmd_suffix, parent);
 		cmds_for_free = (char **)cmd->cmd->darray;
 		while (*cmds_for_free)
 		{
@@ -55,7 +55,7 @@ void	free_ast(t_cmd_pipe *sequence)
 	while (sequence)
 	{
 		tmp = sequence->next;
-		free_cmd(sequence->cmd);
+		free_cmd(sequence->cmd, 1);
 		free(sequence);
 		sequence = tmp;
 	}

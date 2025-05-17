@@ -38,23 +38,22 @@ int	process_heredoc_loop(int hdfd, char *delimiter, t_dictionary *env)
 
 char	*get_hd_name(void)
 {
-	char	*hd_name_idx;
 	char	*hd_name;
 	char	*tmp;
 	int		count_hd;
 
 	count_hd = 0;
 	tmp = NULL;
-	hd_name = "./.heredoc_";
-	hd_name_idx = hd_name;
-	while (!access(hd_name_idx, F_OK))
+	hd_name = ft_strdup("./.heredoc");
+	while (!access(hd_name, F_OK))
 	{
+		tmp = ft_itoa(count_hd);
+		free(hd_name);
+		hd_name = ft_strjoin("./.heredoc_", tmp);
 		free(tmp);
-		hd_name_idx = ft_strjoin(hd_name, ft_itoa(count_hd));
-		tmp = hd_name_idx;
 		count_hd++;
 	}
-	return (hd_name_idx);
+	return (hd_name);
 }
 
 int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
@@ -65,7 +64,6 @@ int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
 	status = 0;
 	signal(SIGINT, handle_sigint_heredoc);
 	redir->hd_name = get_hd_name();
-	ft_printf("redir hd_name: %s\n", redir->hd_name);
 	hdfd = open(redir->hd_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (hdfd == -1)
 		return (1);

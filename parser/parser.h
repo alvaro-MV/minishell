@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 20:00:47 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/17 22:38:27 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ typedef struct s_cmd_pipe
 	struct s_cmd_pipe	*next;
 }						t_cmd_pipe;
 
-void					free_io_redir(t_io_redir *io_redir);
-void					free_cmd(t_cmd *cmd);
+void					free_io_redir(t_io_redir *io_redir, int parent);
+void					free_cmd(t_cmd *cmd, int parent);
 void					free_ast(t_cmd_pipe *sequence);
 void					handle_sigint2(int sig);
 void					handle_sigquit2(int sig);

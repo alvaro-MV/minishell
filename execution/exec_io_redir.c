@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:21 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 19:59:55 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/17 22:36:33 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	override_fd(t_exec *exec, t_io_redir *redir, int flags, int idx)
 			return (1);
 		if (!(file_stat.st_mode & S_IWUSR) || !(file_stat.st_mode & S_IRUSR))
 		{
-			free_cmd(exec->cmd);
+			free_cmd(exec->cmd, 0);
 			dict_delete(exec->env);
 			return (1);
 		}
@@ -48,19 +48,31 @@ int	traverse_io_redir(t_io_redir *ix, t_exec *exec)
 
 	status = 0;
 	if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, "<", 2))
+	{
+		printf("Redir tipo %s fname %s\n", ix->op->text, ix->filename->text);
 		status = override_fd(exec, ix, O_RDONLY, 0);
+	}
 	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, "<<",
 			2))
 	{
+		printf("Redir tipo %s fname %s hdoc %s\n", ix->op->text, ix->filename->text, ix->hd_name);
 		exec->cmd->fds[0] = open(ix->hd_name, O_RDONLY);
 		if (exec->cmd->fds[0] == -1)
-			return (-1);
+			return (1);
 	}
 	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, ">", 2))
-		status = override_fd(exec, ix, O_RDWR | O_CREAT | O_TRUNC, 1);
+	{
+		printf("Redir tipo %s fname %s\n", ix->op->text, ix->filename->text);
+		status = override_fd(exec, ix, O_WRONLY | O_CREAT | O_TRUNC, 1);
+	}
 	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, ">>",
 			2))
-		status = override_fd(exec, ix, O_RDWR | O_APPEND | O_CREAT, 1);
+	{
+		printf("Redir tipo %s fname %s\n", ix->op->text, ix->filename->text);
+		status = override_fd(exec, ix, O_WRONLY | O_CREAT | O_APPEND, 1);
+	}
+	else
+		printf("JAJASALU2\nop: %p\n", ix->op);
 	return (status);
 }
 
@@ -75,6 +87,7 @@ int	execute_io_redir(t_exec *exec)
 	status = 0;
 	while (prefix)
 	{
+		printf("PREFIXES\n");
 		status = traverse_io_redir(prefix, exec);
 		if (status != 0)
 			return (status);
@@ -82,6 +95,7 @@ int	execute_io_redir(t_exec *exec)
 	}
 	while (suffix)
 	{
+		printf("SUFFIXES\n");
 		status = traverse_io_redir(suffix, exec);
 		if (status != 0)
 			return (status);

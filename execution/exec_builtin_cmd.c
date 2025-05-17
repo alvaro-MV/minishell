@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin_cmd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 15:35:19 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 22:36:12 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int	execute_child(t_exec *exec_vars, t_cmd_pipe *sequence)
 			if (sequence->cmd != exec_vars->cmd)
 			{
 				close_cmd_fds(sequence->cmd);
-				free_cmd(sequence->cmd);
+				free_cmd(sequence->cmd, 0);
 			}
 			free(sequence);
 			sequence = tmp;

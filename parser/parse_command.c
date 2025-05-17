@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:17 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/17 09:51:17 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 22:36:56 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 		&& (*token_stream)->type != PIPE_OPERATOR)
 	{
 		if (!parse_ix(&current_cmd->cmd_prefix, token_stream, env))
-			return (free_cmd(ret_cmd), NULL);
+			return (free_cmd(ret_cmd, 1), NULL);
 		if (!fill_cmd(token_stream, &current_cmd->cmd, env))
-			return (free_cmd(ret_cmd), NULL);
+			return (free_cmd(ret_cmd, 1), NULL);
 		if (!parse_ix(&current_cmd->cmd_suffix, token_stream, env))
-			return (free_cmd(ret_cmd), NULL);
+			return (free_cmd(ret_cmd, 1), NULL);
 		if (!alloc_cmd(&tmp_cmd))
-			return (free_cmd(ret_cmd), NULL);
+			return (free_cmd(ret_cmd, 1), NULL);
 		current_cmd->next = tmp_cmd;
 		current_cmd = tmp_cmd;
 	}
