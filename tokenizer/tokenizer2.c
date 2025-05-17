@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:01:54 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 10:04:24 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 10:38:44 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,34 @@ t_darray	*tokenizer_str(char *line)
 
 t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
 {
+	int		i;
+	t_token	*token_stream;
+
+	i = 0;
+	token_stream = malloc((len + 1) * sizeof(t_token));
+	if (!token_stream)
+		return (NULL);
+	while (tokens_strings[i])
+	{
+		token_stream[i].text = handle_fin_quotes(tokens_strings[i],
+				unclosed_quote_char(tokens_strings[i]));
+		if (tokens_strings[i][0] == '|')
+			token_stream[i].type = PIPE_OPERATOR;
+		else if (is_double_operator(tokens_strings[i][0]))
+			token_stream[i].type = IO_OPERATOR;
+		else if (i > 0 && token_stream[i - 1].type == IO_OPERATOR)
+			token_stream[i].type = FILENAME;
+		else
+			token_stream[i].type = COMMAND;
+		i++;
+	}
+	token_stream[i].type = END;
+	token_stream[i].text = NULL;
+	return (token_stream);
+}
+
+/*t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
+{
 	int			i;
 	t_token		*token_stream;
 	t_io_redir	*ret_io_redir;
@@ -85,7 +113,7 @@ t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
 		else if (is_double_operator(tokens_strings[i][0]))
 			token_st
 	}
-t_io_redir *parse_io_redir(t_token * *token_stream, t_dictionary * env)
+t_io_redir	*parse_io_redir(t_token * *token_stream, t_dictionary * env)
 	{
 		if (!alloc_io_redir(&ret_io_redir))
 			return (NULL);
@@ -128,4 +156,4 @@ t_io_redir *parse_io_redir(t_token * *token_stream, t_dictionary * env)
 	token_stream[i].type = END;
 	token_stream[i].text = NULL;
 	return (token_stream);
-}
+}*/

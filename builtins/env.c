@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 16:17:30 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 10:48:08 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ static int	is_exportable_var(t_dictionary *dic, char *key)
 int	ft_env(char **args, t_exec *exec)
 {
 	char	**env_keys;
+	char	**tmp;
 
 	env_keys = dict_get_keys(exec->env);
+	tmp = env_keys;
 	if (args[0] && args[1] == NULL)
 	{
 		while (*env_keys != NULL)
@@ -50,7 +52,9 @@ int	ft_env(char **args, t_exec *exec)
 	else
 	{
 		ft_putstr_fd("minishell: env: too much arguments\n", 2);
+		ft_free_array(tmp);
 		return (1);
 	}
+	ft_free_array(tmp);
 	return (0);
 }

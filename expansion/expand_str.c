@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   copia_expander.c                                   :+:      :+:    :+:   */
+/*   expand_str.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 20:04:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/14 20:13:56 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/17 10:41:50 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ char	*expand_str(char *str, t_dictionary *env)
 {
 	t_utils	utils;
 
-	utils.expanded_str = ft_strdup("");
 	utils = ((void)env, (t_utils){0});
+	utils.expanded_str = ft_strdup("");
 	utils.state = WORD;
 	utils.old_state = WORD;
 	while (str[utils.i])

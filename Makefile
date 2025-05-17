@@ -2,7 +2,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 
 RM = rm -f
 
@@ -47,7 +47,7 @@ LIB = libft/libft.a
 
 OBJS = $(SRC:.c=.o)
 
-all = $(NAME)
+all: $(NAME)
 
 $(NAME) : $(OBJS)
 	@echo "${CIAN}Compiling...${NC}"
