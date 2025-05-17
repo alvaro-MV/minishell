@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 14:08:49 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 20:00:47 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 typedef struct s_io_redir
 {
 	t_token				*op;
+	char				*hd_name;
 	t_token				*filename;
 	struct s_io_redir	*next;
 	int					fd;
@@ -55,9 +56,8 @@ void					free_ast(t_cmd_pipe *sequence);
 void					handle_sigint2(int sig);
 void					handle_sigquit2(int sig);
 void					handle_sigint_heredoc(int sig);
-void					process_heredoc_loop(int hdfd, char *delimiter,
-							void *env);
-void					child_heredoc(char *delimiter, void *env);
+int						process_heredoc_loop(int hdfd, char *delimiter,
+							t_dictionary *env);
 int						here_doc(char *delimiter, t_io_redir *redir,
 							t_dictionary *env);
 int						parse_ix(t_io_redir **ptr_io_redir,

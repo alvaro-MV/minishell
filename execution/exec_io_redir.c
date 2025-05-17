@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_io_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:21 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 14:09:30 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:59:55 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ int	traverse_io_redir(t_io_redir *ix, t_exec *exec)
 	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, "<<",
 			2))
 	{
-		exec->cmd->fds[0] = ix->fd;
-		status = 0;
+		exec->cmd->fds[0] = open(ix->hd_name, O_RDONLY);
+		if (exec->cmd->fds[0] == -1)
+			return (-1);
 	}
 	else if (ix->op && ix->op->type != END && !ft_strncmp(ix->op->text, ">", 2))
 		status = override_fd(exec, ix, O_RDWR | O_CREAT | O_TRUNC, 1);

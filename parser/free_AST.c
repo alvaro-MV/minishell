@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_AST.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:41 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/17 13:12:25 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 20:27:41 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ void	free_io_redir(t_io_redir *io_redir)
 {
 	t_io_redir	*tmp_io_redir;
 
-	if (io_redir)
+	while (io_redir)
 	{
 		tmp_io_redir = io_redir->next;
+		if (io_redir->hd_name)
+			unlink(io_redir->hd_name);
 		free(io_redir);
-		free_io_redir(tmp_io_redir);
+		io_redir = tmp_io_redir;
 	}
 }
 
@@ -48,10 +50,14 @@ void	free_cmd(t_cmd *cmd)
 
 void	free_ast(t_cmd_pipe *sequence)
 {
-	if (!sequence)
-		return ;
-	free_cmd(sequence->cmd);
-	if (sequence->next)
-		free_ast(sequence->next);
-	free(sequence);
+	t_cmd_pipe *tmp;
+
+	while (sequence)
+	{
+		tmp = sequence->next;
+		free_cmd(sequence->cmd);
+		free(sequence);
+		sequence = tmp;
+	}
 }
+
