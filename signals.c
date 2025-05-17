@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 22:07:31 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/17 23:45:54 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ void	signals(char **input, int *exit)
 	//*input = readline("minishell> ");
 	static int i = 0;
 	if (i == 0)
-		*input = ft_strdup("cat << l << l1 > o1 | cat -e << l << l1 >> o2");
+		*input = ft_strdup("cat << l << l1 > o1 | cat -e << l << l1 > o2");
+	else if (i == 1)
+		*input = ft_strdup("echo SUCCESS");
 	else
 		*input = NULL;
 	i ++;

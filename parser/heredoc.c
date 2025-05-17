@@ -19,7 +19,7 @@ int	process_heredoc_loop(int hdfd, char *delimiter, t_dictionary *env)
 
 	while (1)
 	{
-		next_line = readline("herdoc> ");
+		next_line = readline("ratdoc> ");
 		if (storage_signal(0, 0))
 			return (storage_signal(0, 0));
 		if (!next_line)
@@ -62,14 +62,13 @@ int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
 	int		hdfd;
 
 	status = 0;
-	signal(SIGINT, handle_sigint_heredoc);
+	signal(SIGINT, SIG_DFL);
 	redir->hd_name = get_hd_name();
 	hdfd = open(redir->hd_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (hdfd == -1)
 		return (1);
-		
 	status = process_heredoc_loop(hdfd, delimiter, env);
-
+	signal(SIGINT, handle_sigint);
 	close(hdfd);
 	return (status);
 }

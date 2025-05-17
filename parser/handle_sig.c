@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_sig.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:31:13 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 18:03:41 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/17 23:49:02 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,4 @@ void	handle_sigint_heredoc(int sig)
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	close(0);
 }

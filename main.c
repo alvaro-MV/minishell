@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 20:26:36 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/18 00:01:28 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,18 @@ void	process_commands(t_dictionary *hash_env, char *line)
 	storage_signal(0, 1);
 	sequence = parse_cmd_pipe(&token_stream, hash_env);
 	if (sequence)
+	{
 		insert_status(executor(sequence, hash_env), &hash_env);
+		free_ast(sequence);
+	}
 	else
 		insert_status(storage_signal(0, 0), &hash_env);
-	free_ast(sequence);
-	
-	size_t i = 0;
-	while (tokens_for_free[i].type != END)
-	{
-		free(tokens_for_free[i].text);
-		i ++;
-	}
+	// size_t i = 0;
+	// while (tokens_for_free[i].type != END)
+	// {
+	// 	free(tokens_for_free[i].text);
+	// 	i ++;
+	// }
 	free(tokens_for_free);
 
 	tokens_array = NULL;
@@ -70,6 +71,7 @@ void	process_commands(t_dictionary *hash_env, char *line)
 
 int	main(int argc, char **argv, char **env)
 {
+	t_minishell		mini;
 	t_dictionary	*hash_env;
 	char			*line;
 	int				finish;
