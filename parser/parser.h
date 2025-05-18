@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/18 16:23:59 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/18 16:52:11 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 
 typedef struct s_io_redir
 {
-	t_token				op;
-	t_token				filename;
+	t_token				*op;
+	t_token				*filename;
 	char				*hd_name;
 	struct s_io_redir	*next;
 	int					fd;
@@ -73,7 +73,7 @@ int						is_empty_cmd(t_cmd *cmd);
 int						alloc_pipe_cmd(t_cmd_pipe **ptr_cmd_pipe);
 t_cmd_pipe				*parse_cmd_pipe(t_token **token_stream,
 							t_dictionary *env);
-t_token					parse_word(t_token **token_stream);
+t_token					*parse_word(t_token **token_stream);
 int						handle_expansion(t_command **cmd, char *element,
 							t_dictionary *env);
 int						add_command(t_command **cmd, char *element,

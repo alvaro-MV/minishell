@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:31 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/18 16:37:55 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/18 17:08:54 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	print_io_redir(t_io_redir *io_redir)
 {
 	if (io_redir)
 	{
-		if (io_redir->op.type != END)
-			ft_printf("(%s ", io_redir->op.text);
-		if (io_redir->filename.type != END)
-			ft_printf("%s) ", io_redir->filename.text);
+		if (io_redir->op && io_redir->op->type != END)
+			ft_printf("(%s ", io_redir->op->text);
+		if (io_redir->op && io_redir->filename->type != END)
+			ft_printf("%s) ", io_redir->filename->text);
 		print_io_redir(io_redir->next);
 	}
 }

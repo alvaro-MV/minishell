@@ -6,19 +6,21 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:27 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/18 16:30:02 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/18 16:59:19 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_token	parse_word(t_token **token_stream)
+t_token	*parse_word(t_token **token_stream)
 {
-	t_token	ret_token;
+	t_token	*ret_token;
 
-	ret_token = (**token_stream);
-	// if (ret_token.type != FILENAME && ret_token.type != END)
-	// 	return (NULL);
+	if ((*token_stream)->type != FILENAME && (*token_stream)->type != END)
+		return (NULL);
+	ret_token = malloc(sizeof(t_token));
+	ret_token->text = ft_strdup((*token_stream)->text);
+	ret_token->type = (*token_stream)->type;
 	if ((*token_stream)->type != END)
 		(*token_stream)++;
 	return (ret_token);

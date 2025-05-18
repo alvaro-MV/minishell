@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_AST.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:41 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/17 22:37:25 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:13:36 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,17 @@ void	free_io_redir(t_io_redir *io_redir, int parent)
 		tmp_io_redir = io_redir->next;
 		if (io_redir->hd_name && parent == 1)
 			unlink(io_redir->hd_name);
+		free(io_redir->hd_name);
+		if (io_redir->filename)
+		{
+			free(io_redir->filename->text);
+			free(io_redir->filename);
+		}
+		if (io_redir->op)
+		{
+			free(io_redir->op->text);
+			free(io_redir->op);
+		}
 		free(io_redir);
 		io_redir = tmp_io_redir;
 	}

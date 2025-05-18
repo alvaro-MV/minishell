@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:25 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/18 16:37:13 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/18 17:02:07 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	is_empty_cmd(t_cmd *cmd)
 {
-	if (cmd->cmd_prefix->op.type != END
-		&& cmd->cmd_prefix->filename.type != END)
+	if (cmd->cmd_prefix->op->type != END
+		&& cmd->cmd_prefix->filename->type != END)
 		return (0);
 	if (cmd->cmd->full_idx > 0)
 		return (0);
-	if (cmd->cmd_suffix->op.type != END
-		&& cmd->cmd_suffix->filename.type != END)
+	if (cmd->cmd_suffix->op->type != END
+		&& cmd->cmd_suffix->filename->type != END)
 		return (0);
 	if (cmd->next)
 		return (0);
