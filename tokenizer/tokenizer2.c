@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:01:54 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/18 16:06:15 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/18 18:10:37 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,7 @@ t_token	*tokenizer_t_tokens(char **tokens_strings, size_t len)
 		return (free(token_stream), NULL);
 	while (tokens_strings[i])
 	{
-		token_stream[i].text = handle_fin_quotes(tokens_strings[i],
-				unclosed_quote_char(tokens_strings[i]));
+		token_stream[i].text = ft_strdup(tokens_strings[i]);
 		if (tokens_strings[i][0] == '|')
 			token_stream[i].type = PIPE_OPERATOR;
 		else if (is_double_operator(tokens_strings[i][0]))

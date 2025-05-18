@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_io_redir.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:22 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/18 16:58:31 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/18 18:37:47 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_io_redir	*parse_io_redir(t_token **token_stream, t_dictionary *env)
 		current_io_redir->op = malloc(sizeof(t_token));
 		current_io_redir->op->text = ft_strdup((*token_stream)->text);
 		current_io_redir->filename = parse_word(token_stream);
-		if (current_io_redir->filename->type != FILENAME)
+		if (current_io_redir->filename && current_io_redir->filename->type != FILENAME)
 		{
 			ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
 			if ((*token_stream)->type == END)
@@ -55,7 +55,7 @@ t_io_redir	*parse_io_redir(t_token **token_stream, t_dictionary *env)
 			storage_signal(2, 1);
 			return (free_io_redir(ret_io_redir, 1), NULL);
 		}
-		if (!ft_strcmp(current_io_redir->op->text, "<<"))
+		if (current_io_redir->filename && !ft_strcmp(current_io_redir->op->text, "<<"))
 		{
 			if (here_doc(current_io_redir->filename->text, current_io_redir, env))
 				return (free_io_redir(ret_io_redir, 1), NULL);
