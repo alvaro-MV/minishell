@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:01:54 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 13:19:40 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:06:15 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,9 @@ int	process_tokenization(char *line, t_darray *tokens)
 
 t_darray	*tokenizer_str(char *line)
 {
-	int			i;
-	int			start;
 	char		*tmp_line;
 	t_darray	*tokens;
 
-	i = 0;
-	start = 0;
 	tmp_line = line;
 	line = ft_strtrim(line, " ");
 	if (!line)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_pipe.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:25 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 17:48:26 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:37:13 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	is_empty_cmd(t_cmd *cmd)
 {
-	if (cmd->cmd_prefix->op->type != END
-		&& cmd->cmd_prefix->filename->type != END)
+	if (cmd->cmd_prefix->op.type != END
+		&& cmd->cmd_prefix->filename.type != END)
 		return (0);
 	if (cmd->cmd->full_idx > 0)
 		return (0);
-	if (cmd->cmd_suffix->op->type != END
-		&& cmd->cmd_suffix->filename->type != END)
+	if (cmd->cmd_suffix->op.type != END
+		&& cmd->cmd_suffix->filename.type != END)
 		return (0);
 	if (cmd->next)
 		return (0);
@@ -47,18 +47,18 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream, t_dictionary *env)
 		return (NULL);
 	ret_cmd_pipe->cmd = parse_cmd(token_stream, env);
 	if (!ret_cmd_pipe->cmd)
-		return (free_ast(ret_cmd_pipe), NULL);
+		return (NULL);
 	current_cmd_pipe = ret_cmd_pipe;
 	while ((*token_stream)->type == PIPE_OPERATOR)
 	{
 		(*token_stream)++;
 		if (!alloc_pipe_cmd(&tmp_cmd_pipe))
-			return (free_ast(ret_cmd_pipe), NULL);
+			return (NULL);
 		tmp_cmd_pipe->cmd = parse_cmd(token_stream, env);
 		current_cmd_pipe->next = tmp_cmd_pipe;
 		current_cmd_pipe = tmp_cmd_pipe;
 		if (!tmp_cmd_pipe->cmd)
-			return (free_ast(ret_cmd_pipe), NULL);
+			return (NULL);
 	}
 	current_cmd_pipe->next = NULL;
 	return (ret_cmd_pipe);

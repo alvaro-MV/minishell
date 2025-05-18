@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin_cmd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 22:36:12 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:02:46 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,8 @@ int	handle_child_process(t_exec *exec_vars)
 int	execute_child(t_exec *exec_vars, t_cmd_pipe *sequence)
 {
 	int	ret;
-	int	status;
 	t_cmd_pipe *tmp;
 
-	status = 0;
 	ret = fork();
 	if (ret == 0)
 	{
@@ -141,7 +139,7 @@ int	execute_child(t_exec *exec_vars, t_cmd_pipe *sequence)
 			free(sequence);
 			sequence = tmp;
 		}
-		status = handle_child_process(exec_vars);
+		handle_child_process(exec_vars);
 	}
 	else
 		close_cmd_fds(exec_vars->cmd);

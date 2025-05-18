@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/18 00:01:28 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:39:06 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	process_commands(t_dictionary *hash_env, char *line)
 	t_darray	*tokens_array;
 	char		**tokens_strings;
 	t_token		*token_stream;
-	t_token		*tokens_for_free;
+	// t_token		*tokens_for_free;
 	t_cmd_pipe	*sequence;
 
 	tokens_array = tokenizer_str(line);
@@ -45,33 +45,34 @@ void	process_commands(t_dictionary *hash_env, char *line)
 	ft_free_array(tokens_array->darray);
 	tokens_array->darray = NULL;
 	free_darray(tokens_array);
-	tokens_for_free = token_stream;
+	// tokens_for_free = token_stream;
 	storage_signal(0, 1);
 	sequence = parse_cmd_pipe(&token_stream, hash_env);
+	print_ast(sequence);
 	if (sequence)
 	{
 		insert_status(executor(sequence, hash_env), &hash_env);
-		free_ast(sequence);
 	}
 	else
-		insert_status(storage_signal(0, 0), &hash_env);
+	insert_status(storage_signal(0, 0), &hash_env);
+	free_ast(sequence);
 	// size_t i = 0;
 	// while (tokens_for_free[i].type != END)
 	// {
 	// 	free(tokens_for_free[i].text);
 	// 	i ++;
 	// }
-	free(tokens_for_free);
+	// free_tokens(tokens_for_free);
 
 	tokens_array = NULL;
 	tokens_strings = NULL;
-	tokens_for_free = NULL;
+	// tokens_for_free = NULL;
 	sequence = NULL;
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_minishell		mini;
+	// t_minishell		mini;
 	t_dictionary	*hash_env;
 	char			*line;
 	int				finish;

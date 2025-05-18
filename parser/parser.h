@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 22:38:27 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:23:59 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@
 
 typedef struct s_io_redir
 {
-	t_token				*op;
+	t_token				op;
+	t_token				filename;
 	char				*hd_name;
-	t_token				*filename;
 	struct s_io_redir	*next;
 	int					fd;
 }						t_io_redir;
@@ -56,7 +56,7 @@ void					free_ast(t_cmd_pipe *sequence);
 void					handle_sigint2(int sig);
 void					handle_sigquit2(int sig);
 void					handle_sigint_heredoc(int sig);
-int						process_heredoc_loop(int hdfd, char *delimiter,
+void					process_heredoc_loop(int hdfd, char *delimiter,
 							t_dictionary *env);
 int						here_doc(char *delimiter, t_io_redir *redir,
 							t_dictionary *env);
@@ -73,7 +73,7 @@ int						is_empty_cmd(t_cmd *cmd);
 int						alloc_pipe_cmd(t_cmd_pipe **ptr_cmd_pipe);
 t_cmd_pipe				*parse_cmd_pipe(t_token **token_stream,
 							t_dictionary *env);
-t_token					*parse_word(t_token **token_stream);
+t_token					parse_word(t_token **token_stream);
 int						handle_expansion(t_command **cmd, char *element,
 							t_dictionary *env);
 int						add_command(t_command **cmd, char *element,

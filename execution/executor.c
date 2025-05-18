@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:37 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 14:51:39 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:03:31 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ int	execute_builtin(t_exec *exec_vars)
 	if (status != 0)
 		return (status);
 	if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) == -1)
-		;
+		write(1, "Siiiiiii\n", 10);
 	if (exec_vars->cmd->fds[1] != 1 && dup2(exec_vars->cmd->fds[1], 1) == -1)
-		;
+		write(1, "Siiiiiii\n", 10);
 	status = run_builtin(exec_vars);
 	close_cmd_fds(exec_vars->cmd);
 	return (status);

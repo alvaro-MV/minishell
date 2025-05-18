@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_quotes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:51:57 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/17 15:10:45 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:06:38 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,9 @@ char	unclosed_quote_char(const char *str)
 {
 	bool	in_single_quote;
 	bool	in_double_quote;
-	int		i;
 
 	in_single_quote = false;
 	in_double_quote = false;
-	i = 0;
 	process_quotes(str, &in_single_quote, &in_double_quote);
 	if (in_single_quote)
 		return ('\'');

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 23:45:54 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:07:40 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ void	signals(char **input, int *exit)
 {
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigquit);
-	//*input = readline("minishell> ");
-	static int i = 0;
-	if (i == 0)
-		*input = ft_strdup("cat << l << l1 > o1 | cat -e << l << l1 > o2");
-	else if (i == 1)
-		*input = ft_strdup("echo SUCCESS");
-	else
-		*input = NULL;
-	i ++;
+	*input = readline("minishell> ");
+	// static int i = 0;
+	// if (i == 0)
+	// 	*input = ft_strdup("cat << l << l1 > o1 | cat -e << l << l1 > o2");
+	// else if (i == 1)
+	// 	*input = ft_strdup("echo SUCCESS");
+	// else
+	// 	*input = NULL;
+	// i ++;
 	if (!*input)
 	{
 		ft_printf("exit\n");

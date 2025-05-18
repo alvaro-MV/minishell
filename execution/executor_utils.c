@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:38:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 14:01:31 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:32:53 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	expand_ix(t_io_redir *ix, t_dictionary *env)
 
 	while (ix && ix->next)
 	{
-		tmp = ix->filename->text;
-		ix->filename->text = expand_str(tmp, env);
+		tmp = ix->filename.text;
+		ix->filename.text = expand_str(tmp, env);
 		free(tmp);
 		ix = ix->next;
 	}

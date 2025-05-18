@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:17 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/17 22:36:56 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:19:18 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	fill_cmd(t_token **stream, t_command **ptr_cmd, t_dictionary *env)
 	n_cmd = 0;
 	while ((*stream)->type == COMMAND)
 	{
-		if (!add_command(ptr_cmd, (*stream)->text, env, n_cmd))
+		if (!add_command(ptr_cmd, ft_strdup((*stream)->text), env, n_cmd))
 			return (0);
 		(*stream)++;
 		n_cmd++;

@@ -12,30 +12,6 @@
 
 #include "parser.h"
 
-int	process_heredoc_loop(int hdfd, char *delimiter, t_dictionary *env)
-{
-	char	*next_line;
-	char	*expanded_line;
-
-	while (1)
-	{
-		next_line = readline("ratdoc> ");
-		if (storage_signal(0, 0))
-			return (storage_signal(0, 0));
-		if (!next_line)
-			return (0);
-		if (ft_strcmp(next_line, delimiter) == 0)
-		{
-			free(next_line);
-			break ;
-		}
-		expanded_line = expand_str(next_line, env);
-		write(hdfd, expanded_line, ft_strlen(expanded_line));
-		(write(hdfd, "\n", 1), free(next_line), free(expanded_line));
-	}
-	return (0);
-}
-
 char	*get_hd_name(void)
 {
 	char	*hd_name;
@@ -56,19 +32,61 @@ char	*get_hd_name(void)
 	return (hd_name);
 }
 
-int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
+void	process_heredoc_loop(int hdfd, char *delimiter, t_dictionary *env)
 {
-	int		status;
-	int		hdfd;
+	char	*next_line;
+	char	*expanded_line;
 
-	status = 0;
-	signal(SIGINT, SIG_DFL);
-	redir->hd_name = get_hd_name();
+	while (1)
+	{
+		next_line = readline("herdoc> ");
+		if (storage_signal(0, 0))
+			exit(130);
+		if (!next_line)
+			exit(0);
+		if (ft_strcmp(next_line, delimiter) == 0)
+		{
+			free(next_line);
+			break ;
+		}
+		expanded_line = expand_str(next_line, env);
+		write(hdfd, expanded_line, ft_strlen(expanded_line));
+		(write(hdfd, "\n", 1), free(next_line), free(expanded_line));
+	}
+	exit(0);
+}
+
+void	child_heredoc(t_io_redir *redir, char *delimiter, void *env)
+{
+	int	hdfd;
+
+	signal(SIGINT, handle_sigint_heredoc);
+	signal(SIGQUIT, SIG_IGN);
 	hdfd = open(redir->hd_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (hdfd == -1)
-		return (1);
-	status = process_heredoc_loop(hdfd, delimiter, env);
-	signal(SIGINT, handle_sigint);
+		exit(1);
+	process_heredoc_loop(hdfd, delimiter, env);
 	close(hdfd);
-	return (status);
+	exit(0);
+}
+
+int	here_doc(char *delimiter, t_io_redir *redir, t_dictionary *env)
+{
+	pid_t	pid;
+	int		status;
+
+	redir->hd_name = get_hd_name();
+	pid = fork();
+	if (pid == 0)
+		child_heredoc(redir, delimiter, env);
+	signal(SIGINT, SIG_IGN);
+	wait(&status);
+	signal(SIGINT, handle_sigint2);
+	signal(SIGQUIT, SIG_IGN);
+	if (WIFSIGNALED(status) || WEXITSTATUS(status) != 0)
+	{
+		storage_signal(WEXITSTATUS(status), 1);
+		return (WEXITSTATUS(status));
+	}
+	return (0);
 }
