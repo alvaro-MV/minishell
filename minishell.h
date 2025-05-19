@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:01:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 22:08:21 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/19 23:15:36 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@
 
 typedef	struct s_minishell
 {
-	t_darray	*tokens_array;
-	char		**tokens_strings;
-	t_token		*token_stream;
-	t_token		*tokens_for_free;
-	t_cmd_pipe	*sequence;
-	t_dictionary *env;
+	t_darray		*tokens_array;
+	char			**tokens_strings;
+	t_token			*token_stream;
+	t_token			*tokens_for_free;
+	t_cmd_pipe		*sequence;
+	t_dictionary	*env;
+	int				*saved_std;
+	pid_t			*pids;
 }				t_minishell;
 
 char	**dict_envp(t_dictionary *env);
@@ -47,7 +49,7 @@ void	get_env(t_dictionary **hash_env, char **env);
 void	insert_status(int status, t_dictionary **dict);
 void	init_environment(t_dictionary **hash_env, char **env, char **line,
 			int *finish);
-void	process_commands(t_dictionary *hash_env, char *line);
+void	process_commands(t_dictionary *hash_env, char *line, int *saved_std);
 char	*expand_str(char *str, t_dictionary *env);
 
 #endif

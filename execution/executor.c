@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:37 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 18:09:48 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/19 23:15:18 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,29 @@ void	handler_signint_child(int sig)
 	close(0);
 }
 
-int	execute_sequence(t_cmd_pipe *sequence, t_dictionary *env, int n_cmd)
+int	execute_sequence(t_cmd_pipe *sequence, t_dictionary *env, int n_cmd, t_minishell *mini)
 {
 	t_cmd_pipe *seq_start;
 	t_exec	exec_vars;
 	int		status;
-	int		*pids;
 	int		i;
 
 	status = 0;
-	pids = ft_calloc(n_cmd, sizeof(pid_t));
+	mini->pids = ft_calloc(n_cmd, sizeof(pid_t));
 	signal(SIGINT, handler_signint_child);
 	i = 0;
 	seq_start = sequence;
 	while (sequence)
 	{
-		exec_vars = (t_exec){sequence->cmd, env};
-		pids[i++] = execute_child(&exec_vars, seq_start);
+		exec_vars = (t_exec){sequence->cmd, env, mini};
+		mini->pids[i++] = execute_child(&exec_vars, seq_start);
 		close_cmd_fds(sequence->cmd);
 		sequence = sequence->next;
 	}
 	i = 0;
 	while (i < n_cmd)
-		waitpid(pids[i++], &status, 0);
-	free(pids);
+		waitpid(mini->pids[i++], &status, 0);
+	free(mini->pids);
 	return (WEXITSTATUS(status));
 }
 
@@ -65,7 +64,7 @@ int	execute_builtin(t_exec *exec_vars)
 	return (status);
 }
 
-int	executor(t_cmd_pipe *sequence, t_dictionary *env)
+int	executor(t_minishell *mini, t_cmd_pipe *sequence, t_dictionary *env)
 {
 	t_exec	exec_vars;
 	int		status;
@@ -76,10 +75,10 @@ int	executor(t_cmd_pipe *sequence, t_dictionary *env)
 	expand_pipe_seq(sequence, env);
 	if (n_cmd == 1 && is_builtin(sequence->cmd->cmd->darray))
 	{
-		exec_vars = (t_exec){sequence->cmd, env};
+		exec_vars = (t_exec){sequence->cmd, env, mini};
 		return (execute_builtin(&exec_vars));
 	}
 	else
-		status = execute_sequence(sequence, env, n_cmd);
+		status = execute_sequence(sequence, env, n_cmd, mini);
 	return (status);
 }

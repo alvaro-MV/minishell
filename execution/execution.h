@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:32 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 14:52:06 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/19 22:31:39 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,15 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
+typedef struct s_minishell t_minishell;
+
 typedef struct s_exec
 {
 	t_cmd			*cmd;
 	t_dictionary	*env;
+	t_minishell		*mini;
 }					t_exec;
+
 
 char				*find_exec_in_path(char **path, char *exec);
 int					call_execve(t_exec *exec);
@@ -40,10 +44,12 @@ int					create_pipe_and_fds(t_cmd_pipe *sequence);
 void				expand_ix(t_io_redir *ix, t_dictionary *env);
 void				expand_pipe_seq(t_cmd_pipe *sequence, t_dictionary *env);
 void				handler_signint_child(int sig);
-int					execute_sequence(t_cmd_pipe *sequence, t_dictionary *env,
-						int n_cmd);
+int					execute_sequence(t_cmd_pipe *sequence, t_dictionary *env, 
+									int n_cmd, t_minishell *mini);
 int					execute_builtin(t_exec *exec_vars);
-int					executor(t_cmd_pipe *sequence, t_dictionary *env);
+int					executor(t_minishell *mini, t_cmd_pipe *sequence, 
+						t_dictionary *env);
+
 int					execute_child(t_exec *exec_vars, t_cmd_pipe *seq_start);
 
 #endif

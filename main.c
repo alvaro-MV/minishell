@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 22:08:06 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/19 22:46:27 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,53 +31,46 @@ void	init_environment(t_dictionary **hash_env, char **env, char **line,
 	*finish = 0;
 }
 
-void	process_commands(t_dictionary *hash_env, char *line)
+void	process_commands(t_dictionary *hash_env, char *line, int *saved_std)
 {
 	t_minishell	mini;
-	t_darray	*tokens_array;
-	char		**tokens_strings;
-	t_token		*token_stream;
-	t_token		*tokens_for_free;
-	t_cmd_pipe	*sequence;
+	// t_darray	*tokens_array;
+	// char		**tokens_strings;
+	// t_token		*token_stream;
+	// t_token		*tokens_for_free;
+	// t_cmd_pipe	*sequence;
 
 	mini.tokens_array = tokenizer_str(line);
-	mini.tokens_strings = (char **)tokens_array->darray;
-	mini.token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
+	mini.saved_std = saved_std;
+	mini.tokens_strings = (char **)mini.tokens_array->darray;
+	mini.token_stream = tokenizer_t_tokens(mini.tokens_strings, mini.tokens_array->full_idx);
 	ft_free_array(mini.tokens_array->darray);
 	mini.tokens_array->darray = NULL;
 	free_darray(mini.tokens_array);
-	mini.tokens_for_free = token_stream;
+	mini.tokens_for_free = mini.token_stream;
 	storage_signal(0, 1);
 	mini.env = hash_env;
 	mini.sequence = parse_cmd_pipe(&mini.token_stream, mini.env);
 	if (mini.sequence)
 	{
-		insert_status(executor(mini, mini.sequence, mini.env), &mini.env);
+		insert_status(executor(&mini, mini.sequence, mini.env), &mini.env);
 	}
 	else
 	insert_status(storage_signal(0, 0), &mini.env);
 	free_tokens(mini.tokens_for_free);
 	free_ast(mini.sequence);
-	// size_t i = 0;
-	// while (tokens_for_free[i].type != END)
-	// {
-	// 	free(tokens_for_free[i].text);
-	// 	i ++;
-	// }
-	// free_tokens(tokens_for_free);
-
-	tokens_array = NULL;
-	tokens_strings = NULL;
+	mini.tokens_array = NULL;
+	mini.tokens_strings = NULL;
 	// tokens_for_free = NULL;
-	sequence = NULL;
+	mini.sequence = NULL;
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_dictionary	*hash_env;
-	int				saved_std[2];
 	char			*line;
 	int				finish;
+	int				saved_std[2];
 
 	(void)argc;
 	(void)argv;
@@ -99,7 +92,7 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		dict_insert(&hash_env, dict_create_entry(ft_strdup("?"),
 				ft_itoa(storage_signal(0, 0))));
-		process_commands(hash_env, line);
+		process_commands(hash_env, line, saved_std);
 		dup2(saved_std[0], STDIN_FILENO);
 		dup2(saved_std[1], STDOUT_FILENO);
 		close(saved_std[0]);
