@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:50:25 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/19 11:42:43 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/19 13:46:19 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	process_operator(char *argv, int *i, size_t *n_op)
 	(*n_op)++;
 	while (isspace(argv[*i + 1]))
 		(*i)++;
-	(*i)++;
 }
 
 void	process_whitespace(char *argv, int *i, size_t *n_op)

@@ -17,6 +17,7 @@ int	override_fd(t_exec *exec, t_io_redir *redir, int flags, int idx)
 	int			fd;
 	struct stat	file_stat;
 
+	ft_printf("filename: %s\n", redir->filename->text);
 	fd = open(redir->filename->text, flags, 0644);
 	if (fd == -1)
 	{
