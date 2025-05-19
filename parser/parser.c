@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:27 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/18 16:59:19 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/19 19:05:06 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_token	*parse_word(t_token **token_stream)
 
 	if ((*token_stream)->type != FILENAME && (*token_stream)->type != END)
 		return (NULL);
-	ret_token = malloc(sizeof(t_token));
+	ret_token = ft_calloc(1, sizeof(t_token));
 	ret_token->text = ft_strdup((*token_stream)->text);
 	ret_token->type = (*token_stream)->type;
 	if ((*token_stream)->type != END)

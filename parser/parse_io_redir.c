@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_io_redir.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:22 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/19 11:34:21 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/19 19:10:50 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_io_redir	*parse_io_redir(t_token **token_stream, t_dictionary *env)
 			current_io_redir->next = tmp_io_redir;
 			current_io_redir = tmp_io_redir;
 		}
-		current_io_redir->op = malloc(sizeof(t_token));
+		current_io_redir->op = ft_calloc(1, sizeof(t_token));
 		current_io_redir->op->text = ft_strdup((*token_stream)->text);
 		(*token_stream)++;
 		current_io_redir->filename = parse_word(token_stream);
@@ -58,7 +58,7 @@ t_io_redir	*parse_io_redir(t_token **token_stream, t_dictionary *env)
 		}
 		if (current_io_redir->filename && !ft_strcmp(current_io_redir->op->text, "<<"))
 		{
-			if (here_doc(current_io_redir->filename->text, current_io_redir, env))
+			if (here_doc(token_stream, current_io_redir, env))
 				return (free_io_redir(ret_io_redir, 1), NULL);
 		}
 	}

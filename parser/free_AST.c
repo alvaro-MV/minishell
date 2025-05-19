@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:41 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/18 18:21:46 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:44:34 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,3 +72,16 @@ void	free_ast(t_cmd_pipe *sequence)
 	}
 }
 
+// /* Nuevo helper: libera la tubería completa */
+// void	free_cmd_pipe(t_cmd_pipe *pipe)
+// {
+// 	t_cmd_pipe	*next;
+
+// 	while (pipe)
+// 	{
+// 		next = pipe->next;
+// 		free_cmd(pipe->cmd);
+// 		free(pipe);
+// 		pipe = next;
+// 	}
+// }

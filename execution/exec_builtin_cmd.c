@@ -84,7 +84,13 @@ int	run_builtin(t_exec *exec)
 	else if (!ft_strcmp(arguments[0], "env"))
 		ft_env(arguments, exec);
 	else if (!ft_strcmp(arguments[0], "exit"))
+	{
+		free_cmd(exec->cmd, 1);
+		dict_delete(exec->env);
+		rl_clear_history(); 
 		status = ft_exit(arguments);
+	}
+		
 	else if (!ft_strcmp(arguments[0], "unset"))
 		unset(exec, arguments);
 	else if (!ft_strcmp(arguments[0], "cd"))

@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 18:08:18 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:56:35 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void	process_commands(t_dictionary *hash_env, char *line)
 
 int	main(int argc, char **argv, char **env)
 {
-	// t_minishell		mini;
 	t_dictionary	*hash_env;
 	int				saved_std[2];
 	char			*line;
@@ -87,7 +86,13 @@ int	main(int argc, char **argv, char **env)
 		saved_std[0] = signals(&line, &finish);
 		saved_std[1] = dup(STDOUT_FILENO);
 		if (finish)
-			return (dict_delete(hash_env), 0);
+		{
+			dict_delete(hash_env);
+			rl_clear_history();
+			free(line);
+			return (0);
+			
+		}
 		if (!line)
 			continue ;
 		dict_insert(&hash_env, dict_create_entry(ft_strdup("?"),
@@ -99,5 +104,7 @@ int	main(int argc, char **argv, char **env)
 		close(saved_std[1]);
 	}
 	dict_delete(hash_env);
+	rl_clear_history();
+	free(line);
 	return (0);
 }

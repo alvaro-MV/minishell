@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 17:34:47 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/19 20:22:16 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,7 @@ void					free_ast(t_cmd_pipe *sequence);
 void					handle_sigint2(int sig);
 void					handle_sigquit2(int sig);
 void					handle_sigint_heredoc(int sig);
-void					process_heredoc_loop(int hdfd, char *delimiter,
-							t_dictionary *env);
-int						here_doc(char *delimiter, t_io_redir *redir,
+int						here_doc(t_token **stream, t_io_redir *redir,
 							t_dictionary *env);
 int						parse_ix(t_io_redir **ptr_io_redir,
 							t_token **token_stream, t_dictionary *env);
@@ -83,5 +81,4 @@ void					print_io_redir(t_io_redir *io_redir, char ix_type);
 void					print_io_redirections(t_cmd *cmd);
 void					print_cmd(t_cmd *cmd);
 void					print_ast(t_cmd_pipe *sequence);
-
 #endif

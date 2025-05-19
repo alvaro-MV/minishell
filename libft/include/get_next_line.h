@@ -3,28 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 17:59:24 by alvmoral          #+#    #+#             */
-/*   Updated: 2024/12/10 17:59:25 by alvmoral         ###   ########.fr       */
+/*   Created: 2024/05/06 11:42:20 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/19 20:46:26 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <fcntl.h>
-
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 13
+#  define BUFFER_SIZE 42
 # endif
 
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <stdint.h>
+# include <limits.h>
+
 char	*get_next_line(int fd);
-char	*ft_read(int fd, char *left_str);
-char	*ft_get_line(char *left_str);
-char	*ft_leftovers(char *left_str);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strjoin(char *s1, char *s2);
+
+size_t	ft_strlen(const char *s);
+char	*read_until_new_line(int fd, char **str);
+char	*take_until_new_line(char *str);
+char	*take_after_new_line(char *temp);
+
 
 #endif

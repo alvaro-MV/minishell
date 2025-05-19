@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:38:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/18 17:01:42 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/19 18:59:25 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	expand_pipe_seq(t_cmd_pipe *sequence, t_dictionary *env)
 			{
 				tmp = cmd_array[i];
 				cmd_array[i] = expand_str(tmp, env);
+				free(tmp);
 			}
 			expand_ix(cmd->cmd_prefix, env);
 			expand_ix(cmd->cmd_suffix, env);
