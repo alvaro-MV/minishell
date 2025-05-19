@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_io_redir.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:22 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/18 18:37:47 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:34:21 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_io_redir	*parse_io_redir(t_token **token_stream, t_dictionary *env)
 		}
 		current_io_redir->op = malloc(sizeof(t_token));
 		current_io_redir->op->text = ft_strdup((*token_stream)->text);
+		(*token_stream)++;
 		current_io_redir->filename = parse_word(token_stream);
 		if (current_io_redir->filename && current_io_redir->filename->type != FILENAME)
 		{

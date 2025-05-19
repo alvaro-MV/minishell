@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/18 18:13:23 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:23:05 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	main(int argc, char **argv, char **env)
 {
 	// t_minishell		mini;
 	t_dictionary	*hash_env;
+	int				saved_std[2];
 	char			*line;
 	int				finish;
 
@@ -83,12 +84,19 @@ int	main(int argc, char **argv, char **env)
 	init_environment(&hash_env, env, &line, &finish);
 	while (1)
 	{
-		signals(&line, &finish);
+		saved_std[0] = signals(&line, &finish);
+		saved_std[1] = dup(STDOUT_FILENO);
 		if (finish)
 			return (dict_delete(hash_env), 0);
+		if (!line)
+			continue ;
 		dict_insert(&hash_env, dict_create_entry(ft_strdup("?"),
 				ft_itoa(storage_signal(0, 0))));
 		process_commands(hash_env, line);
+		dup2(saved_std[0], STDIN_FILENO);
+		dup2(saved_std[1], STDOUT_FILENO);
+		close(saved_std[0]);
+		close(saved_std[1]);
 	}
 	dict_delete(hash_env);
 	return (0);

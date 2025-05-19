@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/18 16:07:40 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/19 11:59:36 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,11 @@ void	handle_sigquit(int sig)
 	(void)sig;
 }
 
-void	signals(char **input, int *exit)
+int	signals(char **input, int *exit)
 {
+	int	save_stdin;
+	
+	save_stdin = dup(STDIN_FILENO);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigquit);
 	*input = readline("minishell> ");
@@ -60,4 +63,5 @@ void	signals(char **input, int *exit)
 		*input = NULL;
 	else if (*input && **input)
 		add_history(*input);
+	return (save_stdin);
 }
