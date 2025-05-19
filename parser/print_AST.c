@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   print_AST.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:31 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/18 17:08:54 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/19 17:34:34 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	print_io_redir(t_io_redir *io_redir)
+void	print_io_redir(t_io_redir *io_redir, char ix_type)
 {
 	if (io_redir)
 	{
 		if (io_redir->op && io_redir->op->type != END)
-			ft_printf("(%s ", io_redir->op->text);
+			ft_printf("%c (%s ", ix_type, io_redir->op->text);
 		if (io_redir->op && io_redir->filename->type != END)
 			ft_printf("%s) ", io_redir->filename->text);
-		print_io_redir(io_redir->next);
+		print_io_redir(io_redir->next, ix_type);
 	}
 }
 
@@ -28,8 +28,8 @@ void	print_io_redirections(t_cmd *cmd)
 {
 	while (cmd)
 	{
-		print_io_redir(cmd->cmd_prefix);
-		print_io_redir(cmd->cmd_suffix);
+		print_io_redir(cmd->cmd_prefix, 'p');
+		print_io_redir(cmd->cmd_suffix,'s');
 		cmd = cmd->next;
 	}
 }

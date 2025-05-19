@@ -17,7 +17,6 @@ int	override_fd(t_exec *exec, t_io_redir *redir, int flags, int idx)
 	int			fd;
 	struct stat	file_stat;
 
-	ft_printf("filename: %s\n", redir->filename->text);
 	fd = open(redir->filename->text, flags, 0644);
 	if (fd == -1)
 	{
@@ -37,7 +36,8 @@ int	override_fd(t_exec *exec, t_io_redir *redir, int flags, int idx)
 	}
 	else
 	{
-		close(exec->cmd->fds[idx]);
+		if (exec->cmd->fds[idx] > 2)
+			close(exec->cmd->fds[idx]);
 		exec->cmd->fds[idx] = fd;
 	}
 	return (0);
@@ -75,24 +75,39 @@ int	execute_io_redir(t_exec *exec)
 {
 	t_io_redir	*prefix;
 	t_io_redir	*suffix;
+	t_cmd 		*tmp_cmd;
+	t_cmd 		*cmd;
 	int			status;
 
-	prefix = exec->cmd->cmd_prefix;
-	suffix = exec->cmd->cmd_suffix;
-	status = 0;
-	while (prefix)
+	tmp_cmd = exec->cmd;
+	cmd = exec->cmd;
+	while (cmd)
 	{
-		status = traverse_io_redir(prefix, exec);
-		if (status != 0)
-			return (status);
-		prefix = prefix->next;
+		prefix = exec->cmd->cmd_prefix;
+		suffix = exec->cmd->cmd_suffix;
+		status = 0;
+		while (prefix)
+		{
+			status = traverse_io_redir(prefix, exec);
+			if (status != 0)
+			{
+				exec->cmd = tmp_cmd;
+				return (status);
+			}
+			prefix = prefix->next;
+		}
+		while (suffix)
+		{
+			status = traverse_io_redir(suffix, exec);
+			if (status != 0)
+			{
+				exec->cmd = tmp_cmd;
+				return (status);
+			}
+			suffix = suffix->next;
+		}
+		cmd = cmd->next;
 	}
-	while (suffix)
-	{
-		status = traverse_io_redir(suffix, exec);
-		if (status != 0)
-			return (status);
-		suffix = suffix->next;
-	}
+	exec->cmd = tmp_cmd;	
 	return (status);
 }

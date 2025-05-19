@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/18 16:52:11 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/19 17:34:47 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int						handle_expansion(t_command **cmd, char *element,
 int						add_command(t_command **cmd, char *element,
 							t_dictionary *env, int exp);
 void					print_from_diff(char *AST, char *expected);
-void					print_io_redir(t_io_redir *io_redir);
+void					print_io_redir(t_io_redir *io_redir, char ix_type);
 void					print_io_redirections(t_cmd *cmd);
 void					print_cmd(t_cmd *cmd);
 void					print_ast(t_cmd_pipe *sequence);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 13:50:00 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/19 18:08:18 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	process_commands(t_dictionary *hash_env, char *line)
 	tokens_for_free = token_stream;
 	storage_signal(0, 1);
 	sequence = parse_cmd_pipe(&token_stream, hash_env);
-	print_ast(sequence);
 	if (sequence)
 	{
 		insert_status(executor(sequence, hash_env), &hash_env);
