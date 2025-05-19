@@ -132,29 +132,6 @@ char	*get_hd_name(void)
 	return (hd_name);
 }
 
-// char	*get_here_doc_line(int fd, int free_line)
-// {
-// 	static char	*str;
-// 	char		*line;
-
-// 	if (free_line == 1)
-// 		return (free(str), NULL);
-// 	if (fd < 0 || BUFFER_SIZE <= 0)
-// 		return (NULL);
-// 	str = read_until_new_line(fd, &str);
-// 	if (!str)
-// 		return (0);
-// 	line = take_until_new_line(str);
-// 	if (!line)
-// 	{
-// 		free(line);
-// 		free(str);
-// 		str = NULL;
-// 		return (NULL);
-// 	}
-// 	str = take_after_new_line(str);
-// 	return (line);
-// }
 
 /* ── 2.  Bucle con gnl ─────────────────────────────────────────── */
 static int	process_heredoc_loop(int hdfd,
@@ -168,8 +145,8 @@ static int	process_heredoc_loop(int hdfd,
 	{
 		ft_printf("herdoc> ");                 /* prompt */
 		line = get_next_line(STDIN_FILENO);
-		if (!line)                             /* EOF → fin heredoc           */
-			break ;
+		// if (!line)                             /* EOF → fin heredoc           */
+		// 	break ;
 		if (storage_signal(0, 0))              /* ^C detectado                */
 			return (free(line), -1);
 		if (line[ft_strlen(line) - 1] == '\n')

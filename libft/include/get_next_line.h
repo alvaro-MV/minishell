@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 11:42:20 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 20:46:26 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:39:24 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@
 # include <limits.h>
 
 char	*get_next_line(int fd);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
+// char	*ft_strchr(const char *s, int c);
+// char	*ft_strjoin(char *s1, char *s2);
 
-size_t	ft_strlen(const char *s);
-char	*read_until_new_line(int fd, char **str);
-char	*take_until_new_line(char *str);
-char	*take_after_new_line(char *temp);
+// size_t	ft_strlen(const char *s);
+// char	*read_until_new_line(int fd, char **str);
+// char	*take_until_new_line(char *str);
+// char	*take_after_new_line(char *temp);
 
 
 #endif
