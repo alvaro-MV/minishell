@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 19:56:35 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/19 22:08:06 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,31 @@ void	init_environment(t_dictionary **hash_env, char **env, char **line,
 
 void	process_commands(t_dictionary *hash_env, char *line)
 {
+	t_minishell	mini;
 	t_darray	*tokens_array;
 	char		**tokens_strings;
 	t_token		*token_stream;
 	t_token		*tokens_for_free;
 	t_cmd_pipe	*sequence;
 
-	tokens_array = tokenizer_str(line);
-	tokens_strings = (char **)tokens_array->darray;
-	token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
-	ft_free_array(tokens_array->darray);
-	tokens_array->darray = NULL;
-	free_darray(tokens_array);
-	tokens_for_free = token_stream;
+	mini.tokens_array = tokenizer_str(line);
+	mini.tokens_strings = (char **)tokens_array->darray;
+	mini.token_stream = tokenizer_t_tokens(tokens_strings, tokens_array->full_idx);
+	ft_free_array(mini.tokens_array->darray);
+	mini.tokens_array->darray = NULL;
+	free_darray(mini.tokens_array);
+	mini.tokens_for_free = token_stream;
 	storage_signal(0, 1);
-	sequence = parse_cmd_pipe(&token_stream, hash_env);
-	if (sequence)
+	mini.env = hash_env;
+	mini.sequence = parse_cmd_pipe(&mini.token_stream, mini.env);
+	if (mini.sequence)
 	{
-		insert_status(executor(sequence, hash_env), &hash_env);
+		insert_status(executor(mini, mini.sequence, mini.env), &mini.env);
 	}
 	else
-	insert_status(storage_signal(0, 0), &hash_env);
-	free_tokens(tokens_for_free);
-	free_ast(sequence);
+	insert_status(storage_signal(0, 0), &mini.env);
+	free_tokens(mini.tokens_for_free);
+	free_ast(mini.sequence);
 	// size_t i = 0;
 	// while (tokens_for_free[i].type != END)
 	// {

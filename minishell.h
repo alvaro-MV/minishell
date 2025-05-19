@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:01:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 19:57:03 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/19 22:08:21 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+
+typedef	struct s_minishell
+{
+	t_darray	*tokens_array;
+	char		**tokens_strings;
+	t_token		*token_stream;
+	t_token		*tokens_for_free;
+	t_cmd_pipe	*sequence;
+	t_dictionary *env;
+}				t_minishell;
 
 char	**dict_envp(t_dictionary *env);
 void	dict_set_env_var(t_dictionary **env, char *k, char *v, int export);
