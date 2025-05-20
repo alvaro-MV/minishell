@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 22:46:27 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/20 15:45:39 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	process_commands(t_dictionary *hash_env, char *line, int *saved_std)
 	storage_signal(0, 1);
 	mini.env = hash_env;
 	mini.sequence = parse_cmd_pipe(&mini.token_stream, mini.env);
+	free_tokens(mini.tokens_for_free);
 	if (mini.sequence)
 	{
 		insert_status(executor(&mini, mini.sequence, mini.env), &mini.env);
 	}
 	else
 	insert_status(storage_signal(0, 0), &mini.env);
-	free_tokens(mini.tokens_for_free);
 	free_ast(mini.sequence);
 	mini.tokens_array = NULL;
 	mini.tokens_strings = NULL;

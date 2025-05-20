@@ -45,9 +45,9 @@ char	*find_exec_in_path(char **path, char *exec)
 static void	free_all(t_exec *exec_vars)
 {
 	close_cmd_fds(exec_vars->cmd);
-	free_tokens(exec_vars->mini->token_stream);
 	free_ast(exec_vars->mini->sequence);
 	dict_delete(exec_vars->mini->env);
+	free(exec_vars->mini->pids);
 	close(exec_vars->mini->saved_std[0]);
 	close(exec_vars->mini->saved_std[1]);
 }
@@ -72,16 +72,13 @@ int	call_execve(t_exec *exec)
 	ft_free_array(envp);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd_name, 2);
-	
 	close_cmd_fds(exec->cmd);
 	free_ast(exec->mini->sequence);
 	dict_delete(exec->mini->env);
 	free(exec->mini->pids);
-	free(exec->mini->tokens_for_free);
-	
 	if (access(execve_args[0], F_OK) == 0 && !ft_strncmp(execve_args[0], "./", 2))
-		(ft_putstr_fd(": Permission denied\n", 2), exit(126));
-	// ft_free_array(execve_args);
+		(ft_putstr_fd(": Permission denied\n", 2), ft_free_array(execve_args), exit(126));
+	ft_free_array(execve_args);
 	ft_putstr_fd(": command not found\n", 2);
 	exit(127);
 }
@@ -103,12 +100,10 @@ int	run_builtin(t_exec *exec)
 		ft_env(arguments, exec);
 	else if (!ft_strcmp(arguments[0], "exit"))
 	{
-		free_cmd(exec->cmd, 1);
-		dict_delete(exec->env);
 		rl_clear_history(); 
+		free_all(exec);
 		status = ft_exit(arguments);
 	}
-		
 	else if (!ft_strcmp(arguments[0], "unset"))
 		unset(exec, arguments);
 	else if (!ft_strcmp(arguments[0], "cd"))
@@ -125,25 +120,16 @@ int	handle_child_process(t_exec *exec_vars)
 
 	status = execute_io_redir(exec_vars);
 	if (status)
-	{
-		free_all(exec_vars);
-		exit(1);
-	}
+		(free_all(exec_vars), exit(1));
 	if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) == -1)
 		write(1, "Failed to redirect stdin.\n", 26);
 	if (exec_vars->cmd->fds[1] != 1 && dup2(exec_vars->cmd->fds[1], 1) == -1)
 		write(1, "Failed to redirect stdout.\n", 27);
 	close_cmd_fds(exec_vars->cmd);
 	if (status != 0)
-	{
-		free_all(exec_vars);
-		exit(status);
-	}
+		(free_all(exec_vars), exit(1));
 	if (!status && is_builtin(exec_vars->cmd->cmd->darray))
-	{
-		free_all(exec_vars);
-		exit(run_builtin(exec_vars));
-	}
+		(free_all(exec_vars), exit(1));
 	else if (!status && !is_builtin(exec_vars->cmd->cmd->darray))
 		status = call_execve(exec_vars);
 	free_all(exec_vars);
@@ -154,23 +140,11 @@ int	execute_child(t_exec *exec_vars, t_cmd_pipe *sequence)
 {
 	int	ret;
 	(void) sequence;
-	// t_cmd_pipe *tmp;
 
 	ret = fork();
 	if (ret == 0)
 	{
 		rl_clear_history();
-		// while (sequence)
-		// {
-		// 	tmp = sequence->next;
-		// 	if (sequence->cmd != exec_vars->cmd)
-		// 	{
-		// 		close_cmd_fds(sequence->cmd);
-		// 		free_cmd(sequence->cmd, 0);
-		// 	}
-		// 	free(sequence);
-		// 	sequence = tmp;
-		// }
 		handle_child_process(exec_vars);
 	}
 	else

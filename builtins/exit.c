@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 15:36:02 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:58:18 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_exit(char **args)
 
 	rl_clear_history();
 	if (!args[1])
-		exit(0);
+		(ft_free_array(args), exit(0));
 	if (!is_numeric(args[1]))
 	{
 		ft_printf("exit\n");
@@ -47,5 +47,5 @@ int	ft_exit(char **args)
 		return (1);
 	}
 	status = ft_atoi(args[1]);
-	exit (status % 256);
+	(ft_free_array(args), exit (status % 256));
 }

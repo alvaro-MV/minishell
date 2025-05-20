@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:14 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/16 16:27:37 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:26:56 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char	**create_args(t_cmd *cmd)
 	char		**command_list;
 	t_command	*ret_array;
 	char		**tmp_array;
+	char		*cmd_lst_dup;
 	size_t		i;
 
 	ret_array = alloc_darray(10, sizeof(char *));
@@ -24,13 +25,13 @@ char	**create_args(t_cmd *cmd)
 		return (NULL);
 	while (cmd)
 	{
-		i = 0;
+		i = -1;
 		command_list = (char **)cmd->cmd->darray;
-		while (command_list && command_list[i])
+		while (command_list && command_list[++i])
 		{
-			if (!append_darray(&ret_array, &command_list[i]))
+			cmd_lst_dup = ft_strdup(command_list[i]);
+			if (!append_darray(&ret_array, &cmd_lst_dup))
 				return (NULL);
-			i++;
 		}
 		cmd = cmd->next;
 	}
