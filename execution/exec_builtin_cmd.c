@@ -129,7 +129,10 @@ int	handle_child_process(t_exec *exec_vars)
 	if (status != 0)
 		(free_all(exec_vars), exit(1));
 	if (!status && is_builtin(exec_vars->cmd->cmd->darray))
-		(free_all(exec_vars), exit(1));
+	{
+		status = run_builtin(exec_vars);
+		exit(status);
+	}
 	else if (!status && !is_builtin(exec_vars->cmd->cmd->darray))
 		status = call_execve(exec_vars);
 	free_all(exec_vars);
