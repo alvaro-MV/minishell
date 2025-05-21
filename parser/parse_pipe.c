@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_pipe.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:25 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/19 19:27:43 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:41:53 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream, t_dictionary *env)
 	t_cmd_pipe	*current_cmd_pipe;
 	t_cmd_pipe	*tmp_cmd_pipe;
 
+	ret_cmd_pipe = NULL;
 	if (!*token_stream)
 		return (NULL);
 	if (!alloc_pipe_cmd(&ret_cmd_pipe))
@@ -48,18 +49,20 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream, t_dictionary *env)
 	ret_cmd_pipe->cmd = parse_cmd(token_stream, env);
 	if (!ret_cmd_pipe->cmd)
 		return (NULL);
-	current_cmd_pipe = ret_cmd_pipe;
 	while ((*token_stream)->type == PIPE_OPERATOR)
 	{
 		(*token_stream)++;
 		if (!alloc_pipe_cmd(&tmp_cmd_pipe))
 			return (NULL);
 		tmp_cmd_pipe->cmd = parse_cmd(token_stream, env);
+		if (!tmp_cmd_pipe->cmd)
+			return (NULL);
 		current_cmd_pipe->next = tmp_cmd_pipe;
 		current_cmd_pipe = tmp_cmd_pipe;
 		if (!tmp_cmd_pipe->cmd)
 			return (NULL);
 	}
 	current_cmd_pipe->next = NULL;
+	ft_printf("Pero me estan vacilandooooooo\n");
 	return (ret_cmd_pipe);
 }

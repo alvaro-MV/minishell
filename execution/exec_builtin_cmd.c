@@ -110,7 +110,7 @@ int	run_builtin(t_exec *exec)
 		status = cd(exec, arguments);
 	else
 		ft_printf("minishell: command not found\n");
-	free(arguments);
+	ft_free_array(arguments);
 	return (status);
 }
 
