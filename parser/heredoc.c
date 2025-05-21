@@ -145,6 +145,8 @@ static int	process_heredoc_loop(int hdfd,
 	{
 		ft_printf("herdoc> ");                 /* prompt */
 		line = get_next_line(STDIN_FILENO);
+		if (storage_signal(0, 0) != 0)
+			return (-1);
 		if (!line)                             /* EOF → fin heredoc           */
 			break ;
 		if (storage_signal(0, 0))              /* ^C detectado                */

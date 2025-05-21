@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:37 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 22:20:02 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/21 23:45:25 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	executor(t_minishell *mini, t_cmd_pipe *sequence, t_dictionary *env)
 	status = 0;
 	n_cmd = create_pipe_and_fds(sequence);
 	expand_pipe_seq(sequence, env);
-	// mini->pids = NULL;
+	mini->pids = NULL;
 	if (n_cmd == 1 && is_builtin(sequence->cmd->cmd->darray))
 	{
 		exec_vars = (t_exec){sequence->cmd, env, mini};

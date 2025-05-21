@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:25 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/21 21:28:47 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/22 00:01:59 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,21 @@ t_cmd_pipe	*parse_cmd_pipe(t_token **token_stream, t_dictionary *env)
 	if (!*token_stream)
 		return (NULL);
 	if (!alloc_pipe_cmd(&ret_cmd_pipe))
-		return (NULL);
+		return (free_ast(ret_cmd_pipe), NULL);
 	ret_cmd_pipe->cmd = parse_cmd(token_stream, env);
 	if (!ret_cmd_pipe->cmd)
-		return (NULL);
+		return (free_ast(ret_cmd_pipe), NULL);
 	current_cmd_pipe = ret_cmd_pipe;
 	while ((*token_stream)->type == PIPE_OPERATOR)
 	{
 		(*token_stream)++;
 		if (!alloc_pipe_cmd(&tmp_cmd_pipe))
-			return (NULL);
+			return (free_ast(ret_cmd_pipe), NULL);
 		tmp_cmd_pipe->cmd = parse_cmd(token_stream, env);
-		// if (tmp_cmd_pipe->cmd == NULL)
-		// 	return (NULL);
 		current_cmd_pipe->next = tmp_cmd_pipe;
 		current_cmd_pipe = tmp_cmd_pipe;
 		if (!tmp_cmd_pipe->cmd)
-			return (NULL);
+			return (free_ast(ret_cmd_pipe), NULL);
 	}
 	current_cmd_pipe->next = NULL;
 	return (ret_cmd_pipe);

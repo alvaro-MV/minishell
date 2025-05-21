@@ -132,7 +132,7 @@ int	run_builtin(t_exec *exec)
 		status = cd(exec, arguments);
 	else
 		ft_printf("minishell: command not found\n");
-	free(arguments);
+	ft_free_array(arguments);
 	return (status);
 }
 
@@ -157,6 +157,7 @@ int	handle_child_process(t_exec *exec_vars)
 	if (!status && is_builtin(exec_vars->cmd->cmd->darray))
 	{
 		status = run_builtin(exec_vars);
+		free_all(exec_vars);
 		exit(status);
 	}
 	else if (!status && !is_builtin(exec_vars->cmd->cmd->darray))
