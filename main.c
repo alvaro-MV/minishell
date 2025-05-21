@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 12:06:44 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:20:35 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	main(int argc, char **argv, char **env)
 			(close(saved_std[0]), close(saved_std[1]));
 			rl_clear_history();
 			free(line);
+			line = NULL;
 			return (0);
 		}
 		if (!line)
@@ -104,6 +105,6 @@ int	main(int argc, char **argv, char **env)
 	}
 	dict_delete(hash_env);
 	rl_clear_history();
-	// free(line);
+	free(line);
 	return (0);
 }

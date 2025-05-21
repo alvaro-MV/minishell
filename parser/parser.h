@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 20:22:16 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:31:34 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ typedef struct s_cmd_pipe
 	struct s_cmd_pipe	*next;
 }						t_cmd_pipe;
 
-void					free_io_redir(t_io_redir *io_redir, int parent);
-void					free_cmd(t_cmd *cmd, int parent);
+void					free_io_redir(t_io_redir *io_redir);
+void					free_cmd(t_cmd *cmd);
 void					free_ast(t_cmd_pipe *sequence);
 void					handle_sigint2(int sig);
 void					handle_sigquit2(int sig);

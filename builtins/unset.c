@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:43 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/18 16:06:59 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:00:54by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ void	remove_env_var(t_exec *exec, char *var_name)
 	ft_free_array(env);
 }
 
+static void	unset_error(char *name)
+{
+	if (name[0] == '-')
+		ft_printf("minishell: unset: %c%c: invalid option\n", name[0], name[1]);
+}
+
 int	unset(t_exec *exec, char **arg)
 {
 	int	i;
@@ -44,7 +50,7 @@ int	unset(t_exec *exec, char **arg)
 	while (arg[i])
 	{
 		if (!is_valid_name(arg[i]))
-			export_error(arg[i]);
+			return (unset_error(arg[i]), 0);
 		else
 			remove_env_var(exec, arg[i]);
 		i++;

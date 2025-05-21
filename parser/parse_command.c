@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:17 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/18 16:19:18 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:32:51 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 		&& (*token_stream)->type != PIPE_OPERATOR)
 	{
 		if (!parse_ix(&current_cmd->cmd_prefix, token_stream, env))
-			return (free_cmd(ret_cmd, 1), NULL);
+			return (free_cmd(ret_cmd), NULL);
 		if (!fill_cmd(token_stream, &current_cmd->cmd, env))
-			return (free_cmd(ret_cmd, 1), NULL);
+			return (free_cmd(ret_cmd), NULL);
 		if (!parse_ix(&current_cmd->cmd_suffix, token_stream, env))
-			return (free_cmd(ret_cmd, 1), NULL);
+			return (free_cmd(ret_cmd), NULL);
 		if (!alloc_cmd(&tmp_cmd))
-			return (free_cmd(ret_cmd, 1), NULL);
+			return (free_cmd(ret_cmd), NULL);
 		current_cmd->next = tmp_cmd;
 		current_cmd = tmp_cmd;
 	}
