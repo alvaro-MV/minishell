@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/20 15:45:39 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 12:06:44 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,22 @@ int	main(int argc, char **argv, char **env)
 	int				finish;
 	int				saved_std[2];
 
-	(void)argc;
-	(void)argv;
+	// (void)argc;
+	// (void)argv;
 	finish = 0;
 	init_environment(&hash_env, env, &line, &finish);
+
 	while (1)
 	{
-		saved_std[0] = signals(&line, &finish);
+		saved_std[0] = signals(&line, &finish, argc, argv);
 		saved_std[1] = dup(STDOUT_FILENO);
 		if (finish)
 		{
 			dict_delete(hash_env);
+			(close(saved_std[0]), close(saved_std[1]));
 			rl_clear_history();
 			free(line);
 			return (0);
-			
 		}
 		if (!line)
 			continue ;
@@ -97,9 +98,12 @@ int	main(int argc, char **argv, char **env)
 		dup2(saved_std[1], STDOUT_FILENO);
 		close(saved_std[0]);
 		close(saved_std[1]);
+		if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+			break ;
+
 	}
 	dict_delete(hash_env);
 	rl_clear_history();
-	free(line);
+	// free(line);
 	return (0);
 }

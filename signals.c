@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 11:59:36 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 12:05:52 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,17 @@ void	handle_sigquit(int sig)
 	(void)sig;
 }
 
-int	signals(char **input, int *exit)
+int	signals(char **input, int *exit, int argc, char **argv)
 {
 	int	save_stdin;
 	
 	save_stdin = dup(STDIN_FILENO);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigquit);
-	*input = readline("minishell> ");
+	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
+		*input = ft_strdup(argv[2]);
+	else
+		*input = readline("minishell> ");
 	// static int i = 0;
 	// if (i == 0)
 	// 	*input = ft_strdup("cat << l << l1 > o1 | cat -e << l << l1 > o2");

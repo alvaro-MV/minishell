@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:57:52 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/15 15:46:43 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:36:57 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@ void	echo(char **arguments)
 	int		i;
 	int		new_line;
 
-	i = 0;
+	i = 1;
 	new_line = process_flags(arguments, &i);
-	arguments++;
 	while (arguments[i])
 	{
 		ft_printf("%s", arguments[i]);
-		if (arguments[i + 1])
+		if (arguments[i + 1] && ft_strncmp(arguments[i + 1], "", 1))
 			ft_printf(" ");
 		i++;
 	}

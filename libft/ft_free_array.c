@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_array.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 17:56:00 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/17 12:35:20 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:49:35 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	ft_free_array(char **marr)
 	unsigned int	i;
 
 	i = 0;
+	if (marr == NULL)
+		return ;
 	while (marr[i])
 	{
 		free_ptr = marr[i];
