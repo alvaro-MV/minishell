@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:50:25 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/19 13:46:19 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 14:00:38 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	process_operator(char *argv, int *i, size_t *n_op)
 {
 	if (*i && !isspace(argv[*i - 1]) && !is_simple_operator(argv[*i - 1]))
 		(*n_op)++;
-	if (argv[*i] == argv[*i + 1])
+	if (argv[*i] == argv[*i + 1] && is_double_operator(argv[*i]))
 		(*i)++;
 	(*n_op)++;
 	while (isspace(argv[*i + 1]))
@@ -67,11 +67,11 @@ int	tokenize_operator(char *line, int *i, int *start, t_darray **tokens)
 		if (!add_token(tokens, ft_substr(line, *start, *i - *start)))
 			return (free_darray(*tokens), 0);
 	}
-	if (line[*i] == line[*i + 1])
+	if (line[*i] == line[*i + 1] && is_double_operator(line[*i]))
 		len_op++;
 	if (!add_token(tokens, ft_substr(line, *i, len_op)))
 		return (free_darray(*tokens), 0);
-	if (line[*i] == line[*i + 1])
+	if (line[*i] == line[*i + 1] && is_double_operator(line[*i]))
 		*i = *i + 1;
 	while (isspace(line[*i + 1]) && line[*i + 1] != '\0')
 		*i = *i + 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_AST.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:31 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/19 17:34:34 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:01:23 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	print_cmd(t_cmd *cmd)
 
 void	print_ast(t_cmd_pipe *sequence)
 {
+	if (sequence == NULL)
+		return ;
 	print_cmd(sequence->cmd);
 	if (sequence->next)
 	{

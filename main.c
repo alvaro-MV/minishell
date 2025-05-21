@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 13:20:35 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 14:04:44y alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	insert_status(int status, t_dictionary **dict)
 {
-	if (status || storage_signal(0, 0) != 0)
+	if (status && storage_signal(0, 0) == 0)
 	{
 		dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
 		storage_signal(status, 1);
 	}
-	else
-		storage_signal(0, 1);
+	// else
+	// 	storage_signal(0, 1);
 }
 
 void	init_environment(t_dictionary **hash_env, char **env, char **line,
@@ -34,11 +34,6 @@ void	init_environment(t_dictionary **hash_env, char **env, char **line,
 void	process_commands(t_dictionary *hash_env, char *line, int *saved_std)
 {
 	t_minishell	mini;
-	// t_darray	*tokens_array;
-	// char		**tokens_strings;
-	// t_token		*token_stream;
-	// t_token		*tokens_for_free;
-	// t_cmd_pipe	*sequence;
 
 	mini.tokens_array = tokenizer_str(line);
 	mini.saved_std = saved_std;
@@ -53,15 +48,13 @@ void	process_commands(t_dictionary *hash_env, char *line, int *saved_std)
 	mini.sequence = parse_cmd_pipe(&mini.token_stream, mini.env);
 	free_tokens(mini.tokens_for_free);
 	if (mini.sequence)
-	{
 		insert_status(executor(&mini, mini.sequence, mini.env), &mini.env);
-	}
 	else
-	insert_status(storage_signal(0, 0), &mini.env);
+		insert_status(storage_signal(0, 0), &mini.env);
 	free_ast(mini.sequence);
 	mini.tokens_array = NULL;
 	mini.tokens_strings = NULL;
-	// tokens_for_free = NULL;
+	mini.tokens_for_free = NULL;
 	mini.sequence = NULL;
 }
 
@@ -101,7 +94,6 @@ int	main(int argc, char **argv, char **env)
 		close(saved_std[1]);
 		if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
 			break ;
-
 	}
 	dict_delete(hash_env);
 	rl_clear_history();

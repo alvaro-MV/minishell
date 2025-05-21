@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:17 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/21 13:32:51 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 13:41:50 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ t_cmd	*parse_cmd(t_token **token_stream, t_dictionary *env)
 	t_cmd	*current_cmd;
 
 	ret_cmd = init_cmd_parsing(token_stream);
+	if (ret_cmd == NULL)
+		return (NULL);
 	current_cmd = ret_cmd;
 	while ((*token_stream)->type != END
 		&& (*token_stream)->type != PIPE_OPERATOR)
