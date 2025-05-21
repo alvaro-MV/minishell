@@ -14,13 +14,13 @@
 
 void	insert_status(int status, t_dictionary **dict)
 {
-	if (status && storage_signal(0, 0) == 0)
+	if (status || storage_signal(0, 0) != 0)
 	{
 		dict_insert(dict, dict_create_entry(ft_strdup("?"), ft_itoa(status)));
 		storage_signal(status, 1);
 	}
-	// else
-	// 	storage_signal(0, 1);
+	else
+		storage_signal(0, 1);
 }
 
 void	init_environment(t_dictionary **hash_env, char **env, char **line,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/20 15:58:18 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 20:38:30 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ int	is_numeric(const char *str)
 	return (1);
 }
 
-int	ft_exit(char **args)
+int	ft_exit(t_exec *exec, char **args)
 {
 	int	status;
+	(void) exec;
 
 	rl_clear_history();
 	if (!args[1])
@@ -39,6 +40,7 @@ int	ft_exit(char **args)
 	{
 		ft_printf("exit\n");
 		ft_printf("exit: %s: numeric argument required\n", args[1]);
+		// free_all(exec);
 		exit(2);
 	}
 	if (args[2])

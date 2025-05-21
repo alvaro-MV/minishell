@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_str.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 20:04:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/17 11:02:25 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:13:19 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ int	nose_pon_nombre(t_dictionary *env, char *str, t_utils *utils)
 				utils->len_env_var++;
 			else if (!is_special_var(&str[utils->len_env_var]))
 			{
-				while (ft_isalnum(str[utils->len_env_var]))
+				while (ft_isalnum(str[utils->len_env_var]) || str[utils->len_env_var] == '_')
 				{
-					utils->len_env_var++;
-					if (!ft_isalpha(str[utils->i]))
+					if (!ft_isalpha(str[utils->i]) && str[utils->i] != '_')
 						break ;
+					utils->len_env_var++;
 				}
 			}
 			no_se_pon_nombre_2(str, utils, env);
@@ -74,7 +74,8 @@ int	expand_quotes(char *str, t_utils *utils)
 		if (str[utils->i] == '"')
 			utils->state = WORD;
 		else if ((str[utils->i] == '$' && ft_isalpha(str[utils->i + 1]))
-			|| (str[utils->i] == '$' && is_special_var(&str[utils->i + 1])))
+			|| (str[utils->i] == '$' && is_special_var(&str[utils->i + 1]))
+			|| (str[utils->i] == '$' && str[utils->i + 1 ] == '_'))
 			utils->state = ENV_VAR;
 		else
 			join_char(&utils->expanded_str, &str[utils->i]);

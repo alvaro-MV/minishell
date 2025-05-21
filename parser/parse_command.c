@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:17 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/21 16:26:09 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 21:28:18 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ t_cmd	*init_cmd_parsing(t_token **token_stream)
 {
 	t_cmd	*ret_cmd;
 
+	if ((*token_stream)->type == END)
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+		storage_signal(2, 1);
+		return (NULL);
+	}
 	if ((*token_stream)->type == PIPE_OPERATOR)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);

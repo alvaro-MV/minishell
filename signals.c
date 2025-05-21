@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 12:05:52 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 20:49:02 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,11 @@ int	storage_signal(int status, int flag)
 
 void	handle_sigint(int sig)
 {
-	(void)sig;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	storage_signal(130, 1);
-}
-
-void	handle_sigquit(int sig)
-{
-	(void)sig;
+	storage_signal(128 + sig, 1);
 }
 
 int	signals(char **input, int *exit, int argc, char **argv)
@@ -43,7 +37,7 @@ int	signals(char **input, int *exit, int argc, char **argv)
 	
 	save_stdin = dup(STDIN_FILENO);
 	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, handle_sigquit);
+	signal(SIGQUIT, SIG_IGN);
 	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
 		*input = ft_strdup(argv[2]);
 	else

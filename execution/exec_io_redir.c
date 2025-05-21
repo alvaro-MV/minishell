@@ -83,8 +83,9 @@ int	execute_io_redir(t_exec *exec)
 	cmd = exec->cmd;
 	while (cmd)
 	{
-		prefix = exec->cmd->cmd_prefix;
-		suffix = exec->cmd->cmd_suffix;
+		prefix = cmd->cmd_prefix;
+		suffix = cmd->cmd_suffix;
+
 		status = 0;
 		while (prefix)
 		{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:08 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 12:04:27 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 20:49:08 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <unistd.h>
 
 void	handle_sigint(int sig);
-void	handle_sigquit(int sig);
 int		signals(char **input, int *exit, int argc, char **argv);
 int		storage_signal(int status, int flag);
 

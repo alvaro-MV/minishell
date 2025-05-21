@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 20:10:58 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/16 20:22:57 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:06:28 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	is_env_var(char *str, t_utils utils)
 	return ((str[utils.i] == '$' && ft_isalnum(str[utils.i + 1]))
 		|| (str[utils.i] == '$' && str[utils.i + 1] == '\'')
 		|| (str[utils.i] == '$' && str[utils.i + 1] == '"')
+		|| (str[utils.i] == '$' && str[utils.i + 1] == '_')
 		|| (str[utils.i] == '$' && is_special_var(&str[utils.i + 1])));
 }
 

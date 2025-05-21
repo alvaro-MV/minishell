@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:52 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/17 13:52:00 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:37:39 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int						print_exported_vars(t_exec *exec);
 int						process_argument(char *argument, t_exec *exec);
 int						export(t_exec *exec, char **arguments);
 int						is_numeric(const char *str);
-int						ft_exit(char **args);
+int						ft_exit(t_exec *exec, char **args);
 void					remove_env_var(t_exec *exec, char *var_name);
 int						unset(t_exec *exec, char **arg);
 int						cd(t_exec *exec, char **arg);

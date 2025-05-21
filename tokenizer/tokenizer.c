@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:50:25 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/21 14:00:38 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/21 21:26:51 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ size_t	count_n_tokens(char *argv)
 		if (argv[i])
 			i++;
 	}
-	if (i > 0 && !is_double_operator(argv[i - 1]))
-		++n_op;
+	if (i > 0 && !is_simple_operator(argv[i - 1]))
+		n_op++;
 	return (n_op);
 }
 

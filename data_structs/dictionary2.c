@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dictionary2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 12:09:28 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/15 16:17:50 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:28:58 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ char	**dict_get_keys(t_dictionary *dict)
 	{
 		if (dict->entries[counter])
 		{
-			*tmp = dict->entries[counter]->key;
+			*tmp = ft_strdup(dict->entries[counter]->key);
 			tmp++;
 		}
 		counter++;
