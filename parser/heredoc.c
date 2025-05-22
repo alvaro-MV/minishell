@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:46 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/17 19:27:33y alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/22 23:23:23 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	*get_hd_name(void)
 	}
 	return (hd_name);
 }
-
 
 static int	process_heredoc_loop(int hdfd,
 								char *delimiter,

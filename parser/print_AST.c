@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_AST.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:31 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/21 14:01:23 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/22 23:24:36 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	print_io_redirections(t_cmd *cmd)
 	while (cmd)
 	{
 		print_io_redir(cmd->cmd_prefix, 'p');
-		print_io_redir(cmd->cmd_suffix,'s');
+		print_io_redir(cmd->cmd_suffix, 's');
 		cmd = cmd->next;
 	}
 }

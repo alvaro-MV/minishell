@@ -6,12 +6,11 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 17:28:36by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/23 00:28:39 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-#include <errno.h>
 
 char	*find_exec_in_path(char **path, char *exec)
 {
@@ -42,7 +41,7 @@ char	*find_exec_in_path(char **path, char *exec)
 	return (exec);
 }
 
-static void	free_all(t_exec *exec_vars)
+void	free_execution(t_exec *exec_vars)
 {
 	close_cmd_fds(exec_vars->cmd);
 	free_ast(exec_vars->mini->sequence);
@@ -50,79 +49,6 @@ static void	free_all(t_exec *exec_vars)
 	free(exec_vars->mini->pids);
 	close(exec_vars->mini->saved_std[0]);
 	close(exec_vars->mini->saved_std[1]);
-}
-
-int	call_execve(t_exec *exec)
-{
-	char	**arguments;
-	char	cmd_name[1024];
-	char	**execve_args;
-	char	**envp;
-	char	**path;
-	int		err;
-
-	arguments = (char **)exec->cmd->cmd->darray;
-	if (arguments[0] == NULL)
-		(free_all(exec), exit(0));
-	ft_bzero(cmd_name, 1024);
-	ft_memcpy(cmd_name, arguments[0], ft_strlen(arguments[0]));
-	path = ft_split(dict_get(exec->env, "PATH"), ':');
-	if (arguments[0][0] == '/')
-    {
-        if (access(arguments[0], F_OK) != 0)
-        {
-            ft_putstr_fd("minishell: ", 2);
-            ft_putstr_fd(arguments[0], 2);
-            ft_putstr_fd(": No such file or directory\n", 2);
-			(ft_free_array(path), free_all(exec));
-            exit(127);
-        }
-    }
-	arguments[0] = find_exec_in_path(path, arguments[0]);
-	ft_free_array(path);
-	execve_args = create_args(exec->cmd);
-	envp = dict_envp(exec->env);
-	execve(execve_args[0], execve_args, envp);
-	err = errno;
-	ft_free_array(envp);
-	close_cmd_fds(exec->cmd);
-	free_ast(exec->mini->sequence);
-	dict_delete(exec->mini->env);
-	free(exec->mini->pids);
-	(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd_name, 2));
-	if (err == EISDIR)
-	{
-		ft_putstr_fd(": Is a directory\n", 2);
-		(ft_free_array(execve_args), exit(126));
-	}
-	else if (err == EACCES || !access(execve_args[0], X_OK))
-	{
-		if (!ft_strchr(execve_args[0], '/'))
-		{
-			ft_putstr_fd(": command not found\n", 2);
-			(ft_free_array(execve_args), exit(127));
-		}		
-		ft_putstr_fd(": Permission denied\n", 2);
-		(ft_free_array(execve_args), exit(126));
-	}
-	else if (err == ENOENT)
-	{
-		ft_putstr_fd(": command not found\n", 2);
-		(ft_free_array(execve_args), exit(127));
-	}
-	else if (err == ENOEXEC)
-	{
-		ft_putstr_fd(": Exec format error\n", 2);
-		(ft_free_array(execve_args), exit(126));
-	}
-	else
-	{
-		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(strerror(err), 2);
-		ft_putstr_fd("\n", 2);
-		ft_free_array(execve_args);
-		exit(1);
-	}
 }
 
 int	run_builtin(t_exec *exec)
@@ -151,8 +77,7 @@ int	run_builtin(t_exec *exec)
 		status = cd(exec, arguments);
 	else
 		ft_printf("minishell: command not found\n");
-	ft_free_array(arguments);
-	return (status);
+	return (ft_free_array(arguments), status);
 }
 
 int	handle_child_process(t_exec *exec_vars)
@@ -162,7 +87,7 @@ int	handle_child_process(t_exec *exec_vars)
 	status = execute_io_redir(exec_vars);
 	if (status)
 	{
-		free_all(exec_vars);
+		free_execution(exec_vars);
 		exit(1);
 	}
 	if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) == -1)
@@ -171,16 +96,16 @@ int	handle_child_process(t_exec *exec_vars)
 		write(1, "Failed to redirect stdout.\n", 27);
 	close_cmd_fds(exec_vars->cmd);
 	if (status != 0)
-		(free_all(exec_vars), exit(status));
+		(free_execution(exec_vars), exit(status));
 	if (!status && is_builtin(exec_vars->cmd->cmd->darray))
 	{
 		status = run_builtin(exec_vars);
-		free_all(exec_vars);
+		free_execution(exec_vars);
 		exit(status);
 	}
 	else if (!status && !is_builtin(exec_vars->cmd->cmd->darray))
 		status = call_execve(exec_vars);
-	free_all(exec_vars);
+	free_execution(exec_vars);
 	exit(status);
 }
 
@@ -199,9 +124,7 @@ int	execute_child(t_exec *exec_vars, t_cmd_pipe *sequence)
 			if (sequence->cmd != exec_vars->cmd)
 			{
 				close_cmd_fds(sequence->cmd);
-				// free_cmd(sequence->cmd);
 			}
-			// free(sequence);
 			sequence = tmp;
 		}
 		handle_child_process(exec_vars);

@@ -6,13 +6,13 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 20:04:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/21 20:13:19 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/23 00:23:34 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
-void	no_se_pon_nombre_2(char *str, t_utils *utils, t_dictionary *env)
+void	expand_env_var2(char *str, t_utils *utils, t_dictionary *env)
 {
 	char	*tmp_str;
 	char	*env_var_name;
@@ -37,7 +37,7 @@ void	no_se_pon_nombre_2(char *str, t_utils *utils, t_dictionary *env)
 	utils->i = (free(tmp_str), free(env_var_name), utils->len_env_var - 1);
 }
 
-int	nose_pon_nombre(t_dictionary *env, char *str, t_utils *utils)
+int	expand_env_var(t_dictionary *env, char *str, t_utils *utils)
 {
 	if (utils->state == ENV_VAR)
 	{
@@ -52,14 +52,15 @@ int	nose_pon_nombre(t_dictionary *env, char *str, t_utils *utils)
 				utils->len_env_var++;
 			else if (!is_special_var(&str[utils->len_env_var]))
 			{
-				while (ft_isalnum(str[utils->len_env_var]) || str[utils->len_env_var] == '_')
+				while (ft_isalnum(str[utils->len_env_var])
+					|| str[utils->len_env_var] == '_')
 				{
 					if (!ft_isalpha(str[utils->i]) && str[utils->i] != '_')
 						break ;
 					utils->len_env_var++;
 				}
 			}
-			no_se_pon_nombre_2(str, utils, env);
+			expand_env_var2(str, utils, env);
 		}
 		return (1);
 	}
@@ -75,7 +76,7 @@ int	expand_quotes(char *str, t_utils *utils)
 			utils->state = WORD;
 		else if ((str[utils->i] == '$' && ft_isalpha(str[utils->i + 1]))
 			|| (str[utils->i] == '$' && is_special_var(&str[utils->i + 1]))
-			|| (str[utils->i] == '$' && str[utils->i + 1 ] == '_'))
+			|| (str[utils->i] == '$' && str[utils->i + 1] == '_'))
 			utils->state = ENV_VAR;
 		else
 			join_char(&utils->expanded_str, &str[utils->i]);
@@ -116,7 +117,7 @@ char	*expand_str(char *str, t_dictionary *env)
 				join_char(&utils.expanded_str, &str[utils.i]);
 		}
 		else if (!expand_quotes(str, &utils))
-			nose_pon_nombre(env, str, &utils);
+			expand_env_var(env, str, &utils);
 		utils.i++;
 	}
 	return (utils.expanded_str);

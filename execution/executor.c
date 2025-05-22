@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:20:37 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 23:45:25 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/22 23:17:52 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ void	handler_signint_child(int sig)
 	close(0);
 }
 
-int	execute_sequence(t_cmd_pipe *sequence, t_dictionary *env, int n_cmd, t_minishell *mini)
+int	execute_sequence(t_cmd_pipe *sequence, t_dictionary *env, int n_cmd,
+		t_minishell *mini)
 {
-	t_cmd_pipe *seq_start;
-	t_exec	exec_vars;
-	int		status;
-	int		i;
+	t_cmd_pipe	*seq_start;
+	t_exec		exec_vars;
+	int			status;
+	int			i;
 
 	status = 0;
 	mini->pids = ft_calloc(n_cmd, sizeof(pid_t));

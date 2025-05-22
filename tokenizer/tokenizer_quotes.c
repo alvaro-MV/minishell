@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_quotes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:51:57 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/18 16:06:38 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/23 00:10:45 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*handle_fin_quotes(char *line, char quote)
 	append_darray(&darr, "\n");
 	while (1)
 	{
-		while(!quote_line)
+		while (!quote_line)
 			quote_line = readline("quote> ");
 		i = 0;
 		while (quote_line[i])

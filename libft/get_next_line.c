@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:38:04 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/19 21:57:29 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/22 23:20:47 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,9 +127,9 @@
 char	*strjoin_and_free(char *s1, char *s2)
 {
 	char	*joined;
-	int	i;
+	int		i;
 	size_t	j;
-	
+
 	joined = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!joined)
 		return (NULL);
@@ -150,9 +150,10 @@ char	*get_next_line(int fd)
 	static char	buffer[BUFFER_SIZE];
 	static int	buffer_read = 0;
 	static int	buffer_pos = 0;
-	char		*line = NULL;
+	char		*line;
 	char		temp[2];
-	
+
+	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	while (1)

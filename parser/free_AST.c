@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_AST.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:47:41 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/21 13:31:15 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/22 23:23:04 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	free_cmd(t_cmd *cmd)
 
 void	free_ast(t_cmd_pipe *sequence)
 {
-	t_cmd_pipe *tmp;
+	t_cmd_pipe	*tmp;
 
 	while (sequence)
 	{
@@ -71,17 +71,3 @@ void	free_ast(t_cmd_pipe *sequence)
 		sequence = tmp;
 	}
 }
-
-// /* Nuevo helper: libera la tubería completa */
-// void	free_cmd_pipe(t_cmd_pipe *pipe)
-// {
-// 	t_cmd_pipe	*next;
-
-// 	while (pipe)
-// 	{
-// 		next = pipe->next;
-// 		free_cmd(pipe->cmd);
-// 		free(pipe);
-// 		pipe = next;
-// 	}
-// }
