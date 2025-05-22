@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 19:08:03 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/22 19:08:07 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/23 01:33:54 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,16 @@ void	process_commands(t_dictionary *hash_env, char *line, int *saved_std)
 	mini.sequence = NULL;
 }
 
+int	ctrd_routine(t_dictionary *hash_env, int saved_std[2], char *line)
+{
+	dict_delete(hash_env);
+	(close(saved_std[0]), close(saved_std[1]));
+	rl_clear_history();
+	free(line);
+	line = NULL;
+	return (0);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_dictionary	*hash_env;
@@ -66,21 +76,14 @@ int	main(int argc, char **argv, char **env)
 	int				finish;
 	int				saved_std[2];
 
-	finish = 0;
+	(void) argc, (void) argv, finish = 0;
 	init_environment(&hash_env, env, &line, &finish);
 	while (1)
 	{
-		saved_std[0] = signals(&line, &finish, argc, argv);
+		saved_std[0] = signals(&line, &finish);
 		saved_std[1] = dup(STDOUT_FILENO);
 		if (finish)
-		{
-			dict_delete(hash_env);
-			(close(saved_std[0]), close(saved_std[1]));
-			rl_clear_history();
-			free(line);
-			line = NULL;
-			return (0);
-		}
+			return (ctrd_routine(hash_env, saved_std, line));
 		if (!line)
 			continue ;
 		dict_insert(&hash_env, dict_create_entry(ft_strdup("?"),
@@ -88,13 +91,9 @@ int	main(int argc, char **argv, char **env)
 		process_commands(hash_env, line, saved_std);
 		dup2(saved_std[0], STDIN_FILENO);
 		dup2(saved_std[1], STDOUT_FILENO);
-		close(saved_std[0]);
-		close(saved_std[1]);
-		if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
-			break ;
+		(close(saved_std[0]), close(saved_std[1]));
 	}
 	dict_delete(hash_env);
 	rl_clear_history();
-	free(line);
-	return (0);
+	return (free(line), 0);
 }

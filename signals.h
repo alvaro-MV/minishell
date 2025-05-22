@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:08 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 20:49:08 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/23 01:31:39 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <unistd.h>
 
 void	handle_sigint(int sig);
-int		signals(char **input, int *exit, int argc, char **argv);
+int		signals(char **input, int *exit);
 int		storage_signal(int status, int flag);
 
 #endif

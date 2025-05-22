@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 20:04:37 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/23 00:23:34 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/23 01:36:21 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,18 @@ void	expand_env_var2(char *str, t_utils *utils, t_dictionary *env)
 	utils->i = (free(tmp_str), free(env_var_name), utils->len_env_var - 1);
 }
 
+static void	init_expand_env_var(t_utils *utils)
+{
+	utils->state = utils->old_state;
+	utils->old_state = ENV_VAR;
+	utils->len_env_var = utils->i;
+}
+
 int	expand_env_var(t_dictionary *env, char *str, t_utils *utils)
 {
 	if (utils->state == ENV_VAR)
 	{
-		utils->state = utils->old_state;
-		utils->old_state = ENV_VAR;
-		utils->len_env_var = utils->i;
+		init_expand_env_var(utils);
 		if (utils->state != DOUBLE_QUOTE && str[utils->i] == '\'')
 			utils->state = SINGLE_QUOTE;
 		else

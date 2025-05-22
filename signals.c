@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/22 19:07:12 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/23 01:31:28 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,14 @@ void	handle_sigint(int sig)
 	storage_signal(128 + sig, 1);
 }
 
-int	signals(char **input, int *exit, int argc, char **argv)
+int	signals(char **input, int *exit)
 {
 	int	save_stdin;
 
 	save_stdin = dup(STDIN_FILENO);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-	if (argc >= 3 && !ft_strncmp(argv[1], "-c", 3))
-		*input = ft_strdup(argv[2]);
-	else
-		*input = readline("minishell> ");
+	*input = readline("minishell> ");
 	if (!*input)
 	{
 		ft_printf("exit\n");

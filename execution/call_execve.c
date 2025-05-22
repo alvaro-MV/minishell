@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   call_execve.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 00:55:29 by alvmoral          #+#    #+#             */
+/*   Updated: 2025/05/23 00:55:30 by alvmoral         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "execution.h"
 
-void    free_execve(char **envp, t_exec *exec)
+void	free_execve(char **envp, t_exec *exec)
 {
 	ft_free_array(envp);
 	close_cmd_fds(exec->cmd);
@@ -9,7 +21,7 @@ void    free_execve(char **envp, t_exec *exec)
 	free(exec->mini->pids);
 }
 
-void    check_errno(int err, char **execve_args)
+void	check_errno(int err, char **execve_args)
 {
 	if (err == EISDIR)
 	{
@@ -49,17 +61,8 @@ void	set_cmd_name(char **cmd_name, char ***arguments, t_exec *exec)
 	ft_free_array(path);
 }
 
-int	call_execve(t_exec *exec)
+static void	no_such_file(char **arguments, t_exec *exec)
 {
-	char	**arguments;
-	char	cmd_name[1024];
-	char	**execve_args;
-	char	**envp;
-
-	arguments = (char **)exec->cmd->cmd->darray;
-	if (arguments[0] == NULL)
-		(free_execution(exec), exit(0));
-
 	if (arguments[0][0] == '/')
 	{
 		if (access(arguments[0], F_OK) != 0)
@@ -70,12 +73,25 @@ int	call_execve(t_exec *exec)
 			(free_execution(exec), exit(127));
 		}
 	}
-	set_cmd_name((char **) cmd_name, &arguments, exec);
+}
+
+int	call_execve(t_exec *exec)
+{
+	char	**arguments;
+	char	cmd_name[1024];
+	char	**execve_args;
+	char	**envp;
+
+	arguments = (char **)exec->cmd->cmd->darray;
+	if (arguments[0] == NULL)
+		(free_execution(exec), exit(0));
+	no_such_file(arguments, exec);
+	set_cmd_name((char **)cmd_name, &arguments, exec);
 	execve_args = create_args(exec->cmd);
 	envp = dict_envp(exec->env);
 	execve(execve_args[0], execve_args, envp);
-    free_execve(envp, exec);
+	free_execve(envp, exec);
 	(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd_name, 2));
-    check_errno(errno, execve_args);
-    return (0);
+	check_errno(errno, execve_args);
+	return (0);
 }

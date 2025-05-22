@@ -6,19 +6,24 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 10:01:54 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/22 23:25:10 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/23 01:05:57 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
+
+static void	init_process_tokenization(int *i, int *start)
+{
+	*i = 0;
+	*start = 0;
+}
 
 int	process_tokenization(char *line, t_darray *tokens)
 {
 	int	i;
 	int	start;
 
-	i = 0;
-	start = 0;
+	init_process_tokenization(&i, &start);
 	while (tokens->full_idx < count_n_tokens(line))
 	{
 		while (still_in_quote(line[i], '\''))
