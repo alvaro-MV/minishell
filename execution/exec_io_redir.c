@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_io_redir.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:21 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/18 17:06:50by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/22 23:15:29 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,44 +67,59 @@ int	traverse_io_redir(t_io_redir *ix, t_exec *exec)
 	return (status);
 }
 
-int	execute_io_redir(t_exec *exec)
+int	check_redir_status(t_exec *exec, t_io_redir *ix, t_cmd *tmp_cmd)
+{
+	int			status;
+
+	status = traverse_io_redir(ix, exec);
+	if (status != 0)
+	{
+		exec->cmd = tmp_cmd;
+		return (status);
+	}
+	return (0);
+}
+
+int	exec_prefix_suffix(t_cmd *tmp_cmd, t_exec *exec, t_cmd *cmd)
 {
 	t_io_redir	*prefix;
 	t_io_redir	*suffix;
-	t_cmd 		*tmp_cmd;
-	t_cmd 		*cmd;
+	int			status;
+
+	prefix = cmd->cmd_prefix;
+	suffix = cmd->cmd_suffix;
+	while (prefix)
+	{
+		status = check_redir_status(exec, prefix, tmp_cmd);
+		if (status)
+			return (status);
+		prefix = prefix->next;
+	}
+	while (suffix)
+	{
+		status = check_redir_status(exec, suffix, tmp_cmd);
+		if (status)
+			return (status);
+		suffix = suffix->next;
+	}
+	return (0);
+}
+
+int	execute_io_redir(t_exec *exec)
+{
+	t_cmd		*cmd;
+	t_cmd		*tmp_cmd;
 	int			status;
 
 	tmp_cmd = exec->cmd;
 	cmd = exec->cmd;
 	while (cmd)
 	{
-		prefix = cmd->cmd_prefix;
-		suffix = cmd->cmd_suffix;
-
-		status = 0;
-		while (prefix)
-		{
-			status = traverse_io_redir(prefix, exec);
-			if (status != 0)
-			{
-				exec->cmd = tmp_cmd;
-				return (status);
-			}
-			prefix = prefix->next;
-		}
-		while (suffix)
-		{
-			status = traverse_io_redir(suffix, exec);
-			if (status != 0)
-			{
-				exec->cmd = tmp_cmd;
-				return (status);
-			}
-			suffix = suffix->next;
-		}
+		status = exec_prefix_suffix(tmp_cmd, exec, cmd);
+		if (status)
+			return (status);
 		cmd = cmd->next;
 	}
-	exec->cmd = tmp_cmd;	
+	exec->cmd = tmp_cmd;
 	return (status);
 }

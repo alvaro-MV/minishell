@@ -1,4 +1,5 @@
 */*.out
+bash.supp
 out*
 a.out
 minishell_tester
