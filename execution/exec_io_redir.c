@@ -27,7 +27,7 @@ int	override_fd(t_exec *exec, t_io_redir *redir, int flags, int idx)
 			return (1);
 		if (!(file_stat.st_mode & S_IWUSR) || !(file_stat.st_mode & S_IRUSR))
 		{
-			free_cmd(exec->cmd);
+			// free_cmd(exec->cmd);
 			dict_delete(exec->env);
 			return (1);
 		}

@@ -95,6 +95,11 @@ int	call_execve(t_exec *exec)
 	}
 	else if (err == EACCES || !access(execve_args[0], X_OK))
 	{
+		if (!ft_strchr(execve_args[0], '/'))
+		{
+			ft_putstr_fd(": command not found\n", 2);
+			(ft_free_array(execve_args), exit(127));
+		}		
 		ft_putstr_fd(": Permission denied\n", 2);
 		(ft_free_array(execve_args), exit(126));
 	}
@@ -157,7 +162,7 @@ int	handle_child_process(t_exec *exec_vars)
 	if (status)
 	{
 		close_cmd_fds(exec_vars->cmd);
-		// free_all(exec_vars);
+		free_cmd(exec_vars->cmd);
 		exit(1);
 	}
 	if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) == -1)
