@@ -59,31 +59,43 @@ int	call_execve(t_exec *exec)
 	char	**execve_args;
 	char	**envp;
 	char	**path;
+	int		err;
 
 	arguments = (char **)exec->cmd->cmd->darray;
 	ft_bzero(cmd_name, 1024);
 	ft_memcpy(cmd_name, arguments[0], ft_strlen(arguments[0]));
 	path = ft_split(dict_get(exec->env, "PATH"), ':');
+	if (arguments[0][0] == '/')
+    {
+        if (access(arguments[0], F_OK) != 0)
+        {
+            ft_putstr_fd("minishell: ", 2);
+            ft_putstr_fd(arguments[0], 2);
+            ft_putstr_fd(": No such file or directory\n", 2);
+            ft_free_array(path);
+            exit(127);
+        }
+    }
 	arguments[0] = find_exec_in_path(path, arguments[0]);
 	ft_free_array(path);
 	execve_args = create_args(exec->cmd);
 	envp = dict_envp(exec->env);
 	execve(execve_args[0], execve_args, envp);
-	int err = errno;
+	err = errno;
 	ft_free_array(envp);
 	close_cmd_fds(exec->cmd);
 	free_ast(exec->mini->sequence);
 	dict_delete(exec->mini->env);
 	free(exec->mini->pids);
 	(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd_name, 2));
-	if (err == EACCES)
-	{
-		ft_putstr_fd(": Permission denied\n", 2);
-		(ft_free_array(execve_args), exit(126));
-	}
-	else if (err == EISDIR)
+	if (err == EISDIR)
 	{
 		ft_putstr_fd(": Is a directory\n", 2);
+		(ft_free_array(execve_args), exit(126));
+	}
+	else if (err == EACCES || !access(execve_args[0], X_OK))
+	{
+		ft_putstr_fd(": Permission denied\n", 2);
 		(ft_free_array(execve_args), exit(126));
 	}
 	else if (err == ENOENT)
@@ -91,6 +103,7 @@ int	call_execve(t_exec *exec)
 		ft_putstr_fd(": command not found\n", 2);
 		(ft_free_array(execve_args), exit(127));
 	}
+
 	else if (err == ENOEXEC)
 	{
 		ft_putstr_fd(": Exec format error\n", 2);

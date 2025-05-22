@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/15 16:25:57 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 14:04:44y alvaro           ###   ########.fr       */
+/*   Created: 2025/05/22 19:08:03 by lvez-dia          #+#    #+#             */
+/*   Updated: 2025/05/22 19:08:07 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	process_commands(t_dictionary *hash_env, char *line, int *saved_std)
 	mini.tokens_array = tokenizer_str(line);
 	mini.saved_std = saved_std;
 	mini.tokens_strings = (char **)mini.tokens_array->darray;
-	mini.token_stream = tokenizer_t_tokens(mini.tokens_strings, mini.tokens_array->full_idx);
+	mini.token_stream = tokenizer_t_tokens(mini.tokens_strings,
+			mini.tokens_array->full_idx);
 	ft_free_array(mini.tokens_array->darray);
 	mini.tokens_array->darray = NULL;
 	free_darray(mini.tokens_array);
@@ -65,11 +66,8 @@ int	main(int argc, char **argv, char **env)
 	int				finish;
 	int				saved_std[2];
 
-	// (void)argc;
-	// (void)argv;
 	finish = 0;
 	init_environment(&hash_env, env, &line, &finish);
-
 	while (1)
 	{
 		saved_std[0] = signals(&line, &finish, argc, argv);

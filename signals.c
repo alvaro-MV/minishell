@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:59:16 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 20:49:02 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:07:12 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	handle_sigint(int sig)
 int	signals(char **input, int *exit, int argc, char **argv)
 {
 	int	save_stdin;
-	
+
 	save_stdin = dup(STDIN_FILENO);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
@@ -42,14 +42,6 @@ int	signals(char **input, int *exit, int argc, char **argv)
 		*input = ft_strdup(argv[2]);
 	else
 		*input = readline("minishell> ");
-	// static int i = 0;
-	// if (i == 0)
-	// 	*input = ft_strdup("cat << l << l1 > o1 | cat -e << l << l1 > o2");
-	// else if (i == 1)
-	// 	*input = ft_strdup("echo SUCCESS");
-	// else
-	// 	*input = NULL;
-	// i ++;
 	if (!*input)
 	{
 		ft_printf("exit\n");
