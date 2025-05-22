@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:27 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/19 19:05:06 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/22 22:12:27 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	handle_expansion(t_command **cmd, char *element, t_dictionary *env)
 	int		i;
 
 	expanded_cmd = expand_str(element, env);
+	free(element);
 	if (!expanded_cmd)
 		return (0);
 	split = ft_split(expanded_cmd, ' ');

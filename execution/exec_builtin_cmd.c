@@ -62,6 +62,8 @@ int	call_execve(t_exec *exec)
 	int		err;
 
 	arguments = (char **)exec->cmd->cmd->darray;
+	if (arguments[0] == NULL)
+		(free_all(exec), exit(0));
 	ft_bzero(cmd_name, 1024);
 	ft_memcpy(cmd_name, arguments[0], ft_strlen(arguments[0]));
 	path = ft_split(dict_get(exec->env, "PATH"), ':');
@@ -72,7 +74,7 @@ int	call_execve(t_exec *exec)
             ft_putstr_fd("minishell: ", 2);
             ft_putstr_fd(arguments[0], 2);
             ft_putstr_fd(": No such file or directory\n", 2);
-            ft_free_array(path);
+			(ft_free_array(path), free_all(exec));
             exit(127);
         }
     }
@@ -108,7 +110,6 @@ int	call_execve(t_exec *exec)
 		ft_putstr_fd(": command not found\n", 2);
 		(ft_free_array(execve_args), exit(127));
 	}
-
 	else if (err == ENOEXEC)
 	{
 		ft_putstr_fd(": Exec format error\n", 2);
@@ -161,8 +162,7 @@ int	handle_child_process(t_exec *exec_vars)
 	status = execute_io_redir(exec_vars);
 	if (status)
 	{
-		close_cmd_fds(exec_vars->cmd);
-		free_cmd(exec_vars->cmd);
+		free_all(exec_vars);
 		exit(1);
 	}
 	if (exec_vars->cmd->fds[0] != 0 && dup2(exec_vars->cmd->fds[0], 0) == -1)
