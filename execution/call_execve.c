@@ -6,7 +6,7 @@
 /*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 00:55:29 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/23 14:48:10 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/23 15:09:15 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ int	call_execve(t_exec *exec)
 	close(exec->mini->saved_std[0]);
 	close(exec->mini->saved_std[1]);
 	close_cmd_fds(exec->cmd);
-	// execve_args[0] = ft_strjoin(ft_strjoin(dict_get(exec->env, "PWD"), "/"), ft_substr(execve_args[0], 2, ft_strlen(execve_args[0]) - 2));
-	ft_printf("exec: %s\n", execve_args[0]); //testeo
 	execve(execve_args[0], execve_args, envp);
 	free_execve(envp, exec);
 	(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd_name, 2));
