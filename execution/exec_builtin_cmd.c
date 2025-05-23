@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin_cmd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:19:07 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/23 00:28:39 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:50:28 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ char	*find_exec_in_path(char **path, char *exec)
 	int		l_path;
 	char	pathname[1024];
 
-	if (access(exec, X_OK) == 0)
-		return (ft_strdup(exec));
+	// if (access(exec, X_OK) == 0)
+	// 	return (ft_strdup(exec));
 	if (exec[0] == '/')
 		return (NULL);
 	l_exec = ft_strlen(exec);
