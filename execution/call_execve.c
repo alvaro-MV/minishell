@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_execve.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 00:55:29 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/23 00:55:30 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/23 13:08:09 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	free_execve(char **envp, t_exec *exec)
 {
 	ft_free_array(envp);
-	close_cmd_fds(exec->cmd);
 	free_ast(exec->mini->sequence);
 	dict_delete(exec->mini->env);
 	free(exec->mini->pids);
@@ -89,6 +88,9 @@ int	call_execve(t_exec *exec)
 	set_cmd_name((char **)cmd_name, &arguments, exec);
 	execve_args = create_args(exec->cmd);
 	envp = dict_envp(exec->env);
+	close(exec->mini->saved_std[0]);
+	close(exec->mini->saved_std[1]);
+	close_cmd_fds(exec->cmd);
 	execve(execve_args[0], execve_args, envp);
 	free_execve(envp, exec);
 	(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd_name, 2));

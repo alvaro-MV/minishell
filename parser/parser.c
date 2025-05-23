@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:27 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/22 22:12:27 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/23 12:50:30 by alvaro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,20 @@ int	handle_expansion(t_command **cmd, char *element, t_dictionary *env)
 
 int	add_command(t_command **cmd, char *element, t_dictionary *env, int exp)
 {
+	char	unclosed;
+
 	(void)exp;
+	unclosed = '\0';
+	if (element)
+		unclosed = unclosed_quote_char(element);
+	if (unclosed)
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
+		ft_putstr_fd("`", 2);
+		(ft_putstr_fd(&unclosed, 2), ft_putstr_fd("'\n", 2));
+		(free(element), storage_signal(2, 1));
+		return (0);
+	}
 	if (!element || (element && element[0] != '$') || (element
 			&& element[0] == '$' && exp))
 	{

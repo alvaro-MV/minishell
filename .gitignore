@@ -3,6 +3,7 @@ bash.supp
 out*
 a.out
 minishell_tester
+mierda_tester
 *tester*
 */*.o
 minishell
