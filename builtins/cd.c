@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:57:28 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 13:26:02 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/26 21:01:23 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ static char	*cd_build_path(t_exec *exec, char **arg)
 	if (arg[1][0] == '/')
 		return (ft_strdup(arg[1]));
 	cwd = dict_get(exec->env, "PWD");
+	if (!cwd)
+	{
+		ft_putendl_fd("cd: PWD not set", 2);
+		return (NULL);
+	}
 	tmp = ft_strjoin(cwd, "/");
 	path = ft_strjoin(tmp, arg[1]);
 	free(tmp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:23 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 20:23:13 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/26 21:03:21 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,20 @@ int	process_argument(char *argument, t_exec *exec)
 	var = ft_split(argument, '=');
 	if (!var)
 		return (1);
-	if (is_valid_name(var[0]))
+	if (!is_valid_name(var[0]))
 	{
-		if (var[1] == NULL && ft_strchr(argument, '='))
-			value = "";
-		else
-			value = var[1];
-		entry = dict_create_entry(ft_strdup(var[0]), ft_strdup(value));
-		if (ft_strchr(argument, '='))
-			entry->export = 1;
-		dict_insert(&exec->env, entry);
+		ft_putstr_fd("not a valid identifier\n", 2);
+		ft_free_array(var);
+		return (1);
 	}
+	if (var[1] == NULL && ft_strchr(argument, '='))
+		value = "";
 	else
-		return (export_error(argument), ft_free_array(var), 1);
+		value = var[1];
+	entry = dict_create_entry(ft_strdup(var[0]), ft_strdup(value));
+	if (ft_strchr(argument, '='))
+		entry->export = 1;
+	dict_insert(&exec->env, entry);
 	ft_free_array(var);
 	return (0);
 }

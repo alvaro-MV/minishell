@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 20:29:56 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/26 21:06:29 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,19 @@ static int	is_exportable_var(t_dictionary *dic, char *key)
 	return (0);
 }
 
+static void	print_env_var(t_dictionary *env, char *name)
+{
+	char	*value;
+
+	if (!is_exportable_var(env, name))
+		return ;
+	value = dict_get(env, name);
+	if (value == NULL)
+		ft_printf("%s=\n", name);
+	else
+		ft_printf("%s=%s\n", name, value);
+}
+
 int	ft_env(char **args, t_exec *exec)
 {
 	char	**env_keys;
@@ -44,8 +57,7 @@ int	ft_env(char **args, t_exec *exec)
 	{
 		while (*env_keys != NULL)
 		{
-			if (is_exportable_var(exec->env, *env_keys))
-				ft_printf("%s=%s\n", *env_keys, dict_get(exec->env, *env_keys));
+			print_env_var(exec->env, *env_keys);
 			env_keys++;
 		}
 	}

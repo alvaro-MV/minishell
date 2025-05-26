@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:52 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/21 23:44:54 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/26 21:06:37 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 # include <limits.h>
 # include <stddef.h>
 # include <unistd.h>
+
+# ifndef PATH_MAX
+#  define PATH_MAX 4096
+# endif
 
 struct					s_exec;
 typedef struct s_exec	t_exec;
@@ -32,6 +36,7 @@ int						process_flags(char **arguments, int *i);
 void					echo(char **arguments);
 int						ft_pwd(void);
 int						pwd2(void);
+//void					print_env_var(t_dictionary *env, char *name);
 int						ft_env(char **args, t_exec *exec);
 int						is_valid_name(char *name);
 int						legal_variable_starter(int c);
