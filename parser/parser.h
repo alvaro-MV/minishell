@@ -6,7 +6,7 @@
 /*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 18:55:02 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/22 22:48:01 by alvmoral         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:00:11 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 # include "../data_structs/dictionary.h"
 # include "../data_structs/dynamic_array.h"
 # include "../expansion/expansion.h"
-# include "../libft/include/libft.h"
 # include "../libft/include/get_next_line.h"
+# include "../libft/include/libft.h"
 # include "../signals.h"
 # include "../tokenizer/tokenizer.h"
+# include <fcntl.h>
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <wait.h>
-# include <fcntl.h>
 
 typedef struct s_io_redir
 {
@@ -78,7 +78,6 @@ int						handle_expansion(t_command **cmd, char *element,
 							t_dictionary *env);
 int						add_command(t_command **cmd, char *element,
 							t_dictionary *env, int exp);
-void					print_from_diff(char *AST, char *expected);
 void					print_io_redir(t_io_redir *io_redir, char ix_type);
 void					print_io_redirections(t_cmd *cmd);
 void					print_cmd(t_cmd *cmd);

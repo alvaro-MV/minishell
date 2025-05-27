@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvaro <alvaro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 17:48:27 by alvmoral          #+#    #+#             */
-/*   Updated: 2025/05/23 12:50:30 by alvaro           ###   ########.fr       */
+/*   Updated: 2025/05/27 18:16:23 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ int	handle_expansion(t_command **cmd, char *element, t_dictionary *env)
 	int		i;
 
 	expanded_cmd = expand_str(element, env);
-	free(element);
+	ft_printf("expanded:-%s\n", expanded_cmd);
 	if (!expanded_cmd)
-		return (0);
+		return (free(element), 0);
+	if (expanded_cmd && !ft_strncmp(expanded_cmd, "", 1) && ft_strlen(element))
+		return (free(element), 1);
 	split = ft_split(expanded_cmd, ' ');
 	if (!split)
 		return (free(expanded_cmd), 0);
@@ -67,23 +69,11 @@ int	add_command(t_command **cmd, char *element, t_dictionary *env, int exp)
 		(free(element), storage_signal(2, 1));
 		return (0);
 	}
-	if (!element || (element && element[0] != '$') || (element
-			&& element[0] == '$' && exp))
+	if (!element || (element && element[0] != '$'))
 	{
 		if (!append_darray(cmd, &element))
 			return (0);
 		return (1);
 	}
 	return (handle_expansion(cmd, element, env));
-}
-
-void	print_from_diff(char *AST, char *expected)
-{
-	int	i;
-
-	i = 0;
-	while (AST[i] == expected[i] && AST[i] != '\0' && expected[i] != '\0')
-		i++;
-	ft_printf("A: %s\n", &AST[i]);
-	ft_printf("e: %s\n", &expected[i]);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alvmoral <alvmoral@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:57:28 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/26 21:01:23 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:31:21 by alvmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,22 @@ static int	change_to_oldpwd(t_exec *exec)
 
 static int	change_directory(t_exec *exec, const char *path)
 {
-	char	old_cwd[PATH_MAX];
+	char	*old_cwd;
 	char	new_cwd[PATH_MAX];
 
-	ft_strlcpy(old_cwd, dict_get(exec->env, "PWD"), PATH_MAX);
+	// ft_strlcpy(old_cwd, dict_get(exec->env, "PWD"), PATH_MAX);
+	old_cwd = dict_get(exec->env, "PWD");
 	if (chdir(path) != 0)
 		return (perror("cd"), 1);
 	if (!getcwd(new_cwd, PATH_MAX))
 		return (perror("cd: getcwd"), 1);
-	dict_insert(&exec->env, dict_create_entry(ft_strdup("OLDPWD"),
-			ft_strdup(old_cwd)));
-	dict_insert(&exec->env, dict_create_entry(ft_strdup("PWD"),
-			ft_strdup(new_cwd)));
+	if (old_cwd)
+	{
+		dict_insert(&exec->env, dict_create_entry(ft_strdup("OLDPWD"),
+				ft_strdup(old_cwd)));
+		dict_insert(&exec->env, dict_create_entry(ft_strdup("PWD"),
+				ft_strdup(new_cwd)));
+	}
 	return (0);
 }
 
