@@ -6,7 +6,7 @@
 /*   By: lvez-dia <lvez-dia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:58:52 by lvez-dia          #+#    #+#             */
-/*   Updated: 2025/05/26 21:06:37 by lvez-dia         ###   ########.fr       */
+/*   Updated: 2025/05/27 20:18:15 by lvez-dia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int						process_flags(char **arguments, int *i);
 void					echo(char **arguments);
 int						ft_pwd(void);
 int						pwd2(void);
-//void					print_env_var(t_dictionary *env, char *name);
 int						ft_env(char **args, t_exec *exec);
 int						is_valid_name(char *name);
 int						legal_variable_starter(int c);
